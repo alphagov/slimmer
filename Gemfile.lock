@@ -1,0 +1,18 @@
+PATH
+  remote: .
+  specs:
+    slimmer (0.0.1)
+      nokogiri (~> 1.4.0)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    mocha (0.9.12)
+    nokogiri (1.4.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  mocha
+  slimmer!
