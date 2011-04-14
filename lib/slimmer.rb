@@ -11,8 +11,8 @@ module Slimmer
     end
 
     def call(env)
-      status,env,body = @app.call(env)
-      rewrite_response([status,env,body])
+      status,env2,body = @app.call(env)
+      rewrite_response(env,[status,env2,body])
     end
 
     def on_success(request,body)
@@ -34,12 +34,14 @@ module Slimmer
       b
     end
 
-    def rewrite_response(triplet)
+    def rewrite_response(env,triplet)
       status, headers, app_body = triplet
+      source_request = Rack::Request.new(env)
       request = Rack::Request.new(headers)
       case status.to_i
       when 200
-        if headers['Content-Type'] =~ /text\/html/
+        puts headers
+        if headers['Content-Type'] =~ /text\/html/ || headers['content-type'] =~ /text\/html/
           rewritten_body = on_success(request,s(app_body))
         else
           rewritten_body = app_body
@@ -48,8 +50,13 @@ module Slimmer
         rewritten_body = ""
         redirect_uri = URI.parse(headers['location'])
         if redirect_uri.host =~ /alphagov\.co\.uk/
-          redirect_uri.host = request.host
-          redirect_uri.port = request.port
+          if source_request.host =~ /:/
+            host,port = source_request.host.split(":")
+          else
+            host,port = source_request.host,source_request.port
+          end
+          redirect_uri.host = host
+          redirect_uri.port = port
         end
         headers['location'] = redirect_uri.to_s
       when 304
@@ -59,7 +66,7 @@ module Slimmer
       else
         rewritten_body = on_error(request,status, s(app_body))
       end
-      [status, filter_headers(headers), rewritten_body]
+      [status, filter_headers(headers), [rewritten_body]]
     end
 
     def filter_headers(header_hash)
