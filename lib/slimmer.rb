@@ -26,15 +26,20 @@ module Slimmer
       @skin.error(request, '404')
     end
 
+    def s(body)
+      return body.to_s unless body.respond_to?(:each)
+      b = ""
+      body.each {|a| b << a }
+      b
+    end
+
     def rewrite_response(triplet)
       status, headers, app_body = triplet
       request = Rack::Request.new(headers)
       case status.to_i
       when 200
         if headers['Content-Type'] =~ /text\/html/
-          b = ""
-          app_body.each {|a| b << a }
-          rewritten_body = on_success(request,b)
+          rewritten_body = on_success(request,s(app_body))
         else
           rewritten_body = app_body
         end
@@ -49,9 +54,9 @@ module Slimmer
       when 304
         rewritten_body = app_body
       when 404
-        rewritten_body = on_404(request,app_body)
+        rewritten_body = on_404(request,s(app_body))
       else
-        rewritten_body = on_error(request,status, app_body)
+        rewritten_body = on_error(request,status, s(app_body))
       end
       [status, filter_headers(headers), rewritten_body]
     end
