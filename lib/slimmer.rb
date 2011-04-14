@@ -48,8 +48,8 @@ module Slimmer
         rewritten_body = ""
         redirect_uri = URI.parse(headers['location'])
         if redirect_uri.host =~ /alphagov\.co\.uk/
-          redirect_uri.host = source_request.host
-          redirect_uri.port = source_request.port
+          redirect_uri.host = request.host
+          redirect_uri.port = request.port
         end
         headers['location'] = redirect_uri.to_s
       when 304
