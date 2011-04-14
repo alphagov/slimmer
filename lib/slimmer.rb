@@ -40,7 +40,6 @@ module Slimmer
       request = Rack::Request.new(headers)
       case status.to_i
       when 200
-        puts headers
         if headers['Content-Type'] =~ /text\/html/ || headers['content-type'] =~ /text\/html/
           rewritten_body = on_success(request,s(app_body))
         else
