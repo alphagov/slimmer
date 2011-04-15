@@ -65,7 +65,8 @@ module Slimmer
       else
         rewritten_body = on_error(request,status, s(app_body))
       end
-      [status, filter_headers(headers), [rewritten_body]]
+      rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
+      [status, filter_headers(headers), rewritten_body]
     end
 
     def filter_headers(header_hash)
