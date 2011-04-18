@@ -184,6 +184,14 @@ module Slimmer
       end
     end
 
+    def unparse_esi(doc)
+      ## HTML doesn't really have namespaces, and nokogiri's
+      ## default behaviour is to strip the namespace, but to
+      ## leave the tag name intact. Ugly hack here to reverse
+      ## that for ESI includes
+      doc.gsub("<include","<esi:include").gsub("</include","</esi:include")
+    end
+
     def error(request,template)
       processors = [
         TitleInserter.new()
@@ -199,7 +207,7 @@ module Slimmer
         p.filter(src,dest)
       end
       
-      return dest.to_html
+      return unparse_esi(dest.to_html)
     end
 
     def success(request,body)
