@@ -174,19 +174,8 @@ module Slimmer
       @asset_host = asset_host
     end
 
-    def load_template(template)
-      open("#{@asset_host}/#{template}.html").read
-    end
-
     def template(template)
-      if ENV["RACK_ENV"] == 'development'
-        load_template(template)
-      else
-        @template_cache ||= Hash.new {|hash,key|
-            hash[key] = self.load_template(key)
-        }
-        @template_cache[template]
-      end
+      open("#{@asset_host}/#{template}.html").read
     end
 
     def unparse_esi(doc)
