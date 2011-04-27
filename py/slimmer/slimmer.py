@@ -36,7 +36,7 @@ class SlimmerMiddleware(object):
                     location.query,
                     location.fragment )
             response['Location'] = urlunsplit(rewritten_url).get_url()
-        return response
+        return response.content
 
     def not_found(self,request,response):
         return self.process_error("404")
