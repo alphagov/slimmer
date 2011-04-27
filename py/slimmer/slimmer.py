@@ -31,7 +31,7 @@ class SlimmerMiddleware(object):
         if 'alphagov.co.uk' in location.netloc:
             rewritten_url = (
                     location.scheme,
-                    "%s:%s" % (request.host,request.port),
+                    request.get_host(),
                     location.path,
                     location.query,
                     location.fragment )
