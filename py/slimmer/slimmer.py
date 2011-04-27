@@ -1,6 +1,6 @@
 from django.conf import settings
 from BeautifulSoup import BeautifulSoup
-from urlparse import urlparse
+from urlparse import urlparse,urlunsplit
 
 def insert_title(src,dest):
     if src.html.head and src.html.head.title:
@@ -28,10 +28,14 @@ class SlimmerMiddleware(object):
 
     def redirect(self,request,response):
         location = urlparse(response['Location'])
-        if 'alphagov.co.uk' in location.host:
-            location.host = request.host
-            location.port = request.port
-            response['Location'] = location.get_url()
+        if 'alphagov.co.uk' in location.netloc:
+            rewritten_url = (
+                    location.scheme,
+                    "%s:%s" % (request.host,request.port),
+                    location.path,
+                    location.query,
+                    location.fragment )
+            response['Location'] = urlunsplit(rewritten_url).get_url()
         return response
 
     def not_found(self,request,response):
