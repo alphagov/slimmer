@@ -40,7 +40,7 @@ class SlimmerMiddleware(object):
                     location.path,
                     location.query,
                     location.fragment )
-            response['Location'] = urlunsplit(rewritten_url).get_url()
+            response['Location'] = urlunsplit(rewritten_url)
         return response.content
 
     def not_found(self,request,response):
