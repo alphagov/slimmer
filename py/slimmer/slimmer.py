@@ -1,5 +1,5 @@
 from django.conf import settings
-from BeautifulSoup import BeautifulSoup
+from BeautifulSoup import BeautifulSoup,Tag
 from urlparse import urlparse,urlunsplit
 
 def insert_title(src,dest):
@@ -19,6 +19,11 @@ def insert_body(src,dest):
     if src.find("article") and dest.find("article"):
         body = src.find("article")
         dest.find("article").replaceWith(body)
+    elif src.find("body") and dest.find("article"):
+        body = src.find("body")
+        article = Tag(dest, "article")
+        article.insert(0,body)
+        dest.find("article").replaceWith(article)
 
 class SlimmerMiddleware(object):
 
