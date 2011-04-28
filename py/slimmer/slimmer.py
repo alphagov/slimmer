@@ -53,7 +53,10 @@ class SlimmerMiddleware(object):
         
         if 'text/html' not in response['Content-Type']:
             return response
-        
+                
+        if request.path.find('/admin') == 0:
+            return response
+
         responses = { 200: self.skin,
                       301: self.redirect,
                       302: self.redirect,
