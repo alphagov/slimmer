@@ -45,25 +45,7 @@ module Slimmer
         else
           rewritten_body = app_body
         end
-      when 301, 302
-        rewritten_body = ""
-        location = headers['Location'] || headers['location']
-        redirect_uri = URI.parse(location)
-        if redirect_uri.host =~ /alphagov\.co\.uk/
-          if source_request.host =~ /:/
-            host,port = source_request.host.split(":")
-          else
-            host,port = source_request.host,source_request.port
-          end
-          redirect_uri.host = host
-          redirect_uri.port = port
-        end
-        if headers['location']
-          headers['location'] = redirect_uri.to_s
-        else
-          headers['Location'] = redirect_uri.to_s
-        end
-      when 304
+      when 301, 302, 304
         rewritten_body = app_body
       when 404
         rewritten_body = on_404(request,s(app_body))
