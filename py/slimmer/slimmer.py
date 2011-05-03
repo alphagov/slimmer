@@ -88,6 +88,7 @@ class SlimmerMiddleware(object):
         return self.process([ insert_title ],"<html></html>",self.template(template))
 
     def process(self,processors,content,template):
+        BeautifulSoup.NESTABLE_TAGS['p'] = []
         src_soup  = BeautifulSoup(content)
         dest_soup = BeautifulSoup(template)
    
