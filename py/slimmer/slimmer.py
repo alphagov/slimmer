@@ -14,7 +14,14 @@ def promote(type,tag):
         for node in new_nodes:
             dest.html.head.append(node)
     return move
+
+def promote_nav(src,dest):
+    header = dest.find("div",{"id":"container"}) 
+    nav = src.find("div",{"id":"promoted-nav"})
+    if nav and header:
+        header.insert(2,nav)
     
+
 def insert_body(src,dest):
     if src.find("article") and dest.find("article"):
         body = src.find("article")
@@ -79,7 +86,8 @@ class SlimmerMiddleware(object):
                 insert_title,
                 promote("script","src"),
                 promote("link","href"),
-                insert_body
+                insert_body,
+                promote_nav,
         ]
 
         return self.process(processors,content,self.template("wrapper"))
@@ -95,6 +103,6 @@ class SlimmerMiddleware(object):
         for p in processors:
             p(src_soup,dest_soup)
 
-        return unicode(dest_soup)
+        return str(dest_soup)
 
 
