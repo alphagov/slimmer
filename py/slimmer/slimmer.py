@@ -95,6 +95,6 @@ class SlimmerMiddleware(object):
         for p in processors:
             p(src_soup,dest_soup)
 
-        return dest_soup.prettify()
+        return unicode(dest_soup)
 
 
