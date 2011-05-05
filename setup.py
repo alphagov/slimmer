@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='slimmer',
-      version='0.7.2',
+      version='0.7.4',
       description='Slimmer python',
       author='Alphagov',
       author_email='dev@alphagov.co.uk',

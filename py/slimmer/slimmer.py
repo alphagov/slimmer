@@ -86,8 +86,8 @@ class SlimmerMiddleware(object):
                 insert_title,
                 promote("script","src"),
                 promote("link","href"),
-                insert_body,
                 promote_nav,
+                insert_body,
         ]
 
         return self.process(processors,content,self.template("wrapper"))
