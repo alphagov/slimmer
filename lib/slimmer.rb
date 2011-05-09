@@ -165,7 +165,7 @@ module Slimmer
       ## default behaviour is to strip the namespace, but to
       ## leave the tag name intact. Ugly hack here to reverse
       ## that for ESI includes
-      doc.gsub("<include","<esi:include").gsub("</include","</esi:include")
+      doc.gsub("<include","<esi:include").gsub(/><\/(esi:)?include>/, ' />')
     end
 
     def error(request,template)
