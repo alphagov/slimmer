@@ -38,18 +38,6 @@ class SlimmerMiddleware(object):
         f = open("%s/%s.html" % (settings.TEMPLATE_PATH,name))
         return f.read()
 
-    def redirect(self,request,response):
-        location = urlparse(response['Location'])
-        if 'alphagov.co.uk' in location.netloc:
-            rewritten_url = (
-                    location.scheme,
-                    request.get_host(),
-                    location.path,
-                    location.query,
-                    location.fragment )
-            response['Location'] = urlunsplit(rewritten_url)
-        return response.content
-
     def not_found(self,request,response):
         return self.process_error("404")
 
@@ -65,8 +53,6 @@ class SlimmerMiddleware(object):
             return response
 
         responses = { 200: self.skin,
-                      301: self.redirect,
-                      302: self.redirect,
                       404: self.not_found,
                       500: self.error 
                     }
