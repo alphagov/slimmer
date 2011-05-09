@@ -157,7 +157,7 @@ module Slimmer
     end
 
     def template(template)
-      open("#{@asset_host}/#{template}.html").read
+      open("#{@asset_host}/#{template}.html", "r:UTF-8").read
     end
 
     def unparse_esi(doc)
