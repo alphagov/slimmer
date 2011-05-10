@@ -57,7 +57,7 @@ module Slimmer
     end
 
     def filter_headers(header_hash)
-      valid_keys = ['vary', 'set-cookie', 'location', 'content-type']
+      valid_keys = ['vary', 'set-cookie', 'location', 'content-type', 'expires', 'cache-control']
       header_hash.keys.each do |key|
         header_hash.delete(key) unless valid_keys.include?(key.downcase)
       end
