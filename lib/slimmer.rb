@@ -126,16 +126,30 @@ module Slimmer
 
   class TagMover
     def filter(src,dest)
-      move_tags(src, dest, 'script','src')
-      move_tags(src, dest, 'link',  'href')
+      move_tags(src, dest, 'script', :must_have => ['src'])
+      move_tags(src, dest, 'link',   :must_have => ['href'])
+      move_tags(src, dest, 'meta',   :must_have => ['name', 'content'], :keys => ['name', 'content', 'http-equiv'])
     end
 
-    def move_tags(src,dest,type,comp)
-      already_there = dest.css(type).map { |node| 
-        node.has_attribute?(comp) ? node.attr(comp) : nil
+    def include_tag?(node, min_attrs)
+      min_attrs.inject(true) { |all_okay, attr_name| all_okay && node.has_attribute?(attr_name) }
+    end
+
+    def comparable_attrs(node, attrs)
+      attrs.collect do |attr_name| 
+        node.has_attribute?(attr_name) ? node.attr(attr_name) : nil
+      end.compact.sort
+    end
+
+    def move_tags(src, dest, type, opts)
+      comparison_attrs = opts[:keys] || opts[:must_have]
+      min_attrs = opts[:must_have]
+      already_there = dest.css(type).map { |node|
+        comparable_attrs(node, comparison_attrs)
       }.compact
+
       src.css(type).each do |node|
-        if node.has_attribute?(comp) && ! already_there.include?(node.attr(comp))
+        if include_tag?(node, min_attrs) && !already_there.include?(comparable_attrs(node, comparison_attrs))
           node.remove
           dest.at_xpath('/html/head') << node
         end

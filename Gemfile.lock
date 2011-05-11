@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    slimmer (0.0.1)
+    slimmer (0.7.9)
       nokogiri (~> 1.4.0)
 
 GEM
