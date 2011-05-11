@@ -135,7 +135,7 @@ module Slimmer
       min_attrs.inject(true) { |all_okay, attr_name| all_okay && node.has_attribute?(attr_name) }
     end
 
-    def comparable_attrs(node, attrs)
+    def tag_fingerprint(node, attrs)
       attrs.collect do |attr_name| 
         node.has_attribute?(attr_name) ? node.attr(attr_name) : nil
       end.compact.sort
@@ -145,11 +145,11 @@ module Slimmer
       comparison_attrs = opts[:keys] || opts[:must_have]
       min_attrs = opts[:must_have]
       already_there = dest.css(type).map { |node|
-        comparable_attrs(node, comparison_attrs)
+        tag_fingerprint(node, comparison_attrs)
       }.compact
 
       src.css(type).each do |node|
-        if include_tag?(node, min_attrs) && !already_there.include?(comparable_attrs(node, comparison_attrs))
+        if include_tag?(node, min_attrs) && !already_there.include?(tag_fingerprint(node, comparison_attrs))
           node.remove
           dest.at_xpath('/html/head') << node
         end
