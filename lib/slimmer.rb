@@ -176,6 +176,24 @@ module Slimmer
     end
   end
 
+  class AdminTitleInserter
+    def filter(src,dest)
+      title = src.at_css('#site_title')
+      head  = dest.at_css('#gds-current-app h3')
+      if head && title
+        head.content = title.content
+        title.remove
+      end
+    end
+  end
+
+  class FooterRemover
+    def filter(src,dest)
+      footer = src.at_css("#footer")
+      footer.remove if footer
+    end
+  end
+
   class Skin
 
     def initialize(asset_host)
@@ -215,7 +233,9 @@ module Slimmer
     def admin(request,body)
       processors = [
         TagMover.new(),
-        BodyInserter.new('#wrapper')
+        AdminTitleInserter.new,
+        FooterRemover.new,
+        BodyInserter.new('#wrapper'),
       ]
       self.process(processors,body,template('admin'))
     end
