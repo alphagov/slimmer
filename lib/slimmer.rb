@@ -19,6 +19,10 @@ module Slimmer
       @skin.success(request, body)
     end
 
+    def admin(request,body)
+      @skin.admin(request,body)
+    end
+
     def on_error(request,status, body)
       @skin.error(request, '500')
     end
@@ -41,7 +45,11 @@ module Slimmer
       case status.to_i
       when 200
         if headers['Content-Type'] =~ /text\/html/ || headers['content-type'] =~ /text\/html/
-          rewritten_body = on_success(request,s(app_body))
+          if source_request.path =~ /^\/admin(\/|$)/
+            rewritten_body = admin(request,s(app_body))
+          else
+            rewritten_body = on_success(request,s(app_body))
+          end
         else
           rewritten_body = app_body
         end
@@ -158,9 +166,13 @@ module Slimmer
   end
 
   class BodyInserter
+    def initialize(path='article')
+      @path = path
+    end
+    
     def filter(src,dest)
-      body = src.fragment(src.at_css('article')) 
-      dest.at_css('article').replace(body)
+      body = src.fragment(src.at_css(@path)) 
+      dest.at_css(@path).replace(body)
     end
   end
 
@@ -199,7 +211,15 @@ module Slimmer
       
       return unparse_esi(dest.to_html)
     end
-
+    
+    def admin(request,body)
+      processors = [
+        TagMover.new(),
+        BodyInserter.new('#wrapper')
+      ]
+      self.process(processors,body,template('admin'))
+    end
+    
     def success(request,body)
       
       processors = [
