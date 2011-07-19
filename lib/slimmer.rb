@@ -166,7 +166,7 @@ module Slimmer
   end
 
   class BodyInserter
-    def initialize(path='article')
+    def initialize(path='#wrapper')
       @path = path
     end
     
@@ -235,7 +235,7 @@ module Slimmer
         TagMover.new(),
         AdminTitleInserter.new,
         FooterRemover.new,
-        BodyInserter.new('#wrapper'),
+        BodyInserter.new(),
       ]
       self.process(processors,body,template('admin'))
     end
