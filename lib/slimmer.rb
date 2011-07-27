@@ -42,23 +42,23 @@ module Slimmer
       status, headers, app_body = triplet
       source_request = Rack::Request.new(env)
       request = Rack::Request.new(headers)
-      case status.to_i
-      when 200
-        if headers['Content-Type'] =~ /text\/html/ || headers['content-type'] =~ /text\/html/
+      if headers['Content-Type'] =~ /text\/html/ || headers['content-type'] =~ /text\/html/
+        case status.to_i
+        when 200
           if source_request.path =~ /^\/admin(\/|$)/
             rewritten_body = admin(request,s(app_body))
           else
             rewritten_body = on_success(request,s(app_body))
           end
-        else
+        when 301, 302, 304
           rewritten_body = app_body
+        when 404
+          rewritten_body = on_404(request,s(app_body))
+        else
+          rewritten_body = on_error(request,status, s(app_body))
         end
-      when 301, 302, 304
-        rewritten_body = app_body
-      when 404
-        rewritten_body = on_404(request,s(app_body))
       else
-        rewritten_body = on_error(request,status, s(app_body))
+        rewritten_body = app_body
       end
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
       [status, filter_headers(headers), rewritten_body]
