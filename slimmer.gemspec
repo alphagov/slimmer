@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "slimmer"
 
-  s.add_dependency('nokogiri',"~> 1.4.0")
+  s.add_dependency('nokogiri')
 
   s.files         = Dir[
     'lib/**/*',
