@@ -111,7 +111,6 @@ module Slimmer
       end   
       uri
     end
-
   end
 
   class TitleInserter
@@ -178,8 +177,8 @@ module Slimmer
 
   class AdminTitleInserter
     def filter(src,dest)
-      title = src.at_css('#site_title')
-      head  = dest.at_css('#gds-current-app h3')
+      title = src.at_css('#site-title')
+      head  = dest.at_css('.gds-header h2')
       if head && title
         head.content = title.content
         title.remove
@@ -232,6 +231,7 @@ module Slimmer
     
     def admin(request,body)
       processors = [
+        TitleInserter.new(),
         TagMover.new(),
         AdminTitleInserter.new,
         FooterRemover.new,
