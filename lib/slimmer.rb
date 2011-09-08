@@ -248,10 +248,6 @@ module Slimmer
         BodyInserter.new()
       ]
 
-      if ENV["RACK_ENV"] == 'development'
-        processors.unshift UrlRewriter.new(request)
-      end
-      
       self.process(processors,body,template('wrapper'))
     end
   end
