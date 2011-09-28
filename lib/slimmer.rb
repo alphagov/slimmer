@@ -5,7 +5,7 @@ require 'slimmer/template'
 module Slimmer
 
   class App
-    
+
     def initialize(app,options = {})
       @app = app
       @skin = Skin.new(options[:template_host])
@@ -75,19 +75,19 @@ module Slimmer
   end
 
   class UrlRewriter
-    
+
     def initialize(request)
       @request = request
     end
 
     def filter(src,dest)
-      rewrite_document src 
+      rewrite_document src
     end
 
     def rewrite_document(doc)
-      rewrite_nodes doc.css('body img'),'src' 
-      rewrite_nodes doc.css('script'),'src' 
-      rewrite_nodes doc.css('link'),'href' 
+      rewrite_nodes doc.css('body img'),'src'
+      rewrite_nodes doc.css('script'),'src'
+      rewrite_nodes doc.css('link'),'href'
     end
 
     def rewrite_nodes(nodes,attr)
@@ -109,7 +109,7 @@ module Slimmer
           uri.host =   @request.host
           uri.port =   @request.port
         end
-      end   
+      end
       uri
     end
   end
@@ -122,9 +122,9 @@ module Slimmer
         insert_title(title,head)
       end
     end
-    
+
     def insert_title(title, head)
-      if head.at_css('title').nil? 
+      if head.at_css('title').nil?
         head.first_element_child.nil? ? head << title : head.first_element_child.before(title)
       else
         head.at_css('title').replace(title)
@@ -137,12 +137,12 @@ module Slimmer
       meta_name = dest.at_css('meta[name="x-section-name"]')
       meta_link = dest.at_css('meta[name="x-section-link"]')
       list = dest.at_css('nav[role=navigation] ol')
-      
+
       if meta_name && meta_link && list
         link_node = Nokogiri::XML::Node.new('a', dest)
         link_node['href'] = meta_link['content']
         link_node.content = meta_name['content']
-        
+
         list_item = Nokogiri::XML::Node.new('li', dest)
         list_item.add_child(link_node)
 
@@ -163,7 +163,7 @@ module Slimmer
     end
 
     def tag_fingerprint(node, attrs)
-      attrs.collect do |attr_name| 
+      attrs.collect do |attr_name|
         node.has_attribute?(attr_name) ? node.attr(attr_name) : nil
       end.compact.sort
     end
@@ -188,9 +188,9 @@ module Slimmer
     def initialize(path='#wrapper')
       @path = path
     end
-    
+
     def filter(src,dest)
-      body = src.fragment(src.at_css(@path)) 
+      body = src.fragment(src.at_css(@path))
       dest.at_css(@path).replace(body)
     end
   end
@@ -245,10 +245,10 @@ module Slimmer
       processors.each do |p|
         p.filter(src,dest)
       end
-      
+
       return unparse_esi(dest.to_html)
     end
-    
+
     def admin(request,body)
       processors = [
         TitleInserter.new(),
@@ -259,9 +259,9 @@ module Slimmer
       ]
       self.process(processors,body,template('admin'))
     end
-    
+
     def success(request,body)
-      
+
       processors = [
         TitleInserter.new(),
         TagMover.new(),
