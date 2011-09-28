@@ -4,6 +4,8 @@ require 'slimmer/template'
 
 module Slimmer
 
+  TEMPLATE_HEADER = 'X-Slimmer-Template'
+
   class App
 
     def initialize(app,options = {})
@@ -46,7 +48,7 @@ module Slimmer
       if headers['Content-Type'] =~ /text\/html/ || headers['content-type'] =~ /text\/html/
         case status.to_i
         when 200
-          if headers['X-Slimmer-Layout'] == 'admin' || request.path =~ /^\/admin(\/|$)/
+          if headers[TEMPLATE_HEADER] == 'admin' || source_request.path =~ /^\/admin(\/|$)/
             rewritten_body = admin(request,s(app_body))
           else
             rewritten_body = on_success(request,s(app_body))
