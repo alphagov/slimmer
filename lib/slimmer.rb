@@ -38,6 +38,19 @@ module Slimmer
       b
     end
 
+    def admin_request? request
+      request.path =~ /^\/admin(\/|$)/
+    end
+
+    def admin? request
+      return true if admin_request? request
+      return true if requested_layout(request) == 'admin'
+    end
+
+    def requested_layout request
+      request.header['X-Slimmer-Layout']
+    end
+
     def rewrite_response(env,triplet)
       status, headers, app_body = triplet
       source_request = Rack::Request.new(env)
@@ -45,7 +58,7 @@ module Slimmer
       if headers['Content-Type'] =~ /text\/html/ || headers['content-type'] =~ /text\/html/
         case status.to_i
         when 200
-          if source_request.path =~ /^\/admin(\/|$)/
+          if admin? source_request
             rewritten_body = admin(request,s(app_body))
           else
             rewritten_body = on_success(request,s(app_body))
