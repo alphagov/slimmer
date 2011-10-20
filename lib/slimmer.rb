@@ -221,13 +221,14 @@ module Slimmer
     def initialize(asset_host = nil, template_path = nil)
       @asset_host = asset_host
       @template_path = template_path
+      @template = {}
     end
 
     def template(template_name)
       if templates_are_local?
         load_template(template_name)
       else
-        @template ||= load_template(template_name)
+        @template[template_name] ||= load_template(template_name)
       end
     end
 
