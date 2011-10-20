@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'slimmer/template'
+require 'erb'
 
 module Slimmer
 
@@ -10,7 +11,7 @@ module Slimmer
 
     def initialize(app,options = {})
       @app = app
-      @skin = Skin.new(options[:template_host])
+      @skin = Skin.new(options[:asset_host], options[:template_path])
     end
 
     def call(env)
@@ -217,12 +218,30 @@ module Slimmer
 
   class Skin
 
-    def initialize(asset_host)
+    def initialize(asset_host = nil, template_path = nil)
       @asset_host = asset_host
+      @template_path = template_path
     end
 
-    def template(template)
-      open("#{@asset_host}/#{template}.html", "r:UTF-8").read
+    def template(template_name)
+      if templates_are_local?
+        load_template(template_name)
+      else
+        @template ||= load_template(template_name)
+      end
+    end
+
+    def load_template(template_name)
+      source = open("#{template_path}/#{template_name}.html.erb", "r:UTF-8").read
+      ERB.new(source).result binding
+    end
+
+    def template_path
+      @template_path || (@asset_host.to_s + '/templates')
+    end
+
+    def templates_are_local?
+      File.exists? template_path
     end
 
     def unparse_esi(doc)
@@ -233,11 +252,11 @@ module Slimmer
       doc.gsub("<include","<esi:include").gsub(/><\/(esi:)?include>/, ' />')
     end
 
-    def error(request,template)
+    def error(request, template_name)
       processors = [
         TitleInserter.new()
       ]
-      self.process(processors,"<html></html>",template(template))
+      self.process(processors,"<html></html>",template(template_name))
     end
 
     def process(processors,body,template)
