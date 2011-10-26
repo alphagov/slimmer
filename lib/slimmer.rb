@@ -291,7 +291,8 @@ module Slimmer
         SectionInserter.new()
       ]
 
-      self.process(processors,body,template('wrapper'))
+      template_name = request.env.has_key?(TEMPLATE_HEADER) ? request.env[TEMPLATE_HEADER] : 'wrapper'
+      self.process(processors,body,template(template_name))
     end
   end
 
