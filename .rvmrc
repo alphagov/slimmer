@@ -1,1 +1,1 @@
-rvm --create 1.9.2@ag_slimmer
+rvm use ruby-1.9.2
