@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name        = "slimmer"
-  s.version     = "0.7.13"
+  s.version     = "0.8.0"
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Ben Griffiths"]
-  s.email       = ["bengriffiths@gmail.com"]
+  s.authors     = ["Ben Griffiths", "James Stewart"]
+  s.email       = ["bengriffiths@gmail.com", "james.stewart@digital.cabinet-office.gov.uk"]
   s.homepage    = "http://github.com/alphagov/slimmer"
   s.summary     = %q{Thinner than the skinner}
-  s.description = %q{Thinner than the skinner}
+  s.description = %q{Rack middleware for skinning pages using a specific template}
 
   s.rubyforge_project = "slimmer"
 
