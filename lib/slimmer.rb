@@ -230,9 +230,9 @@ module Slimmer
 
   class Skin
 
-    def initialize(asset_host = nil, template_path = nil)
-      @asset_host = asset_host
-      @template_path = template_path
+    def initialize(template_host = nil, template_path = nil)
+      @template_path = template_path || File.expand_path("../../templates", __FILE__)
+      @template_host = template_host
       @template = {}
     end
 
@@ -254,7 +254,7 @@ module Slimmer
     end
 
     def templates_are_local?
-      File.exists? template_path
+      File.exists?(template_path)
     end
 
     def unparse_esi(doc)
