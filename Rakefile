@@ -1,14 +1,15 @@
 # -*- encoding: utf-8 -*-
 
 require "rubygems"
-require "rake/gempackagetask"
+require "rubygems/package_task"
+require "rdoc/task"
 
 spec = Gem::Specification.load('slimmer.gemspec')
 
-Rake::GemPackageTask.new(spec) do
+Gem::PackageTask.new(spec) do
 end
 
-Rake::RDocTask.new do |rd|
+RDoc::Task.new do |rd|
   rd.rdoc_files.include("lib/**/*.rb")
   rd.rdoc_dir = "rdoc"
 end
