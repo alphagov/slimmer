@@ -1,5 +1,4 @@
-require_relative '../lib/slimmer'
-require 'minitest/autorun'
+require "test_helper"
 
 class TestSlimmer < MiniTest::Unit::TestCase
   def test_template_can_be_loaded
