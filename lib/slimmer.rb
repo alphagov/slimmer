@@ -232,9 +232,9 @@ module Slimmer
 
   class Skin
 
-    def initialize(template_host = nil, template_path = nil)
+    def initialize(asset_host = nil, template_path = nil)
       @template_path = template_path || File.expand_path("../../templates", __FILE__)
-      @template_host = template_host
+      @asset_host = asset_host
       @template = {}
     end
 
