@@ -17,8 +17,8 @@ module Slimmer
     end
 
     def call(env)
-      status,env2,body = @app.call(env)
-      rewrite_response(env,[status,env2,body])
+      status, headers, body = @app.call(env)
+      rewrite_response(env, [status, headers, body])
     end
 
     def on_success(request,body)
