@@ -3,7 +3,7 @@ module Slimmer
     config.slimmer = ActiveSupport::OrderedOptions.new
 
     initializer "slimmer.configure" do |app|
-      app.middleware.use Slimmer::App, app.config.slimmer[:template_host], app.config.slimmer[:template_path]
+      app.middleware.use Slimmer::App, app.config.slimmer.to_hash
     end
   end
 end
