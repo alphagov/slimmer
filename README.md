@@ -43,6 +43,18 @@ eg in a rails app
       end
     end
 
+There's also a macro style method:
+
+    class YourController < ApplicationController
+      slimmer_template :admin
+    end
+
+To get this, include Slimmer::Template in your controller:
+
+    class ApplicationController < ActionController::Base
+      include Slimmer::Template
+    end
+
 ## The name
 
 Slimmer was extracted from a much larger project called 'skinner'. 'slimmer' referred to the size 
