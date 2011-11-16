@@ -1,10 +1,6 @@
 require "test_helper"
 
 class UnparseESITest < MiniTest::Unit::TestCase
-  def unparse_esi(doc)
-    doc.gsub("<include","<esi:include").gsub("</include","</esi:include")
-  end
-
   def test_unparse_esi
     options = [
       "<include src='/blah/blah'></include>",
