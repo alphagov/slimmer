@@ -199,7 +199,7 @@ module Slimmer
       dest.at_css(@path).replace(body)
     end
   end
-  
+
   class BodyClassCopier
     def filter(src, dest)
       src_body_tag = src.at_css("body")

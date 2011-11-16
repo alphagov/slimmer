@@ -6,9 +6,9 @@ module Slimmer
 
     module ClassMethods
       def slimmer_template template_name
-	after_filter do
-	  response.headers[Slimmer::TEMPLATE_HEADER] = template_name.to_s
-	end
+        after_filter do
+          response.headers[Slimmer::TEMPLATE_HEADER] = template_name.to_s
+        end
       end
     end
   end
