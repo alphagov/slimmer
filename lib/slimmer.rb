@@ -1,6 +1,7 @@
-require 'nokogiri'
-require 'open-uri'
 require 'slimmer/template'
+require 'slimmer/railtie' if defined?(Rails)
+
+require 'nokogiri'
 require 'erb'
 
 module Slimmer
@@ -9,7 +10,8 @@ module Slimmer
 
   class App
 
-    def initialize(app,options = {})
+    def initialize(app, *args, &block)
+      options = args.first || {}
       @app = app
       @skin = Skin.new(options[:asset_host], options[:template_path])
     end
