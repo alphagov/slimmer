@@ -1,5 +1,6 @@
 require_relative '../lib/slimmer'
 require 'minitest/autorun'
+require 'rack/test'
 
 class MiniTest::Unit::TestCase
   def as_nokogiri(html_string)
