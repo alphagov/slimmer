@@ -72,4 +72,61 @@ module TypicalUsage
       assert_equal content, element.inner_html.to_s, message if content
     end
   end
+
+  class Error500ResponseTest < MiniTest::Unit::TestCase
+    include Rack::Test::Methods
+
+    def app
+      body = %{
+        <html>
+        <head><title>500 Error</title>
+        <meta name="something" content="yes">
+        <meta name="x-section-name" content="This section">
+        <meta name="x-section-link" content="/this_section">
+        <script src="blah.js"></script>
+        <link href="app.css" rel="stylesheet" type="text/css">
+        </head>
+        <body class="body_class">
+        <div id="wrapper"><p class='message'>Something bad happened</p></div>
+        </body>
+        </html>
+      }
+      inner_app = proc { |env|
+        [500, {"Content-Type" => "text/html"}, body]
+      }
+      Slimmer::App.new(inner_app)
+    end
+
+    def setup
+      get "/"
+    end
+
+    def test_should_not_replace_the_wrapper_using_the_app_response
+      assert_not_rendered_in_template "wrapper", "Something bad happened"
+    end
+
+    def test_should_replace_the_title_using_the_app_response
+      assert_rendered_in_template "wrapper", "head title", "500 Error"
+    end
+
+    private
+
+    def assert_rendered_in_template(template_name, selector, content=nil, message=nil)
+      unless message
+        if content
+          message = "Expected to find #{content.inspect} at #{selector.inspect} in the output template"
+        else
+          message = "Expected to find #{selector.inspect} in the output template"
+        end
+      end
+      element = Nokogiri::HTML.parse(last_response.body).at_css(selector)
+      assert element, message
+      assert_equal content, element.inner_html.to_s, message if content
+    end
+
+    def assert_not_rendered_in_template(template_name, content)
+      refute_match /#{Regexp.escape(content)}/, last_response.body
+    end
+
+  end
 end

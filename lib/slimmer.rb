@@ -29,12 +29,12 @@ module Slimmer
       @skin.admin(request,body)
     end
 
-    def on_error(request,status, body)
-      @skin.error(request, '500')
+    def on_error(request, status, body)
+      @skin.error(request, '500', body)
     end
 
     def on_404(request,body)
-      @skin.error(request, '404')
+      @skin.error(request, '404', body)
     end
 
     def s(body)
@@ -61,7 +61,7 @@ module Slimmer
         when 404
           rewritten_body = on_404(request,s(app_body))
         else
-          rewritten_body = on_error(request,status, s(app_body))
+          rewritten_body = on_error(request,status,s(app_body))
         end
       else
         rewritten_body = app_body
@@ -267,11 +267,11 @@ module Slimmer
       doc.gsub("<include","<esi:include").gsub(/><\/(esi:)?include>/, ' />')
     end
 
-    def error(request, template_name)
+    def error(request, template_name, body)
       processors = [
         TitleInserter.new()
       ]
-      self.process(processors,"<html></html>",template(template_name))
+      self.process(processors, body, template(template_name))
     end
 
     def process(processors,body,template)
