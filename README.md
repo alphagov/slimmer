@@ -11,13 +11,13 @@ Slimmer provides a Railtie so no configuration is necessary should you want to u
 of the supplied templates. If you want to use your own set of templates you will need
 to specify the appropriate path or host (slimmer can load templates over http) eg.
 
-YourApp::Application.configure do
-  config.slimmer.template_path = '/place/on/file/system'
-end
+    YourApp::Application.configure do
+      config.slimmer.template_path = '/place/on/file/system'
+    end
 
-YourApp::Application.configure do
-  config.slimmer.template_host = 'http://your.server.somewhere'
-end
+    YourApp::Application.configure do
+      config.slimmer.template_host = 'http://your.server.somewhere'
+    end
 
 it expects to find templates in a folder called 'templates' on that host or in that folder
 
@@ -25,11 +25,11 @@ it expects to find templates in a folder called 'templates' on that host or in t
 
 Slimmer will work as standard rack middleware:
 
-use Slimmer::App
+    use Slimmer::App
 
 or
 
-use Slimmer::App, :template_path => "/path/to/my/templates"
+    use Slimmer::App, :template_path => "/path/to/my/templates"
 
 ## Specifying a template
 
@@ -37,11 +37,11 @@ A specific template can be requested by giving its name in the X-Slimmer-Templat
 
 eg in a rails app
 
-class MyController < ApplicationController
-  def index
-    headers['X-Slimmer-Template'] = 'homepage'
-  end
-end
+    class MyController < ApplicationController
+      def index
+        headers['X-Slimmer-Template'] = 'homepage'
+      end
+    end
 
 ## The name
 
