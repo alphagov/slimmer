@@ -1,6 +1,15 @@
 require "test_helper"
 
 module TypicalUsage
+
+  class SkippingSlimmerTest < SlimmerIntegrationTest
+    given_response 200, %{Don't template me}, {"X-Slimmer-Skip" => "true"}
+
+    def test_should_return_the_response_as_is
+      assert_equal "Don't template me", last_response.body
+    end
+  end
+
   class NormalResponseTest < SlimmerIntegrationTest
 
     given_response 200, %{
