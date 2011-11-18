@@ -1,14 +1,8 @@
 # -*- encoding: utf-8 -*-
 
-require "rubygems"
-require "rubygems/package_task"
+require "bundler/gem_tasks"
 require "rdoc/task"
 require 'rake/testtask'
-
-spec = Gem::Specification.load('slimmer.gemspec')
-
-Gem::PackageTask.new(spec) do
-end
 
 RDoc::Task.new do |rd|
   rd.rdoc_files.include("lib/**/*.rb")
