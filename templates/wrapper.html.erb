@@ -7,25 +7,23 @@
   <title>www.gov.uk - This is a trial ‘beta’ version of the UK government's official website</title>
   <link href="<%= @asset_host %>/stylesheets/admin/jquery-ui-1.8.14.css" rel="stylesheet" type="text/css" />
   <link href="<%= @asset_host %>/stylesheets/normalize.css" rel="stylesheet" type="text/css" />
-	<link href="<%= @asset_host %>/stylesheets/core-print.css" rel="stylesheet" type="text/css" media="print" />
   <link href="<%= @asset_host %>/stylesheets/core.css" rel="stylesheet" type="text/css" />
+  <link href="<%= @asset_host %>/stylesheets/publisher.css" rel="stylesheet" type="text/css" />
 
-  <link href="<%= @asset_host %>/stylesheets/high-contrast.css" rel="alternate stylesheet" type="text/css" title="I can&rsquo;t see very well (high contrast)" />
-  <link href="<%= @asset_host %>/stylesheets/dyslexic.css" rel="alternate stylesheet" type="text/css" title="I find words difficult" />
+  <script src="<%= @asset_host %>/javascripts/libs/jquery/jquery-1.6.2.min.js"></script>
+  <script src="<%= @asset_host %>/javascripts/libs/jquery/jquery-ui-1.8.16.custom.min.js" defer="defer"></script>
+	<script src="<%= @asset_host %>/javascripts/libs/jquery/plugins/jquery.base64.js" defer="defer"></script>
+  <script src="<%= @asset_host %>/javascripts/search.js" defer="defer"></script>
+	<script src="<%= @asset_host %>/javascripts/devolution.js" defer="defer"></script>
+  <script src="<%= @asset_host %>/javascripts/popup.js" defer="defer"></script>
+  <script src="<%= @asset_host %>/javascripts/feedback.js" defer="defer"></script>
+  <script src="<%= @asset_host %>/javascripts/customise.js" defer="defer"></script>
 
-  <script src="<%= @asset_host %>/javascripts/libs/jquery/jquery-1.6.2.min.js" defer="defer" type="text/javascript"></script>
-  <script src="<%= @asset_host %>/javascripts/libs/jquery/jquery-ui-1.8.16.custom.min.js" defer="defer" type="text/javascript"></script>
-  <script src="<%= @asset_host %>/javascripts/search.js" defer="defer" type="text/javascript"></script>
-	<script src="<%= @asset_host %>/javascripts/libs/jquery/plugins/jquery.base64.js" defer="defer" type="text/javascript"></script>
-	<script src="<%= @asset_host %>/javascripts/devolution.js" defer="defer" type="text/javascript"></script>
-  <script src="<%= @asset_host %>/javascripts/popup.js" defer="defer" type="text/javascript"></script>
-  <script src="<%= @asset_host %>/javascripts/feedback.js" defer="defer" type="text/javascript"></script>
-  <script src="<%= @asset_host %>/javascripts/customise.js" defer="defer" type="text/javascript"></script>
 	<!--[if lt IE 9]>
 		<script src="<%= @asset_host %>/javascripts/html5.js"></script>
 		<script src="<%= @asset_host %>/javascripts/selectivizr-min.js"></script>
 	<![endif]-->
-
+	
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 </head>
 <body>
