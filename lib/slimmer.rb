@@ -262,7 +262,7 @@ module Slimmer
     end
 
     def templates_are_local?
-      File.exists?(template_path)
+      !@asset_host.nil?
     end
 
     def unparse_esi(doc)
