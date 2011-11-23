@@ -15,10 +15,10 @@ end
 class SlimmerIntegrationTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods
 
-  def self.given_response(code, body)
+  def self.given_response(code, body, headers={})
     define_method(:app) do
       inner_app = proc { |env|
-        [code, {"Content-Type" => "text/html"}, body]
+        [code, headers.merge("Content-Type" => "text/html"), body]
       }
       Slimmer::App.new(inner_app)
     end

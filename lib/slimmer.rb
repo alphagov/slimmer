@@ -7,6 +7,7 @@ require 'erb'
 module Slimmer
 
   TEMPLATE_HEADER = 'X-Slimmer-Template'
+  SKIP_HEADER = 'X-Slimmer-Skip'
 
   class App
 
@@ -17,8 +18,12 @@ module Slimmer
     end
 
     def call(env)
-      status, headers, body = @app.call(env)
-      rewrite_response(env, [status, headers, body])
+      response_array = @app.call(env)
+      if response_array[1][SKIP_HEADER]
+        response_array
+      else
+        rewrite_response(env, response_array)
+      end
     end
 
     def on_success(request,body)
