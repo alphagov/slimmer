@@ -3,6 +3,7 @@ require 'slimmer/railtie' if defined?(Rails)
 
 require 'nokogiri'
 require 'erb'
+require 'open-uri'
 
 module Slimmer
 
@@ -257,11 +258,12 @@ module Slimmer
     end
 
     def template_path
-      @template_path || (@asset_host.to_s + '/templates')
+      return (@asset_host.to_s + '/templates') unless @asset_host.nil?
+      @template_path
     end
 
     def templates_are_local?
-      File.exists?(template_path)
+      !@asset_host.nil?
     end
 
     def unparse_esi(doc)
