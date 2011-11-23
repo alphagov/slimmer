@@ -3,6 +3,7 @@ require 'slimmer/railtie' if defined?(Rails)
 
 require 'nokogiri'
 require 'erb'
+require 'open-uri'
 
 module Slimmer
 
