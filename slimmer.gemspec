@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
   s.add_development_dependency 'mocha', '~> 0.9.12'
+  s.add_development_dependency 'webmock', '~> 1.7'
 
   s.files         = Dir[
     'README.md',

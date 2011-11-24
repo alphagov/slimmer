@@ -1,6 +1,9 @@
 require_relative '../lib/slimmer'
 require 'minitest/autorun'
 require 'rack/test'
+require 'webmock/minitest'
+
+WebMock.disable_net_connect!
 
 class MiniTest::Unit::TestCase
   def as_nokogiri(html_string)
@@ -20,10 +23,25 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
       inner_app = proc { |env|
         [code, headers.merge("Content-Type" => "text/html"), body]
       }
-      Slimmer::App.new(inner_app)
+      Slimmer::App.new inner_app, :asset_host => "http://template.local"
     end
 
-    define_method(:setup) { get "/" }
+    define_method :teardown do
+      WebMock.reset!
+    end
+
+    define_method(:setup) do
+      template_name = case code
+      when 200 then 'wrapper'
+      when 404 then '404'
+      else          '500'
+      end
+
+      template = File.read File.dirname(__FILE__) + "/fixtures/#{template_name}.html.erb"
+      stub_request(:get, "http://template.local/templates/#{template_name}.html.erb").
+        to_return(:body => template)
+      get "/"
+    end
   end
 
   private

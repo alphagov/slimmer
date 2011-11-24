@@ -15,7 +15,14 @@ module Slimmer
     def initialize(app, *args, &block)
       options = args.first || {}
       @app = app
-      @skin = Skin.new(options[:asset_host], options[:template_path])
+
+      if options.key? :template_path
+        raise "Template path should not be used. Use asset_host instead."
+      end
+
+      raise "Provide an asset_host" unless options[:asset_host]
+
+      @skin = Skin.new options[:asset_host]
     end
 
     def call(env)
@@ -149,6 +156,9 @@ module Slimmer
       meta_link = dest.at_css('meta[name="x-section-link"]')
       list = dest.at_css('nav[role=navigation] ol')
 
+      # FIXME: Presumably this is meant to stop us adding a 'current section'
+      # link if we're missing navigation, or x-section-* meta tags.
+      # It doesn't work: #at_css will return a truthy object in any case.
       if meta_name && meta_link && list
         link_node = Nokogiri::XML::Node.new('a', dest)
         link_node['href'] = meta_link['content']
@@ -237,48 +247,53 @@ module Slimmer
   end
 
   class Skin
+    attr_accessor :templated_cache
+    private :templated_cache=, :templated_cache
 
-    def initialize(asset_host = nil, template_path = nil)
-      @template_path = template_path || File.expand_path("../../templates", __FILE__)
-      @asset_host = asset_host
-      @template = {}
+    attr_accessor :asset_host
+    private :asset_host=, :asset_host
+
+    def initialize asset_host
+      self.asset_host = asset_host
+      self.templated_cache = {}
     end
 
     def template(template_name)
-      if templates_are_local?
-        load_template(template_name)
-      else
-        @template[template_name] ||= load_template(template_name)
-      end
+      return cached_template(template_name) if template_cached? template_name
+      load_template template_name
     end
 
-    def load_template(template_name)
-      source = open("#{template_path}/#{template_name}.html.erb", "r:UTF-8").read
-      ERB.new(source).result binding
+    def template_cached? name
+      !cached_template(name).nil?
     end
 
-    def template_path
-      return (@asset_host.to_s + '/templates') unless @asset_host.nil?
-      @template_path
+    def cached_template name
+      templated_cache[name]
     end
 
-    def templates_are_local?
-      !@asset_host.nil?
+    def cache name, template
+      templated_cache[name] = template
     end
 
-    def unparse_esi(doc)
-      ## HTML doesn't really have namespaces, and nokogiri's
-      ## default behaviour is to strip the namespace, but to
-      ## leave the tag name intact. Ugly hack here to reverse
-      ## that for ESI includes
-      doc.gsub("<include","<esi:include").gsub(/><\/(esi:)?include>/, ' />')
+    def load_template template_name
+      url = template_url template_name
+      source = open(url, "r:UTF-8").read
+      template = ERB.new(source).result binding
+      cache template_name, template
+      template
+    end
+
+    def template_url template_name
+      host = asset_host.dup
+      host += '/' unless host =~ /\/$/
+      "#{host}templates/#{template_name}.html.erb"
     end
 
     def error(request, template_name, body)
       processors = [
         TitleInserter.new()
       ]
-      self.process(processors, body, template(template_name))
+      process(processors, body, template(template_name))
     end
 
     def process(processors,body,template)
@@ -289,7 +304,7 @@ module Slimmer
         p.filter(src,dest)
       end
 
-      return unparse_esi(dest.to_html)
+      return dest.to_html
     end
 
     def admin(request,body)
@@ -301,11 +316,10 @@ module Slimmer
         BodyInserter.new(),
         BodyClassCopier.new
       ]
-      self.process(processors,body,template('admin'))
+      process(processors,body,template('admin'))
     end
 
     def success(request,body)
-
       processors = [
         TitleInserter.new(),
         TagMover.new(),
@@ -315,7 +329,7 @@ module Slimmer
       ]
 
       template_name = request.env.has_key?(TEMPLATE_HEADER) ? request.env[TEMPLATE_HEADER] : 'wrapper'
-      self.process(processors,body,template(template_name))
+      process(processors,body,template(template_name))
     end
   end
 
