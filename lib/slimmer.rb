@@ -11,7 +11,6 @@ module Slimmer
   SKIP_HEADER = 'X-Slimmer-Skip'
 
   class App
-
     def initialize(app, *args, &block)
       options = args.first || {}
       @app = app
@@ -20,7 +19,9 @@ module Slimmer
         raise "Template path should not be used. Use asset_host instead."
       end
 
-      raise "Provide an asset_host" unless options[:asset_host]
+      unless options[:asset_host]
+        options[:asset_host] = Plek.current.find("assets")
+      end
 
       @skin = Skin.new options[:asset_host], options[:cache_templates]
     end
