@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('nokogiri', '~> 1.5.0')
   s.add_dependency('rack', '~> 1.3.5')
-  s.add_dependency('plek', '~> 0.1')
+  s.add_dependency('plek', '>= 0.1.8')
 
   s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'rake', '~> 0.9.2.2'
