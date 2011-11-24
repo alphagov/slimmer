@@ -22,7 +22,7 @@ module Slimmer
 
       raise "Provide an asset_host" unless options[:asset_host]
 
-      @skin = Skin.new options[:asset_host]
+      @skin = Skin.new options[:asset_host], options[:cache_templates]
     end
 
     def call(env)
@@ -247,15 +247,21 @@ module Slimmer
   end
 
   class Skin
+    attr_accessor :use_cache
+    private :use_cache=, :use_cache
+
     attr_accessor :templated_cache
     private :templated_cache=, :templated_cache
 
     attr_accessor :asset_host
     private :asset_host=, :asset_host
 
-    def initialize asset_host
+    # TODO: Extract the cache to something we can pass in instead of using
+    # true/false and an in-memory cache.
+    def initialize asset_host, use_cache = false
       self.asset_host = asset_host
       self.templated_cache = {}
+      self.use_cache = false
     end
 
     def template(template_name)
@@ -272,6 +278,7 @@ module Slimmer
     end
 
     def cache name, template
+      return unless use_cache
       templated_cache[name] = template
     end
 
