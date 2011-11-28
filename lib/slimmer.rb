@@ -11,6 +11,7 @@ require 'slimmer/skin'
 require 'slimmer/body_inserter'
 require 'slimmer/body_class_copier'
 require 'slimmer/url_rewriter'
+require 'slimmer/header_context_inserter'
 
 require 'slimmer/railtie' if defined?(Rails)
 

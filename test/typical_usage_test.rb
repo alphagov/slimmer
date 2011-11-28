@@ -11,7 +11,6 @@ module TypicalUsage
   end
 
   class NormalResponseTest < SlimmerIntegrationTest
-
     given_response 200, %{
       <html>
       <head><title>The title of the page</title>
@@ -53,6 +52,28 @@ module TypicalUsage
 
     def test_should_insert_meta_navigation_links_into_the_navigation
       assert_rendered_in_template "nav[role=navigation] li a[href='/this_section']", "This section"
+    end
+  end
+
+  class HeaderContextResponseTest < SlimmerIntegrationTest
+    given_response 200, %{
+      <html>
+      <head><title>The title of the page</title>
+      <meta name="something" content="yes">
+      <meta name="x-section-name" content="This section">
+      <meta name="x-section-link" content="/this_section">
+      <script src="blah.js"></script>
+      <link href="app.css" rel="stylesheet" type="text/css">
+      </head>
+      <body class="body_class">
+      <div class="header-context custom-class">app-specific header context</div>
+      <div id="wrapper">The body of the page</div>
+      </body>
+      </html>
+    }
+
+    def test_should_replace_the_header_context_using_the_app_response
+      assert_rendered_in_template ".header-context.custom-class", "app-specific header context"
     end
   end
 

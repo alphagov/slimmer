@@ -85,6 +85,7 @@ module Slimmer
         TagMover.new(),
         BodyInserter.new(),
         BodyClassCopier.new,
+        HeaderContextInserter.new(),
         SectionInserter.new()
       ]
 

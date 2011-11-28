@@ -13,6 +13,10 @@ class MiniTest::Unit::TestCase
   def assert_in(template, selector, content, message=nil)
     assert_equal content, template.at_css(selector).inner_html.to_s, message
   end
+
+  def assert_not_in(template, selector, message="didn't exist to find #{selector}")
+    refute template.at_css(selector), message
+  end
 end
 
 class SlimmerIntegrationTest < MiniTest::Unit::TestCase
