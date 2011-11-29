@@ -64,6 +64,7 @@ module Slimmer
         begin
           p.filter(src,dest)
         rescue => e
+          puts "Failed while processing #{p}"
           puts [ e.message, e.backtrace ].flatten.join("\n")
         end
       end
