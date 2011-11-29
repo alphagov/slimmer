@@ -1,3 +1,5 @@
+require 'slimmer/skin'
+
 module Slimmer
   class Skin
     def load_template name
