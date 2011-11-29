@@ -61,7 +61,11 @@ module Slimmer
       dest = Nokogiri::HTML.parse(template)
 
       processors.each do |p|
-        p.filter(src,dest)
+        begin
+          p.filter(src,dest)
+        rescue => e
+          puts [ e.message, e.backtrace ].flatten.join("\n")
+        end
       end
 
       return dest.to_html

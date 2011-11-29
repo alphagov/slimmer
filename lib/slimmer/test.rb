@@ -14,7 +14,10 @@ module Slimmer
             <script src="http://static.dev.alphagov.co.uk/javascripts/feedback.js" defer></script>
             <script src="http://static.dev.alphagov.co.uk/javascripts/customisation-settings.js" defer></script>
           </head>
-          <body></body>
+          <body>
+            <div class="header-context">Header</div>
+            <div id="wrapper"></div>
+          </body>
         </html>
       }
     end
