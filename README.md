@@ -60,7 +60,3 @@ To get this, include Slimmer::Template in your controller:
 Slimmer was extracted from a much larger project called 'skinner'. 'slimmer' referred to the size 
 of its code compared to skinner (which also acted as an HTTP proxy and mixed in a few other 
 concerns). Over time the codebase has grown a little, but the name stuck.
-
-## Python
-
-The repository also includes a python version but this is not currently maintained.
