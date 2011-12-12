@@ -7,19 +7,17 @@ various other details, such as meta, script, and style tags.
 
 ## Use in a Rails app
 
-Slimmer provides a Railtie so no configuration is necessary should you want to use one
-of the supplied templates. If you want to use your own set of templates you will need
-to specify the appropriate path or host (slimmer can load templates over http) eg.
+Slimmer provides a Railtie so no configuration is necessary. By default it will use the
+Plek gem to look for the 'assets' host for the current environment.
+
+If you want to use your own set of templates you will need to specify the appropriate host
+eg.
 
     YourApp::Application.configure do
-      config.slimmer.template_path = '/place/on/file/system'
+      config.slimmer.asset_host = 'http://your.server.somewhere'
     end
 
-    YourApp::Application.configure do
-      config.slimmer.template_host = 'http://your.server.somewhere'
-    end
-
-it expects to find templates in a folder called 'templates' on that host or in that folder
+it expects to find templates in a folder called 'templates' on that host.
 
 ## Use elsewhere
 
@@ -29,7 +27,7 @@ Slimmer will work as standard rack middleware:
 
 or
 
-    use Slimmer::App, :template_path => "/path/to/my/templates"
+    use Slimmer::App, :asset_host => "http://my.alternative.host"
 
 ## Specifying a template
 
