@@ -42,7 +42,9 @@ module Slimmer
 
     def s(body)
       return body.to_s unless body.respond_to?(:each)
-      body.join("")
+      b = ""
+      body.each {|a| b << a }
+      b
     end
 
     def rewrite_response(env,triplet)
