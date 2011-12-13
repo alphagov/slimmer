@@ -1,6 +1,6 @@
 require "test_helper"
 
-class TestSlimmer < MiniTest::Unit::TestCase
+class SkinTest < MiniTest::Unit::TestCase
   def test_template_can_be_loaded
     skin = Slimmer::Skin.new "http://example.local/"
     expected_url = "http://example.local/templates/example.html.erb"
