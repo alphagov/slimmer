@@ -16,15 +16,17 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "slimmer"
 
-  s.add_dependency('nokogiri', '~> 1.5.0')
-  s.add_dependency('rack', '~> 1.3.5')
-  s.add_dependency('plek', '>= 0.1.8')
+  s.add_dependency 'nokogiri', '~> 1.5.0'
+  s.add_dependency 'rack', '~> 1.3.5'
+  s.add_dependency 'plek', '>= 0.1.8'
+  s.add_dependency 'json'
 
   s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
   s.add_development_dependency 'mocha', '~> 0.9.12'
   s.add_development_dependency 'webmock', '~> 1.7'
+  s.add_development_dependency 'therubyracer'
 
   s.files         = Dir[
     'README.md',

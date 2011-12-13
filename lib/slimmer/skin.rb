@@ -79,7 +79,7 @@ module Slimmer
         AdminTitleInserter.new,
         FooterRemover.new,
         BodyInserter.new(),
-        BodyClassCopier.new
+        BodyClassCopier.new,
       ]
       process(processors,body,template('admin'))
     end
@@ -91,7 +91,8 @@ module Slimmer
         BodyInserter.new(),
         BodyClassCopier.new,
         HeaderContextInserter.new(),
-        SectionInserter.new()
+        SectionInserter.new(),
+        GoogleAnalyticsConfigurator.new(request.env),
       ]
 
       template_name = request.env.has_key?(TEMPLATE_HEADER) ? request.env[TEMPLATE_HEADER] : 'wrapper'

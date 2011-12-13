@@ -22,4 +22,5 @@ module Slimmer
   autoload :BodyClassCopier, 'slimmer/body_class_copier'
   autoload :UrlRewriter, 'slimmer/url_rewriter'
   autoload :HeaderContextInserter, 'slimmer/header_context_inserter'
+  autoload :GoogleAnalyticsConfigurator, 'slimmer/google_analytics_configurator'
 end
