@@ -6,7 +6,8 @@ module Slimmer
       section:     "Section",
       need_id:     "Need-ID",
       format:      "Format",
-      proposition: "Proposition"
+      proposition: "Proposition",
+      template:    "Template",
     }
 
     def set_slimmer_headers(hash)
