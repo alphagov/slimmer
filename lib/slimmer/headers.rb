@@ -8,6 +8,7 @@ module Slimmer
       format:      "Format",
       proposition: "Proposition",
       template:    "Template",
+      skip:        "Skip",
     }
 
     def set_slimmer_headers(hash)

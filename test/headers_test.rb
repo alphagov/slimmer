@@ -34,6 +34,11 @@ class HeadersTest < MiniTest::Unit::TestCase
     assert_equal "rhubarb", headers["X-Slimmer-Template"]
   end
 
+  def test_should_set_skip_header
+    set_slimmer_headers skip: "rhubarb"
+    assert_equal "rhubarb", headers["X-Slimmer-Skip"]
+  end
+
   def test_should_skip_missing_headers
     set_slimmer_headers section: "rhubarb"
     refute_includes headers.keys, "X-Slimmer-Need-ID"
