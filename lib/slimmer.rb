@@ -4,6 +4,8 @@ require 'open-uri'
 require 'plek'
 require 'null_logger'
 
+require 'slimmer/railtie' if defined? Rails
+
 module Slimmer
   TEMPLATE_HEADER = 'X-Slimmer-Template'
   SKIP_HEADER = 'X-Slimmer-Skip'
