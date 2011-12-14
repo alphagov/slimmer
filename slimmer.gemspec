@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack', '~> 1.3.5'
   s.add_dependency 'plek', '>= 0.1.8'
   s.add_dependency 'json'
+  s.add_dependency 'null_logger'
 
   s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'rake', '~> 0.9.2.2'

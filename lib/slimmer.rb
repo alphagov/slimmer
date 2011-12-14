@@ -2,6 +2,7 @@ require 'nokogiri'
 require 'erb'
 require 'open-uri'
 require 'plek'
+require 'null_logger'
 
 module Slimmer
   TEMPLATE_HEADER = 'X-Slimmer-Template'
