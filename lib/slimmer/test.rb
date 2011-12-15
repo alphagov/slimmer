@@ -11,7 +11,7 @@ module Slimmer
             <script src="http://static.preview.alphagov.co.uk/javascripts/libs/jquery/jquery-ui-1.8.16.custom.min.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/libs/jquery/plugins/jquery.base64.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/search.js" defer></script>
-            <script src="http://static.preview.alphagov.co.uk/javascripts.preview.alphagov.lution.js" defer></script>
+            <script src="http://static.preview.alphagov.co.uk/javascripts/devolution.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/popup.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/feedback.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/customisation-settings.js" defer></script>
