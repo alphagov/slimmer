@@ -15,6 +15,7 @@ module Slimmer
             <script src="http://static.preview.alphagov.co.uk/javascripts/popup.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/feedback.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/customisation-settings.js" defer></script>
+            <script src="http://static.preview.alphagov.co.uk/javascripts/geo-locator.js" defer></script>
           </head>
           <body>
             <div class="header-context">Header</div>
