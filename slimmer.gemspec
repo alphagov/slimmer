@@ -35,6 +35,6 @@ Gem::Specification.new do |s|
     'lib/**/*',
     'Rakefile'
   ]
-  s.executables   = []
+  s.executables   = ["generate"]
   s.require_paths = ["lib"]
 end
