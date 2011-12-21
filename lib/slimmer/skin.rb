@@ -51,7 +51,7 @@ module Slimmer
       logger.debug "Slimmer: Loading template #{template_name}"
       url = template_url template_name
       logger.debug "Slimmer: template lives at #{url}"
-      source = open(url, "r:UTF-8").read
+      source = open(url, "r:UTF-8", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
       logger.debug "Slimmer: Evaluating the template as ERB"
       template = ERB.new(source).result binding
       cache template_name, template
