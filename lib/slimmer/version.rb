@@ -1,3 +1,3 @@
 module Slimmer
-  VERSION = '1.1.12'
+  VERSION = '1.1.13'
 end
