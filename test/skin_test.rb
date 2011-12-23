@@ -11,4 +11,13 @@ class SkinTest < MiniTest::Unit::TestCase
     assert_requested :get, "http://example.local/templates/example.html.erb"
     assert_equal "<foo />", template
   end
+
+  def test_should_interpolate_values_for_prefix
+    skin = Slimmer::Skin.new "http://example.local/", false, "this-is-the-prefix"
+    expected_url = "http://example.local/templates/example.html.erb"
+    stub_request(:get, expected_url).to_return :body => "<p><%= prefix %></p>"
+
+    template = skin.load_template 'example'
+    assert_equal "<p>this-is-the-prefix</p>", template
+  end
 end

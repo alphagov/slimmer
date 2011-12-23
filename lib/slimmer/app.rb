@@ -18,7 +18,7 @@ module Slimmer
         options[:asset_host] = Plek.current.find("assets")
       end
 
-      @skin = Skin.new options[:asset_host], options[:cache_templates], :logger => logger
+      @skin = Skin.new options[:asset_host], options[:cache_templates], options[:prefix], :logger => logger
     end
 
     def call(env)

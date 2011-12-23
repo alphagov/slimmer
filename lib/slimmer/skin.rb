@@ -9,14 +9,18 @@ module Slimmer
     attr_accessor :asset_host
     private :asset_host=, :asset_host
 
+    attr_accessor :prefix
+    private :prefix=, :prefix
+
     attr_accessor :logger
     private :logger=, :logger
 
     # TODO: Extract the cache to something we can pass in instead of using
     # true/false and an in-memory cache.
-    def initialize asset_host, use_cache = false, options = {}
+    def initialize asset_host, use_cache = false, prefix = nil, options = {}
       self.asset_host = asset_host
       self.templated_cache = {}
+      self.prefix = prefix
       self.use_cache = false
       self.logger = options[:logger] || NullLogger.instance
     end
