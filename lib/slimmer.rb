@@ -3,6 +3,7 @@ require 'erb'
 require 'open-uri'
 require 'plek'
 require 'null_logger'
+require 'openssl'
 
 require 'slimmer/railtie' if defined? Rails
 
