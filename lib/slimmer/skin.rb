@@ -26,35 +26,35 @@ module Slimmer
     end
 
     def template(template_name)
-      logger.debug "Slimmer: Looking for template #{template_name}"
+      logger.debug "Slimmer: Looking for template '#{template_name}'"
       return cached_template(template_name) if template_cached? template_name
       logger.debug "Slimmer: Asking for the template to be loaded"
       load_template template_name
     end
 
     def template_cached? name
-      logger.debug "Slimmer: Checking cache for template #{name}"
+      logger.debug "Slimmer: Checking cache for template '#{name}'"
       cached = !cached_template(name).nil?
       logger.debug "Slimmer: Cache hit = #{cached}"
       cached
     end
 
     def cached_template name
-      logger.debug "Slimmer: Trying to load cached template #{name}"
+      logger.debug "Slimmer: Trying to load cached template '#{name}'"
       templated_cache[name]
     end
 
     def cache name, template
-      logger.debug "Slimmer: Asked to cache #{name}. use_cache = #{use_cache}"
+      logger.debug "Slimmer: Asked to cache '#{name}'. use_cache = #{use_cache}"
       return unless use_cache
       logger.debug "Slimmer: performing caching"
       templated_cache[name] = template
     end
 
     def load_template template_name
-      logger.debug "Slimmer: Loading template #{template_name}"
+      logger.debug "Slimmer: Loading template '#{template_name}'"
       url = template_url template_name
-      logger.debug "Slimmer: template lives at #{url}"
+      logger.debug "Slimmer: template lives at '#{url}'"
       source = open(url, "r:UTF-8", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
       logger.debug "Slimmer: Evaluating the template as ERB"
       template = ERB.new(source).result binding
