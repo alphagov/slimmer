@@ -3,6 +3,7 @@ require 'slimmer/skin'
 module Slimmer
   class Skin
     def load_template name
+      logger.debug "Slimmer: TEST MODE - Loading fixture template from #{__FILE__}"
       %q{
         <html>
           <head>
@@ -12,11 +13,11 @@ module Slimmer
             <script src="http://static.preview.alphagov.co.uk/javascripts/libs/jquery/plugins/jquery.base64.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/libs/jquery/plugins/jquery.mustache.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/search.js" defer></script>
+            <script src="http://static.preview.alphagov.co.uk/javascripts/core.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/devolution.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/popup.js" defer></script>
-            <script src="http://static.preview.alphagov.co.uk/javascripts/feedback.js" defer></script>
-            <script src="http://static.preview.alphagov.co.uk/javascripts/customisation-settings.js" defer></script>
             <script src="http://static.preview.alphagov.co.uk/javascripts/geo-locator.js" defer></script>
+            <script src="http://static.preview.alphagov.co.uk/javascripts/customisation-settings.js" defer></script>
           </head>
           <body>
             <div class="header-context">Header</div>
