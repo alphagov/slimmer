@@ -5,7 +5,7 @@ module Slimmer
     end
 
     def filter(src,dest)
-      body = src.fragment(src.at_css(@path))
+      body = Nokogiri::HTML.fragment(src.at_css(@path).to_html)
       dest.at_css(@path).replace(body)
     end
   end
