@@ -19,7 +19,9 @@ module Slimmer
         set_custom_var(slot, name, @headers[key])
       }.compact.join("\n");
 
-      dest.at_css("#ga-params").content += custom_vars
+      if dest.at_css("#ga-params")
+        dest.at_css("#ga-params").content += custom_vars
+      end
     end
 
   private
