@@ -98,7 +98,7 @@ module Slimmer
     end
 
     def filter_headers(header_hash)
-      valid_keys = %w{vary set-cookie location content-type expires cache-control www-authenticate}
+      valid_keys = %w{vary set-cookie location content-type expires cache-control www-authenticate last-modified etag}
       logger.debug "Slimmer: removing headers except #{valid_keys} from #{header_hash.keys}"
       removed_keys = []
       header_hash.keys.each do |key|
