@@ -92,27 +92,8 @@ module Slimmer
         rewritten_body = app_body
       end
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
-      filtered_headers = filter_headers headers
       logger.debug "Slimmer: Returning final status, headers and body"
-      [status, filtered_headers, rewritten_body]
-    end
-
-    def filter_headers(header_hash)
-      valid_keys = %w{vary set-cookie location content-type expires cache-control www-authenticate last-modified etag}
-      logger.debug "Slimmer: removing headers except #{valid_keys} from #{header_hash.keys}"
-      removed_keys = []
-      header_hash.keys.each do |key|
-        unless valid_keys.include?(key.downcase)
-          removed_keys << key
-          header_hash.delete(key)
-        end
-      end
-      if removed_keys.size > 0
-        logger.debug "Slimmer: removed #{removed_keys.size} headers: #{removed_keys.inspect}"
-      else
-        logger.debug "Slimmer: no headers removed"
-      end
-      header_hash
+      [status, headers, rewritten_body]
     end
   end
 end
