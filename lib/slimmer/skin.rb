@@ -61,6 +61,10 @@ module Slimmer
       cache template_name, template
       logger.debug "Slimmer: Returning evaluated template"
       template
+    rescue OpenURI::HTTPError
+      raise TemplateNotFoundException
+    rescue Errno::ECONNREFUSED
+      raise CouldNotRetrieveTemplate
     end
 
     def template_url template_name
