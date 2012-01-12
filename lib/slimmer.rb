@@ -27,6 +27,7 @@ module Slimmer
   autoload :UrlRewriter, 'slimmer/url_rewriter'
   autoload :HeaderContextInserter, 'slimmer/header_context_inserter'
   autoload :GoogleAnalyticsConfigurator, 'slimmer/google_analytics_configurator'
+  autoload :RelatedItemsInserter, 'slimmer/related_items_inserter'
 
   class TemplateNotFoundException < StandardError; end
   class CouldNotRetrieveTemplate < StandardError; end

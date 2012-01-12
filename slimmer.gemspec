@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'null_logger'
 
   s.test_files    = Dir['test/**/*']
+  s.add_development_dependency 'gds-api-adapters', '~> 0.0.33'
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
   s.add_development_dependency 'mocha', '~> 0.9.12'

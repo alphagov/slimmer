@@ -56,8 +56,13 @@ module Slimmer
       url = template_url template_name
       logger.debug "Slimmer: template lives at '#{url}'"
       source = open(url, "r:UTF-8", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
-      logger.debug "Slimmer: Evaluating the template as ERB"
-      template = ERB.new(source).result binding
+      if template_name =~ /\.raw/
+        logger.debug "Slimmer: reading the raw template"
+        template = source
+      else
+        logger.debug "Slimmer: Evaluating the template as ERB"
+        template = ERB.new(source).result binding
+      end
       cache template_name, template
       logger.debug "Slimmer: Returning evaluated template"
       template
@@ -117,7 +122,7 @@ module Slimmer
       process(processors,body,template('admin'))
     end
 
-    def success(request,body)
+    def success(source_request, request, body)
       processors = [
         TitleInserter.new(),
         TagMover.new(),
@@ -126,6 +131,7 @@ module Slimmer
         HeaderContextInserter.new(),
         SectionInserter.new(),
         GoogleAnalyticsConfigurator.new(request.env),
+        RelatedItemsInserter.new(template('related.raw'), source_request),
       ]
 
       template_name = request.env.has_key?(TEMPLATE_HEADER) ? request.env[TEMPLATE_HEADER] : 'wrapper'

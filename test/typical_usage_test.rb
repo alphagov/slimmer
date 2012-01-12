@@ -1,4 +1,5 @@
 require "test_helper"
+require "gds_api/test_helpers/panopticon"
 
 module TypicalUsage
 
@@ -52,6 +53,56 @@ module TypicalUsage
 
     def test_should_insert_meta_navigation_links_into_the_navigation
       assert_rendered_in_template "nav[role=navigation] li a[href='/this_section']", "This section"
+    end
+    
+  end
+  
+  class ResponseWithRelatedItemsTest < SlimmerIntegrationTest
+    include GdsApi::TestHelpers::Panopticon
+
+    def additional_setup
+      panopticon_has_metadata(
+        'slug' => 'some-slug', 
+        'title' => 'Example document', 
+        'related_items' => [
+            {
+            'artefact' => {
+              'kind' => 'guide',
+              'name' => 'How to test computer software automatically & ensure that 2>1',
+              'slug' => 'how-to-test-computer-software-automatically',
+              }
+            }
+          ]
+        )
+    end
+  end
+  
+  class CitizenRelatedItemsTest < ResponseWithRelatedItemsTest
+    given_response 200, %{
+      <html>
+      <body class="citizen">
+      <div id="wrapper">The body of the page<div id="related-items"></div></div>
+      </body>
+      </html>
+    }, {}, "/some-slug"
+    
+    def test_should_insert_related_items_block
+      assert_rendered_in_template "div.related nav li.guide a", "How to test computer software automatically &amp; ensure that 2&gt;1"
+      assert_rendered_in_template "div.related nav li.guide", %r{href="/how-to-test-computer-software-automatically"}
+    end
+  end
+
+  class NonCitizentRelatedItemsTest < ResponseWithRelatedItemsTest
+    given_response 200, %{
+      <html>
+      <body class="noncitizen">
+      <div id="wrapper">The body of the page<div id="related-items"></div></div>
+      </body>
+      </html>
+    }, {}, "/some-slug"
+    
+    def test_should_not_insert_related_items_block
+      assert_rendered_in_template "div#related-items", ""
     end
   end
 
