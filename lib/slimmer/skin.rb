@@ -21,7 +21,7 @@ module Slimmer
       self.asset_host = asset_host
       self.templated_cache = {}
       self.prefix = prefix
-      self.use_cache = false
+      self.use_cache = use_cache
       self.logger = options[:logger] || NullLogger.instance
     end
 
