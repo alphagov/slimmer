@@ -92,6 +92,9 @@ module Slimmer
         rewritten_body = app_body
       end
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
+
+      headers['Content-Length'] = rewritten_body.join("").bytesize.to_s
+
       logger.debug "Slimmer: Returning final status, headers and body"
       [status, headers, rewritten_body]
     end

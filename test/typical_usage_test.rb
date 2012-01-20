@@ -11,6 +11,28 @@ module TypicalUsage
     end
   end
 
+  class ContentLengthTest < SlimmerIntegrationTest
+    given_response 200, %{
+      <html>
+      <head><title>The title of the page</title>
+      <meta name="something" content="yes">
+      <meta name="x-section-name" content="This section">
+      <meta name="x-section-link" content="/this_section">
+      <script src="blah.js"></script>
+      <link href="app.css" rel="stylesheet" type="text/css">
+      </head>
+      <body class="body_class">
+      <div id="wrapper">The body of the page</div>
+      </body>
+      </html>
+    }
+
+    def test_should_set_correct_content_length_header
+      assert_equal "791", last_response.headers['Content-Length']
+    end
+
+  end
+
   class NormalResponseTest < SlimmerIntegrationTest
     given_response 200, %{
       <html>
