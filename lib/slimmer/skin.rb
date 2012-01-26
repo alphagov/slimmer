@@ -15,6 +15,9 @@ module Slimmer
     attr_accessor :logger
     private :logger=, :logger
 
+    attr_accessor :strict
+    private :strict=, :strict
+
     # TODO: Extract the cache to something we can pass in instead of using
     # true/false and an in-memory cache.
     def initialize asset_host, use_cache = false, prefix = nil, options = {}
@@ -23,6 +26,7 @@ module Slimmer
       self.prefix = prefix
       self.use_cache = use_cache
       self.logger = options[:logger] || NullLogger.instance
+      self.strict = options[:strict] || (ENV['RACK_ENV'] == 'development')
     end
 
     def template(template_name)
@@ -84,11 +88,44 @@ module Slimmer
       ]
       process(processors, body, template(template_name))
     end
+    
+    def report_parse_errors_if_strict!(nokogiri_doc, description_for_error_message)
+      nokogiri_doc
+    end
+    
+    def parse_html(html, description_for_error_message)
+      doc = Nokogiri::HTML.parse(html)
+      if strict
+        errors = doc.errors.select {|e| e.error?}.reject {|e| ignorable?(e)}
+        if errors.size > 0
+          error = errors.first
+          raise "In #{description_for_error_message}: '#{error.message}' at line #{error.line} col #{error.column} (code #{error.code}).\n" +
+            context(html, error)
+        end
+      end
+      doc
+    end
+    
+    def context(html, error)
+      context_size = 5
+      lines = [""] + html.split("\n")
+      from = [1, error.line - context_size].max
+      to = [lines.size - 1, error.line + context_size].min
+      context = (from..to).zip(lines[from..to]).map {|lineno, line| "%4d: %s" % [lineno, line] }
+      marker = " " * (error.column - 1) + "-----v"
+      context.insert(context_size, marker)
+      context.join("\n")
+    end
+    
+    def ignorable?(error)
+      ignorable_codes = [801]
+      ignorable_codes.include?(error.code)
+    end
 
     def process(processors,body,template)
       logger.debug "Slimmer: starting skinning process"
-      src = Nokogiri::HTML.parse(body.to_s)
-      dest = Nokogiri::HTML.parse(template)
+      src = parse_html(body.to_s, "backend response")
+      dest = parse_html(template, "template")
 
       start_time = Time.now
       logger.debug "Slimmer: Start time = #{start_time}"
