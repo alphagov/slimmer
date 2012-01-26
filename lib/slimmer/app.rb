@@ -54,6 +54,12 @@ module Slimmer
       body.each {|a| b << a }
       b
     end
+    
+    def content_length(rewritten_body)
+      size = 0
+      rewritten_body.each { |part| size += part.bytesize }
+      size.to_s
+    end
 
     def rewrite_response(env, response_to_skin)
       status, headers, app_body = response_to_skin
@@ -93,7 +99,7 @@ module Slimmer
       end
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
 
-      headers['Content-Length'] = rewritten_body.join("").bytesize.to_s
+      headers['Content-Length'] = content_length(rewritten_body)
 
       logger.debug "Slimmer: Returning final status, headers and body"
       [status, headers, rewritten_body]
