@@ -20,8 +20,12 @@ class RelatedItemsInserter
     end
   end
   
+  def under_test?
+    ENV['RACK_ENV'] == 'test'
+  end
+  
   def metadata_from_panopticon
-    fetch_artefact(slug: requested_slug)
+    under_test? ? {} : fetch_artefact(slug: requested_slug)
   end
   
   def related_item_block
