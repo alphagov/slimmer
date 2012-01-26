@@ -26,7 +26,7 @@ module Slimmer
       self.prefix = prefix
       self.use_cache = use_cache
       self.logger = options[:logger] || NullLogger.instance
-      self.strict = options[:strict] || (ENV['RACK_ENV'] == 'development')
+      self.strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
     end
 
     def template(template_name)
