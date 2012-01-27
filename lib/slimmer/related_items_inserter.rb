@@ -21,7 +21,7 @@ class RelatedItemsInserter
   end
   
   def under_test?
-    ENV['RACK_ENV'] == 'test'
+    ENV['RACK_ENV'] == 'test' || ENV['RAILS_ENV'] == 'test'
   end
   
   def metadata_from_panopticon
