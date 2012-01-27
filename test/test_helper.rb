@@ -5,6 +5,7 @@ require 'rack/test'
 require 'webmock/minitest'
 require 'json'
 require 'logger'
+require 'mocha'
 
 WebMock.disable_net_connect!
 ENV['FACTER_govuk_platform'] = 'test'

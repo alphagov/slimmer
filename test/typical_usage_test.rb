@@ -242,4 +242,33 @@ module TypicalUsage
       assert_rendered_in_template "head title", "406 Not Acceptable"
     end
   end
+
+  class ApiTimeoutResponseTest < SlimmerIntegrationTest
+    include Rack::Test::Methods
+
+    given_response 200, %{
+      <html>
+      <head><title>The title of the page</title>
+      <meta name="something" content="yes">
+      <meta name="x-section-name" content="This section">
+      <meta name="x-section-link" content="/this_section">
+      <script src="blah.js"></script>
+      <link href="app.css" rel="stylesheet" type="text/css">
+      </head>
+      <body class="body_class citizen">
+      <div id="wrapper">The body of the page</div>
+      <div id="related-items"></div>
+      </body>
+      </html>
+    }
+
+    def additional_setup
+      RelatedItemsInserter.any_instance.stubs(:metadata_from_panopticon).raises(GdsApi::TimedOutException)
+    end
+
+    def test_should_return_503_if_an_API_call_times_out
+      assert_equal 503, last_response.status
+    end
+
+  end
 end

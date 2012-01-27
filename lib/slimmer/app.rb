@@ -103,6 +103,9 @@ module Slimmer
 
       logger.debug "Slimmer: Returning final status, headers and body"
       [status, headers, rewritten_body]
+
+    rescue GdsApi::TimedOutException
+      [503, {"Content-Type" => "text/plain"}, ["GDS API request timed out."]]
     end
   end
 end
