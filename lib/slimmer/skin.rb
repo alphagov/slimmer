@@ -119,7 +119,7 @@ module Slimmer
     
     def ignorable?(error)
       ignorable_codes = [801]
-      ignorable_codes.include?(error.code)
+      ignorable_codes.include?(error.code) || error.message.match(/Element script embeds close tag/)
     end
 
     def process(processors,body,template)
