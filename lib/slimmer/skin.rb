@@ -70,10 +70,10 @@ module Slimmer
       cache template_name, template
       logger.debug "Slimmer: Returning evaluated template"
       template
-    rescue OpenURI::HTTPError
-      raise TemplateNotFoundException
-    rescue Errno::ECONNREFUSED
-      raise CouldNotRetrieveTemplate
+    rescue OpenURI::HTTPError => e
+      raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
+    rescue Errno::ECONNREFUSED => e
+      raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     end
 
     def template_url template_name
@@ -99,8 +99,10 @@ module Slimmer
         errors = doc.errors.select {|e| e.error?}.reject {|e| ignorable?(e)}
         if errors.size > 0
           error = errors.first
-          raise "In #{description_for_error_message}: '#{error.message}' at line #{error.line} col #{error.column} (code #{error.code}).\n" +
-            context(html, error)
+          message = "In #{description_for_error_message}: '#{error.message}' at line #{error.line} col #{error.column} (code #{error.code}).\n"
+          message << "Add ?skip_slimmer=1 to the url to show the raw backend request.\n\n"
+          message << context(html, error)
+          raise message
         end
       end
       doc
