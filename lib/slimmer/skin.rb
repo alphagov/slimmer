@@ -170,7 +170,7 @@ module Slimmer
         GoogleAnalyticsConfigurator.new(request.env),
         RelatedItemsInserter.new(template('related.raw'), source_request),
       ]
-
+      
       template_name = request.env.has_key?(TEMPLATE_HEADER) ? request.env[TEMPLATE_HEADER] : 'wrapper'
       process(processors,body,template(template_name))
     end

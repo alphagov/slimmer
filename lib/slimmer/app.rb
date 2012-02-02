@@ -23,15 +23,32 @@ module Slimmer
 
     def call(env)
       logger.debug "Slimmer: capturing response"
-      response_array = @app.call(env)
-      if response_array[1][SKIP_HEADER]
+      backend_response = @app.call(env)
+
+      if in_development? and skip_slimmer_param?(env)
+        logger.debug "Slimmer: Asked to skip slimmer via skip_slimmer param"
+        return backend_response
+      elsif skip_slimmer_header?(backend_response)
         logger.debug "Slimmer: Asked to skip slimmer via HTTP header"
-        response_array
+        return backend_response
       else
-        rewrite_response(env, response_array)
+        rewrite_response(env, backend_response)
       end
     end
-
+    
+    def in_development?
+      ENV['RAILS_ENV'] == 'development'
+    end
+      
+    def skip_slimmer_param?(env)
+      skip = Rack::Request.new(env).params['skip_slimmer']
+      skip and skip.to_i > 0
+    end
+    
+    def skip_slimmer_header?(backend_response)
+      !! backend_response[1][SKIP_HEADER]
+    end
+    
     def on_success(source_request, request, body)
       @skin.success(source_request, request, body)
     end
@@ -68,6 +85,7 @@ module Slimmer
       logger.debug "Slimmer: constructing request headers object"
       request = Rack::Request.new(headers)
       content_type = headers['Content-Type'] || headers['content-type']
+      
       logger.debug "Slimmer: Content-Type: #{content_type}"
       if content_type =~ /text\/html/
         logger.debug "Slimmer: Status code = #{status}"

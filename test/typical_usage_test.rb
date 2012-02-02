@@ -10,6 +10,35 @@ module TypicalUsage
       assert_equal "Don't template me", last_response.body
     end
   end
+  
+  class SkipUsingQueryParamTest < SlimmerIntegrationTest
+    given_response 200, %{<html><body><div id='unskinned'>Unskinned</div><div id="wrapper">Don't template me</div></body></html>}, {}
+    
+    def fetch_page; end
+
+    def with_rails_env(new_env, &block)
+      old_env, ENV['RAILS_ENV'] = ENV['RAILS_ENV'], new_env
+      begin
+        yield
+      ensure
+        ENV['RAILS_ENV'] = old_env
+      end
+    end
+    
+    def test_should_return_the_response_as_is_in_development
+      with_rails_env('development') do
+        get "/some-slug?skip_slimmer=1"
+      end
+      assert_rendered_in_template '#unskinned', "Unskinned"
+    end
+
+    def test_not_skip_slimmer_in_production
+      with_rails_env('production') do
+        get "/some-slug?skip_slimmer=1"
+      end
+      assert_rendered_in_template '#wrapper', "Don't template me"
+    end
+  end
 
   class ContentLengthTest < SlimmerIntegrationTest
     given_response 200, %{
@@ -82,7 +111,7 @@ module TypicalUsage
   class ResponseWithRelatedItemsTest < SlimmerIntegrationTest
     include GdsApi::TestHelpers::Panopticon
 
-    def additional_setup
+    def setup
       panopticon_has_metadata(
         'slug' => 'some-slug', 
         'title' => 'Example document', 
@@ -96,6 +125,7 @@ module TypicalUsage
             }
           ]
         )
+      super
     end
   end
   
@@ -106,7 +136,11 @@ module TypicalUsage
       <div id="wrapper">The body of the page<div id="related-items"></div></div>
       </body>
       </html>
-    }, {}, "/some-slug"
+    }, {}
+    
+    def fetch_page
+      get "/some-slug"
+    end
     
     def test_should_insert_related_items_block
       assert_rendered_in_template "div.related nav li.guide a", "How to test computer software automatically &amp; ensure that 2&gt;1"
@@ -121,7 +155,11 @@ module TypicalUsage
       <div id="wrapper">The body of the page<div id="related-items"></div></div>
       </body>
       </html>
-    }, {}, "/some-slug"
+    }, {}
+    
+    def fetch_page
+      get "/some-slug"
+    end
     
     def test_should_not_insert_related_items_block
       assert_rendered_in_template "div#related-items", ""
@@ -262,8 +300,9 @@ module TypicalUsage
       </html>
     }
 
-    def additional_setup
-      RelatedItemsInserter.any_instance.stubs(:metadata_from_panopticon).raises(GdsApi::TimedOutException)
+    def setup
+      ::Slimmer::RelatedItemsInserter.any_instance.stubs(:metadata_from_panopticon).raises(GdsApi::TimedOutException)
+      super
     end
 
     def test_should_return_503_if_an_API_call_times_out

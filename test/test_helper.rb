@@ -27,7 +27,7 @@ end
 class SlimmerIntegrationTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods
 
-  def self.given_response(code, body, headers={}, url="/")
+  def self.given_response(code, body, headers={})
     define_method(:app) do
       inner_app = proc { |env|
         [code, headers.merge("Content-Type" => "text/html"), body]
@@ -39,8 +39,7 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
       WebMock.reset!
     end
 
-    define_method(:setup) do
-      additional_setup if self.class.method_defined? :additional_setup
+    define_method(:setup_template) do
       template_name = case code
       when 200 then 'wrapper'
       when 404 then '404'
@@ -49,10 +48,18 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
 
       use_template(template_name)
       use_template('related.raw')
-      get url
     end
   end
 
+  def setup
+    setup_template if respond_to? :setup_template
+    fetch_page
+  end
+  
+  def fetch_page
+    get "/"
+  end
+    
   def use_template(template_name)
     template = File.read File.dirname(__FILE__) + "/fixtures/#{template_name}.html.erb"
     stub_request(:get, "http://template.local/templates/#{template_name}.html.erb").
