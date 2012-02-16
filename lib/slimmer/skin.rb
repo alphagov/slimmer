@@ -105,6 +105,7 @@ module Slimmer
           raise message
         end
       end
+
       doc
     end
     
@@ -146,7 +147,8 @@ module Slimmer
       end_time = Time.now
       logger.debug "Slimmer: Skinning process completed at #{end_time} (#{end_time - start_time}s)"
 
-      return dest.to_html
+      # this is a horrible fix to Nokogiri removing the closing </noscript> tag required by Google Website Optimizer. 
+      dest.to_html.sub(/<noscript rel=("|')placeholder("|')>/, "")
     end
 
     def admin(request,body)
