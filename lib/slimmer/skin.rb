@@ -148,6 +148,7 @@ module Slimmer
       logger.debug "Slimmer: Skinning process completed at #{end_time} (#{end_time - start_time}s)"
 
       # this is a horrible fix to Nokogiri removing the closing </noscript> tag required by Google Website Optimizer. 
+      # http://www.google.com/support/websiteoptimizer/bin/answer.py?hl=en_us&answer=64418
       dest.to_html.sub(/<noscript rel=("|')placeholder("|')>/, "")
     end
 
