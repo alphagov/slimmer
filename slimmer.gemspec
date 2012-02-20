@@ -21,9 +21,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'plek', '>= 0.1.8'
   s.add_dependency 'json'
   s.add_dependency 'null_logger'
+  s.add_dependency 'gds-api-adapters', '~> 0.0.33'
 
   s.test_files    = Dir['test/**/*']
-  s.add_development_dependency 'gds-api-adapters', '~> 0.0.33'
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
   s.add_development_dependency 'mocha', '~> 0.9.12'

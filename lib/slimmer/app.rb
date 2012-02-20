@@ -1,3 +1,5 @@
+require "gds_api/exceptions"
+
 module Slimmer
   class App
     attr_accessor :logger
