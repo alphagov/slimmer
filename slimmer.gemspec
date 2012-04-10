@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.rubyforge_project = "slimmer"
 
   s.add_dependency 'nokogiri', '~> 1.5.0'
-  s.add_dependency 'rack', '> 1.3.5'
+  s.add_dependency 'rack', '>= 1.3.5'
   s.add_dependency 'plek', '>= 0.1.8'
   s.add_dependency 'json'
   s.add_dependency 'null_logger'
