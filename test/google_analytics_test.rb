@@ -38,6 +38,7 @@ module GoogleAnalyticsTest
 
   class WithHeadersTest < SlimmerIntegrationTest
     include JavaScriptAssertions
+    PAGE_LEVEL_EVENT = 3
 
     headers = {
       "X-Slimmer-Section"     => "rhubarb",
@@ -48,19 +49,19 @@ module GoogleAnalyticsTest
     given_response 200, GENERIC_DOCUMENT, headers
 
     def test_should_pass_section_to_GA
-      assert_custom_var 1, "Section", "rhubarb", 3
+      assert_custom_var 1, "Section", "rhubarb", PAGE_LEVEL_EVENT
     end
 
     def test_should_pass_internal_format_name_to_GA
-      assert_custom_var 2, "Format", "custard", 3
+      assert_custom_var 2, "Format", "custard", PAGE_LEVEL_EVENT
     end
 
     def test_should_pass_need_ID_to_GA
-      assert_custom_var 3, "NeedID", "42", 3
+      assert_custom_var 3, "NeedID", "42", PAGE_LEVEL_EVENT
     end
 
     def test_should_pass_proposition_to_GA
-      assert_custom_var 4, "Proposition", "trifle", 3
+      assert_custom_var 4, "Proposition", "trifle", PAGE_LEVEL_EVENT
     end
   end
 

@@ -2,7 +2,7 @@ require "json"
 
 module Slimmer
   class GoogleAnalyticsConfigurator
-
+    PAGE_LEVEL_EVENT = 3
     HEADER_MAPPING = {
       "Section"     => "X-SLIMMER-SECTION",
       "Format"      => "X-SLIMMER-FORMAT",
@@ -31,7 +31,7 @@ module Slimmer
 
     def set_custom_var(slot, name, value)
       return nil unless value
-      "_gaq.push(#{JSON.dump([ "_setCustomVar", slot, name, value, 3])});"
+      "_gaq.push(#{JSON.dump([ "_setCustomVar", slot, name, value, PAGE_LEVEL_EVENT])});"
     end
   end
 end
