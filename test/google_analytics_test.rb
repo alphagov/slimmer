@@ -41,11 +41,13 @@ module GoogleAnalyticsTest
     PAGE_LEVEL_EVENT = 3
 
     headers = {
-      "X-Slimmer-Section"     => "rhubarb",
-      "X-Slimmer-Format"      => "custard",
-      "X-Slimmer-Need-ID"     => "42",
-      "X-Slimmer-Proposition" => "trifle"
+      "X-Slimmer-Section"       => "rhubarb",
+      "X-Slimmer-Format"        => "custard",
+      "X-Slimmer-Need-ID"       => "42",
+      "X-Slimmer-Proposition"   => "trifle",
+      "X-Slimmer-Result-Count"  => "3"
     }
+
     given_response 200, GENERIC_DOCUMENT, headers
 
     def test_should_pass_section_to_GA
@@ -63,6 +65,11 @@ module GoogleAnalyticsTest
     def test_should_pass_proposition_to_GA
       assert_custom_var 4, "Proposition", "trifle", PAGE_LEVEL_EVENT
     end
+
+    def test_should_pass_result_count_to_GA
+      assert_custom_var 5, "ResultCount", "3", PAGE_LEVEL_EVENT
+    end
+
   end
 
   class WithoutHeadersTest < SlimmerIntegrationTest
@@ -84,6 +91,10 @@ module GoogleAnalyticsTest
 
     def test_should_omit_proposition
       refute_custom_var "Proposition"
+    end
+
+    def test_should_omit_result_count
+      refute_custom_var "ResultCount"
     end
   end
 end

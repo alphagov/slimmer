@@ -3,12 +3,13 @@ module Slimmer
     InvalidHeader = Class.new(RuntimeError)
 
     SLIMMER_HEADER_MAPPING = {
-      section:     "Section",
-      need_id:     "Need-ID",
-      format:      "Format",
-      proposition: "Proposition",
-      template:    "Template",
-      skip:        "Skip",
+      section:      "Section",
+      need_id:      "Need-ID",
+      format:       "Format",
+      proposition:  "Proposition",
+      result_count: "Result-Count",
+      template:     "Template",
+      skip:         "Skip",
     }
 
     def set_slimmer_headers(hash)

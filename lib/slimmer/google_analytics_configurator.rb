@@ -8,6 +8,7 @@ module Slimmer
       "Format"      => "X-SLIMMER-FORMAT",
       "NeedID"      => "X-SLIMMER-NEED-ID",
       "Proposition" => "X-SLIMMER-PROPOSITION",
+      "ResultCount" => "X-SLIMMER-RESULT-COUNT"
     }
 
     def initialize(headers)
