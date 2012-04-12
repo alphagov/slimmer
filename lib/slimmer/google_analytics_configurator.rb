@@ -32,6 +32,7 @@ module Slimmer
 
     def set_custom_var(slot, name, value)
       return nil unless value
+      value.downcase!
       "_gaq.push(#{JSON.dump([ "_setCustomVar", slot, name, value, PAGE_LEVEL_EVENT])});"
     end
   end
