@@ -26,18 +26,18 @@ class BodyInserterTest < MiniTest::Unit::TestCase
     assert_equal unicode_endash, template.at_css("#wrapper p").inner_text
   end
 
-  def test_should_allow_replacement_of_arbitrary_wrappers
+  def test_should_allow_replacement_of_arbitrary_segments_into_wrapper
     template = as_nokogiri %{
       <html><body><div>
       <div id="wrapper">don't touch this</div>
-      <div id="some_other_id"></div></div></body></html>
+      </body></html>
     }
     source = as_nokogiri %{
       <html><body><div id="some_other_id"><p>this should be moved</p></div></body></html>
     }
 
     Slimmer::BodyInserter.new("#some_other_id").filter(source, template)
-    assert_in template, "#wrapper", %{don't touch this}
+    assert_not_in template, "#wrapper"
     assert_in template, "#some_other_id", %{<p>this should be moved</p>}
   end
 end
