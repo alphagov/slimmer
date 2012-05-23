@@ -2,7 +2,7 @@ require "test_helper"
 
 class SkinTest < MiniTest::Unit::TestCase
   def test_template_can_be_loaded
-    skin = Slimmer::Skin.new "http://example.local/"
+    skin = Slimmer::Skin.new asset_host: "http://example.local/"
     expected_url = "http://example.local/templates/example.html.erb"
     stub_request(:get, expected_url).to_return :body => "<foo />"
 
@@ -13,7 +13,7 @@ class SkinTest < MiniTest::Unit::TestCase
   end
 
   def test_should_interpolate_values_for_prefix
-    skin = Slimmer::Skin.new "http://example.local/", false, "this-is-the-prefix"
+    skin = Slimmer::Skin.new asset_host: "http://example.local/", use_cache: false, prefix: "this-is-the-prefix"
     expected_url = "http://example.local/templates/example.html.erb"
     stub_request(:get, expected_url).to_return :body => "<p><%= prefix %></p>"
 
@@ -22,7 +22,7 @@ class SkinTest < MiniTest::Unit::TestCase
   end
 
   def test_should_raise_appropriate_exception_when_template_not_found
-    skin = Slimmer::Skin.new "http://example.local/"
+    skin = Slimmer::Skin.new asset_host: "http://example.local/"
     expected_url = "http://example.local/templates/example.html.erb"
     stub_request(:get, expected_url).to_return(:status => '404')
 
@@ -32,7 +32,7 @@ class SkinTest < MiniTest::Unit::TestCase
   end
 
   def test_should_raise_appropriate_exception_when_cant_reach_template_host
-    skin = Slimmer::Skin.new "http://example.local/"
+    skin = Slimmer::Skin.new asset_host: "http://example.local/"
     expected_url = "http://example.local/templates/example.html.erb"
     stub_request(:get, expected_url).to_raise(Errno::ECONNREFUSED)
 
