@@ -36,7 +36,7 @@ class BodyInserterTest < MiniTest::Unit::TestCase
       <html><body><div id="some_other_id"><p>this should be moved</p></div></body></html>
     }
 
-    Slimmer::BodyInserter.new("#some_other_id").filter(source, template)
+    Slimmer::BodyInserter.new("some_other_id").filter(source, template)
     assert_not_in template, "#wrapper"
     assert_in template, "#some_other_id", %{<p>this should be moved</p>}
   end

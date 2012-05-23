@@ -27,12 +27,12 @@ end
 class SlimmerIntegrationTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods
 
-  def self.given_response(code, body, headers={})
+  def self.given_response(code, body, headers={}, app_options={})
     define_method(:app) do
       inner_app = proc { |env|
         [code, headers.merge("Content-Type" => "text/html"), body]
       }
-      Slimmer::App.new inner_app, :asset_host => "http://template.local"
+      Slimmer::App.new inner_app, {asset_host: "http://template.local"}.merge(app_options)
     end
 
     define_method :teardown do
@@ -90,5 +90,10 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
         assert_equal content, element.inner_html.to_s, message
       end
     end
+  end
+
+  def assert_no_selector(selector, message=nil)
+    message ||= "Expected not to find #{selector.inspect}, but did"
+    assert_nil Nokogiri::HTML.parse(last_response.body).at_css(selector), message
   end
 end
