@@ -18,13 +18,17 @@ module Slimmer
     attr_accessor :strict
     private :strict=, :strict
 
+    attr_accessor :options
+    private :options=, :options
+
     # TODO: Extract the cache to something we can pass in instead of using
     # true/false and an in-memory cache.
-    def initialize asset_host, use_cache = false, prefix = nil, options = {}
-      self.asset_host = asset_host
+    def initialize options = {}
+      self.options = options
+      self.asset_host = options[:asset_host]
       self.templated_cache = {}
-      self.prefix = prefix
-      self.use_cache = use_cache
+      self.prefix = options[:prefix]
+      self.use_cache = options[:use_cache] || false
       self.logger = options[:logger] || NullLogger.instance
       self.strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
     end
@@ -168,7 +172,7 @@ module Slimmer
       processors = [
         TitleInserter.new(),
         TagMover.new(),
-        BodyInserter.new(),
+        BodyInserter.new(options[:wrapper_id] || 'wrapper'),
         BodyClassCopier.new,
         HeaderContextInserter.new(),
         SectionInserter.new(),
