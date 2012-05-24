@@ -308,6 +308,21 @@ module TypicalUsage
     def test_should_return_503_if_an_API_call_times_out
       assert_equal 503, last_response.status
     end
+  end
 
+  class ArbitraryWrapperIdTest < SlimmerIntegrationTest
+
+    given_response 200, %{
+      <html>
+      <body>
+      <div id="custom_wrapper">The body of the page</div>
+      </body>
+      </html>
+    }, {}, {wrapper_id: "custom_wrapper"}
+
+    def test_should_replace_wrapper_with_custom_wrapper
+      assert_rendered_in_template "body .content #custom_wrapper", "The body of the page"
+      assert_no_selector "#wrapper"
+    end
   end
 end
