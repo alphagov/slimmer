@@ -21,7 +21,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'plek', '>= 0.1.8'
   s.add_dependency 'json'
   s.add_dependency 'null_logger'
-  s.add_dependency 'gds-api-adapters', '~> 0.0.33'
+  # The 0.1.x versions of the adapters should be fine
+  s.add_dependency 'gds-api-adapters', '>= 0.0.33', '< 0.2.0'
 
   s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'rake', '~> 0.9.2.2'
