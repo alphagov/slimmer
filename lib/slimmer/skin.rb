@@ -78,6 +78,8 @@ module Slimmer
       raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     rescue Errno::ECONNREFUSED => e
       raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
+    rescue SocketError => e
+      raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     end
 
     def template_url template_name
