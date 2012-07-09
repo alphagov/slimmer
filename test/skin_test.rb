@@ -40,4 +40,14 @@ class SkinTest < MiniTest::Unit::TestCase
       skin.load_template 'example'
     end
   end
+
+  def test_should_raise_appropriate_exception_when_hostname_cannot_be_resolved
+    skin = Slimmer::Skin.new asset_host: "http://non-existent.domain/"
+    expected_url = "http://non-existent.domain/templates/example.html.erb"
+    stub_request(:get, expected_url).to_raise(SocketError)
+
+    assert_raises(Slimmer::CouldNotRetrieveTemplate) do
+      skin.load_template 'example'
+    end
+  end
 end
