@@ -51,8 +51,8 @@ module Slimmer
       !! backend_response[1][SKIP_HEADER]
     end
 
-    def on_success(source_request, request, body)
-      @skin.success(source_request, request, body)
+    def on_success(source_request, response, body)
+      @skin.success(source_request, response, body)
     end
 
     def admin(body)
@@ -83,9 +83,9 @@ module Slimmer
     def rewrite_response(env, response_to_skin)
       status, headers, app_body = response_to_skin
       logger.debug "Slimmer: constructing request object"
+      response = Rack::Response.new(app_body, status, headers)
       source_request = Rack::Request.new(env)
       logger.debug "Slimmer: constructing request headers object"
-      request = Rack::Request.new(headers)
       content_type = headers['Content-Type'] || headers['content-type']
 
       logger.debug "Slimmer: Content-Type: #{content_type}"
@@ -101,7 +101,7 @@ module Slimmer
             rewritten_body = admin(s(app_body))
           else
             logger.debug "Slimmer: Rewriting this request as a public request"
-            rewritten_body = on_success(source_request, request, s(app_body))
+            rewritten_body = on_success(source_request, response, s(app_body))
           end
         when 301, 302, 304
           logger.debug "Slimmer: I will not rewrite this request"

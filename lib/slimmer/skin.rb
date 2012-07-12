@@ -117,10 +117,10 @@ module Slimmer
         BodyInserter.new(),
         BodyClassCopier.new,
       ]
-      process(processors,body,template('admin'))
+      process(processors, body, template('admin'))
     end
 
-    def success(source_request, request, body)
+    def success(source_request, response, body)
       processors = [
         TitleInserter.new(),
         TagMover.new(),
@@ -128,12 +128,12 @@ module Slimmer
         BodyClassCopier.new,
         HeaderContextInserter.new(),
         SectionInserter.new(),
-        GoogleAnalyticsConfigurator.new(request.env),
+        GoogleAnalyticsConfigurator.new(response.headers),
         RelatedItemsInserter.new(template('related.raw'), source_request),
       ]
 
-      template_name = request.env.has_key?(TEMPLATE_HEADER) ? request.env[TEMPLATE_HEADER] : 'wrapper'
-      process(processors,body,template(template_name))
+      template_name = response.headers[TEMPLATE_HEADER] || 'wrapper'
+      process(processors, body, template(template_name))
     end
 
     def error(template_name, body)
