@@ -1,78 +1,35 @@
 module Slimmer
   class Skin
-    attr_accessor :use_cache
-    private :use_cache=, :use_cache
-
-    attr_accessor :templated_cache
-    private :templated_cache=, :templated_cache
-
-    attr_accessor :asset_host
-    private :asset_host=, :asset_host
-
-    attr_accessor :prefix
-    private :prefix=, :prefix
-
-    attr_accessor :logger
-    private :logger=, :logger
-
-    attr_accessor :strict
-    private :strict=, :strict
-
-    attr_accessor :options
-    private :options=, :options
+    attr_accessor :use_cache, :template_cache, :asset_host, :prefix, :logger, :strict, :options
 
     # TODO: Extract the cache to something we can pass in instead of using
     # true/false and an in-memory cache.
     def initialize options = {}
-      self.options = options
-      self.asset_host = options[:asset_host]
-      self.templated_cache = {}
-      self.prefix = options[:prefix]
-      self.use_cache = options[:use_cache] || false
-      self.logger = options[:logger] || NullLogger.instance
-      self.strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
+      @options = options
+      @asset_host = options[:asset_host]
+      @template_cache = {}
+      @prefix = options[:prefix]
+      @use_cache = options[:use_cache] || false
+      @logger = options[:logger] || NullLogger.instance
+      @strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
     end
 
     def template(template_name)
-      logger.debug "Slimmer: Looking for template '#{template_name}'"
-      return cached_template(template_name) if template_cached? template_name
-      logger.debug "Slimmer: Asking for the template to be loaded"
-      load_template template_name
+      if use_cache
+        template_cache[template_name] ||= load_template(template_name)
+      else
+        load_template(template_name)
+      end
     end
 
-    def template_cached? name
-      logger.debug "Slimmer: Checking cache for template '#{name}'"
-      cached = !cached_template(name).nil?
-      logger.debug "Slimmer: Cache hit = #{cached}"
-      cached
-    end
-
-    def cached_template name
-      logger.debug "Slimmer: Trying to load cached template '#{name}'"
-      templated_cache[name]
-    end
-
-    def cache name, template
-      logger.debug "Slimmer: Asked to cache '#{name}'. use_cache = #{use_cache}"
-      return unless use_cache
-      logger.debug "Slimmer: performing caching"
-      templated_cache[name] = template
-    end
-
-    def load_template template_name
-      logger.debug "Slimmer: Loading template '#{template_name}'"
-      url = template_url template_name
-      logger.debug "Slimmer: template lives at '#{url}'"
+    def load_template(template_name)
+      url = template_url(template_name)
       source = open(url, "r:UTF-8", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
       if template_name =~ /\.raw/
-        logger.debug "Slimmer: reading the raw template"
         template = source
       else
-        logger.debug "Slimmer: Evaluating the template as ERB"
         template = ERB.new(source).result binding
       end
-      cache template_name, template
-      logger.debug "Slimmer: Returning evaluated template"
       template
     rescue OpenURI::HTTPError => e
       raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
@@ -82,23 +39,16 @@ module Slimmer
       raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     end
 
-    def template_url template_name
+    def template_url(template_name)
       host = asset_host.dup
       host += '/' unless host =~ /\/$/
       "#{host}templates/#{template_name}.html.erb"
     end
 
-    def error(request, template_name, body)
-      processors = [
-        TitleInserter.new()
-      ]
-      process(processors, body, template(template_name))
-    end
-    
     def report_parse_errors_if_strict!(nokogiri_doc, description_for_error_message)
       nokogiri_doc
     end
-    
+
     def parse_html(html, description_for_error_message)
       doc = Nokogiri::HTML.parse(html)
       if strict
@@ -114,7 +64,7 @@ module Slimmer
 
       doc
     end
-    
+
     def context(html, error)
       context_size = 5
       lines = [""] + html.split("\n")
@@ -125,7 +75,7 @@ module Slimmer
       context.insert(context_size, marker)
       context.join("\n")
     end
-    
+
     def ignorable?(error)
       ignorable_codes = [801]
       ignorable_codes.include?(error.code) || error.message.match(/Element script embeds close tag/) || error.message.match(/Unexpected end tag : noscript/)
@@ -153,12 +103,12 @@ module Slimmer
       end_time = Time.now
       logger.debug "Slimmer: Skinning process completed at #{end_time} (#{end_time - start_time}s)"
 
-      # this is a horrible fix to Nokogiri removing the closing </noscript> tag required by Google Website Optimizer. 
+      # this is a horrible fix to Nokogiri removing the closing </noscript> tag required by Google Website Optimizer.
       # http://www.google.com/support/websiteoptimizer/bin/answer.py?hl=en_us&answer=64418
       dest.to_html.sub(/<noscript rel=("|')placeholder("|')>/, "")
     end
 
-    def admin(request,body)
+    def admin(body)
       processors = [
         TitleInserter.new(),
         TagMover.new(),
@@ -167,10 +117,10 @@ module Slimmer
         BodyInserter.new(),
         BodyClassCopier.new,
       ]
-      process(processors,body,template('admin'))
+      process(processors, body, template('admin'))
     end
 
-    def success(source_request, request, body)
+    def success(source_request, response, body)
       processors = [
         TitleInserter.new(),
         TagMover.new(),
@@ -178,12 +128,19 @@ module Slimmer
         BodyClassCopier.new,
         HeaderContextInserter.new(),
         SectionInserter.new(),
-        GoogleAnalyticsConfigurator.new(request.env),
+        GoogleAnalyticsConfigurator.new(response),
         RelatedItemsInserter.new(template('related.raw'), source_request),
       ]
-      
-      template_name = request.env.has_key?(TEMPLATE_HEADER) ? request.env[TEMPLATE_HEADER] : 'wrapper'
-      process(processors,body,template(template_name))
+
+      template_name = response.headers[TEMPLATE_HEADER] || 'wrapper'
+      process(processors, body, template(template_name))
+    end
+
+    def error(template_name, body)
+      processors = [
+        TitleInserter.new()
+      ]
+      process(processors, body, template(template_name))
     end
   end
 end
