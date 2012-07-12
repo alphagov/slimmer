@@ -128,7 +128,7 @@ module Slimmer
         BodyClassCopier.new,
         HeaderContextInserter.new(),
         SectionInserter.new(),
-        GoogleAnalyticsConfigurator.new(response.headers),
+        GoogleAnalyticsConfigurator.new(response),
         RelatedItemsInserter.new(template('related.raw'), source_request),
       ]
 
