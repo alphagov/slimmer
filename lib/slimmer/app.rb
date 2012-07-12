@@ -56,22 +56,6 @@ module Slimmer
       !!response.headers[SKIP_HEADER]
     end
 
-    def on_success(request, response, body)
-      @skin.success(request, response, body)
-    end
-
-    def admin(body)
-      @skin.admin(body)
-    end
-
-    def on_error(body)
-      @skin.error('500', body)
-    end
-
-    def on_404(body)
-      @skin.error('404', body)
-    end
-
     def s(body)
       return body.to_s unless body.respond_to?(:each)
       b = ""
@@ -91,14 +75,14 @@ module Slimmer
       rewritten_body = case response.status
       when 200
         if response.headers[TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
-          admin(s(response.body))
+          @skin.admin s(response.body)
         else
-          on_success(request, response, s(response.body))
+          @skin.success request, response, s(response.body)
         end
       when 404
-        on_404(s(response.body))
+        @skin.error '404', s(response.body)
       else
-        on_error(s(response.body))
+        @skin.error '500', s(response.body)
       end
 
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
