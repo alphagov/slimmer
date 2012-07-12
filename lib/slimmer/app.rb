@@ -25,17 +25,22 @@ module Slimmer
 
     def call(env)
       logger.debug "Slimmer: capturing response"
-      backend_response = @app.call(env)
+      status, headers, body = @app.call(env)
+      response = Rack::Response.new(body, status, headers)
 
-      if in_development? and skip_slimmer_param?(env)
-        logger.debug "Slimmer: Asked to skip slimmer via skip_slimmer param"
-        return backend_response
-      elsif skip_slimmer_header?(backend_response)
-        logger.debug "Slimmer: Asked to skip slimmer via HTTP header"
-        return backend_response
+      if response_can_be_rewritten?(response) && !skip_slimmer?(env, response)
+        rewrite_response(env, response)
       else
-        rewrite_response(env, backend_response)
+        [status, headers, body]
       end
+    end
+
+    def response_can_be_rewritten?(response)
+      response.content_type =~ /text\/html/ && ![301, 302, 304].include?(response.status)
+    end
+
+    def skip_slimmer?(env, response)
+      (in_development? && skip_slimmer_param?(env)) || skip_slimmer_header?(response)
     end
 
     def in_development?
@@ -47,8 +52,8 @@ module Slimmer
       skip and skip.to_i > 0
     end
 
-    def skip_slimmer_header?(backend_response)
-      !! backend_response[1][SKIP_HEADER]
+    def skip_slimmer_header?(response)
+      !!response.headers[SKIP_HEADER]
     end
 
     def on_success(request, response, body)
@@ -80,27 +85,20 @@ module Slimmer
       size.to_s
     end
 
-    def rewrite_response(env, response_to_skin)
-      response = Rack::Response.new(response_to_skin[2], response_to_skin[0], response_to_skin[1])
+    def rewrite_response(env, response)
       request = Rack::Request.new(env)
 
-      rewritten_body = if response.content_type =~ /text\/html/
-        case response.status
-        when 200
-          if response.headers[TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
-            admin(s(response.body))
-          else
-            on_success(request, response, s(response.body))
-          end
-        when 301, 302, 304
-          response.body
-        when 404
-          on_404(s(response.body))
+      rewritten_body = case response.status
+      when 200
+        if response.headers[TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
+          admin(s(response.body))
         else
-          on_error(s(response.body))
+          on_success(request, response, s(response.body))
         end
+      when 404
+        on_404(s(response.body))
       else
-        response.body
+        on_error(s(response.body))
       end
 
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
@@ -108,7 +106,6 @@ module Slimmer
       response.headers['Content-Length'] = content_length(response.body)
 
       response.finish
-
     rescue GdsApi::TimedOutException
       [503, {"Content-Type" => "text/plain"}, ["GDS API request timed out."]]
     end
