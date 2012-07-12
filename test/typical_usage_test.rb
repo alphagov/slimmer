@@ -10,10 +10,10 @@ module TypicalUsage
       assert_equal "Don't template me", last_response.body
     end
   end
-  
+
   class SkipUsingQueryParamTest < SlimmerIntegrationTest
     given_response 200, %{<html><body><div id='unskinned'>Unskinned</div><div id="wrapper">Don't template me</div></body></html>}, {}
-    
+
     def fetch_page; end
 
     def with_rails_env(new_env, &block)
@@ -24,7 +24,7 @@ module TypicalUsage
         ENV['RAILS_ENV'] = old_env
       end
     end
-    
+
     def test_should_return_the_response_as_is_in_development
       with_rails_env('development') do
         get "/some-slug?skip_slimmer=1"
@@ -37,6 +37,14 @@ module TypicalUsage
         get "/some-slug?skip_slimmer=1"
       end
       assert_rendered_in_template '#wrapper', "Don't template me"
+    end
+  end
+
+  class SkipNonHtmlResponse < SlimmerIntegrationTest
+    given_response 200, '{ "json" : "document" }', {'Content-Type' => 'application/json'}
+
+    def test_should_pass_through_non_html_response
+      assert_equal '{ "json" : "document" }', last_response.body
     end
   end
 
@@ -105,16 +113,16 @@ module TypicalUsage
     def test_should_insert_meta_navigation_links_into_the_navigation
       assert_rendered_in_template "nav[role=navigation] li a[href='/this_section']", "This section"
     end
-    
+
   end
-  
+
   class ResponseWithRelatedItemsTest < SlimmerIntegrationTest
     include GdsApi::TestHelpers::Panopticon
 
     def setup
       panopticon_has_metadata(
-        'slug' => 'some-slug', 
-        'title' => 'Example document', 
+        'slug' => 'some-slug',
+        'title' => 'Example document',
         'related_items' => [
             {
             'artefact' => {
@@ -128,7 +136,7 @@ module TypicalUsage
       super
     end
   end
-  
+
   class CitizenRelatedItemsTest < ResponseWithRelatedItemsTest
     given_response 200, %{
       <html>
@@ -137,11 +145,11 @@ module TypicalUsage
       </body>
       </html>
     }, {}
-    
+
     def fetch_page
       get "/some-slug"
     end
-    
+
     def test_should_insert_related_items_block
       assert_rendered_in_template "div.related nav li.guide a", "How to test computer software automatically &amp; ensure that 2&gt;1"
       assert_rendered_in_template "div.related nav li.guide", %r{href="/how-to-test-computer-software-automatically"}
@@ -156,11 +164,11 @@ module TypicalUsage
       </body>
       </html>
     }, {}
-    
+
     def fetch_page
       get "/some-slug"
     end
-    
+
     def test_should_not_insert_related_items_block
       assert_rendered_in_template "div#related-items", ""
     end
