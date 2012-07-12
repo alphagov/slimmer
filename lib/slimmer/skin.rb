@@ -45,13 +45,6 @@ module Slimmer
       "#{host}templates/#{template_name}.html.erb"
     end
 
-    def error(request, template_name, body)
-      processors = [
-        TitleInserter.new()
-      ]
-      process(processors, body, template(template_name))
-    end
-
     def report_parse_errors_if_strict!(nokogiri_doc, description_for_error_message)
       nokogiri_doc
     end
@@ -115,7 +108,7 @@ module Slimmer
       dest.to_html.sub(/<noscript rel=("|')placeholder("|')>/, "")
     end
 
-    def admin(request,body)
+    def admin(body)
       processors = [
         TitleInserter.new(),
         TagMover.new(),
@@ -141,6 +134,13 @@ module Slimmer
 
       template_name = request.env.has_key?(TEMPLATE_HEADER) ? request.env[TEMPLATE_HEADER] : 'wrapper'
       process(processors,body,template(template_name))
+    end
+
+    def error(template_name, body)
+      processors = [
+        TitleInserter.new()
+      ]
+      process(processors, body, template(template_name))
     end
   end
 end

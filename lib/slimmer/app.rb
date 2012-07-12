@@ -37,34 +37,34 @@ module Slimmer
         rewrite_response(env, backend_response)
       end
     end
-    
+
     def in_development?
       ENV['RAILS_ENV'] == 'development'
     end
-      
+
     def skip_slimmer_param?(env)
       skip = Rack::Request.new(env).params['skip_slimmer']
       skip and skip.to_i > 0
     end
-    
+
     def skip_slimmer_header?(backend_response)
       !! backend_response[1][SKIP_HEADER]
     end
-    
+
     def on_success(source_request, request, body)
       @skin.success(source_request, request, body)
     end
 
-    def admin(request,body)
-      @skin.admin(request,body)
+    def admin(body)
+      @skin.admin(body)
     end
 
-    def on_error(request, status, body)
-      @skin.error(request, '500', body)
+    def on_error(body)
+      @skin.error('500', body)
     end
 
-    def on_404(request,body)
-      @skin.error(request, '404', body)
+    def on_404(body)
+      @skin.error('404', body)
     end
 
     def s(body)
@@ -73,7 +73,7 @@ module Slimmer
       body.each {|a| b << a }
       b
     end
-    
+
     def content_length(rewritten_body)
       size = 0
       rewritten_body.each { |part| size += part.bytesize }
@@ -87,7 +87,7 @@ module Slimmer
       logger.debug "Slimmer: constructing request headers object"
       request = Rack::Request.new(headers)
       content_type = headers['Content-Type'] || headers['content-type']
-      
+
       logger.debug "Slimmer: Content-Type: #{content_type}"
       if content_type =~ /text\/html/
         logger.debug "Slimmer: Status code = #{status}"
@@ -98,7 +98,7 @@ module Slimmer
           logger.debug "Slimmer: Request path = #{source_request.path.inspect}"
           if headers[TEMPLATE_HEADER] == 'admin' || source_request.path =~ /^\/admin(\/|$)/
             logger.debug "Slimmer: Rewriting this request as an admin request"
-            rewritten_body = admin(request,s(app_body))
+            rewritten_body = admin(s(app_body))
           else
             logger.debug "Slimmer: Rewriting this request as a public request"
             rewritten_body = on_success(source_request, request, s(app_body))
@@ -108,10 +108,10 @@ module Slimmer
           rewritten_body = app_body
         when 404
           logger.debug "Slimmer: Rewriting this request as a 404 error"
-          rewritten_body = on_404(request,s(app_body))
+          rewritten_body = on_404(s(app_body))
         else
           logger.debug "Slimmer: Rewriting this request as a generic error"
-          rewritten_body = on_error(request,status,s(app_body))
+          rewritten_body = on_error(s(app_body))
         end
       else
         logger.debug "Slimmer: I will not rewrite this request"
