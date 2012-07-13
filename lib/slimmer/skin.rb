@@ -129,6 +129,7 @@ module Slimmer
         HeaderContextInserter.new(),
         SectionInserter.new(),
         GoogleAnalyticsConfigurator.new(response),
+        SearchPathSetter.new(response),
         RelatedItemsInserter.new(template('related.raw'), source_request),
       ]
 

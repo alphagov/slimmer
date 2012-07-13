@@ -10,6 +10,7 @@ require 'slimmer/railtie' if defined? Rails
 module Slimmer
   TEMPLATE_HEADER = 'X-Slimmer-Template'
   SKIP_HEADER = 'X-Slimmer-Skip'
+  SEARCH_PATH_HEADER = 'X-Slimmer-Search-Path'
 
   autoload :Version, 'slimmer/version'
   autoload :Railtie, 'slimmer/railtie'
@@ -28,6 +29,7 @@ module Slimmer
   autoload :HeaderContextInserter, 'slimmer/header_context_inserter'
   autoload :GoogleAnalyticsConfigurator, 'slimmer/google_analytics_configurator'
   autoload :RelatedItemsInserter, 'slimmer/related_items_inserter'
+  autoload :SearchPathSetter, 'slimmer/search_path_setter'
 
   class TemplateNotFoundException < StandardError; end
   class CouldNotRetrieveTemplate < StandardError; end
