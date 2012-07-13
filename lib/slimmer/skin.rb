@@ -93,6 +93,8 @@ module Slimmer
         logger.debug "Slimmer: Processor #{p} started at #{processor_start_time}"
         begin
           p.filter(src,dest)
+        rescue GdsApi::TimedOutException
+          raise
         rescue => e
           logger.error "Slimmer: Failed while processing #{p}: #{[ e.message, e.backtrace ].flatten.join("\n")}"
         end
