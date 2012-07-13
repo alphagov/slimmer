@@ -25,46 +25,35 @@ module Slimmer
 
     def call(env)
       logger.debug "Slimmer: capturing response"
-      backend_response = @app.call(env)
+      status, headers, body = @app.call(env)
+      response = Rack::Response.new(body, status, headers)
 
-      if in_development? and skip_slimmer_param?(env)
-        logger.debug "Slimmer: Asked to skip slimmer via skip_slimmer param"
-        return backend_response
-      elsif skip_slimmer_header?(backend_response)
-        logger.debug "Slimmer: Asked to skip slimmer via HTTP header"
-        return backend_response
+      if response_can_be_rewritten?(response) && !skip_slimmer?(env, response)
+        rewrite_response(env, response)
       else
-        rewrite_response(env, backend_response)
+        [status, headers, body]
       end
     end
-    
+
+    def response_can_be_rewritten?(response)
+      response.content_type =~ /text\/html/ && ![301, 302, 304].include?(response.status)
+    end
+
+    def skip_slimmer?(env, response)
+      (in_development? && skip_slimmer_param?(env)) || skip_slimmer_header?(response)
+    end
+
     def in_development?
       ENV['RAILS_ENV'] == 'development'
     end
-      
+
     def skip_slimmer_param?(env)
       skip = Rack::Request.new(env).params['skip_slimmer']
       skip and skip.to_i > 0
     end
-    
-    def skip_slimmer_header?(backend_response)
-      !! backend_response[1][SKIP_HEADER]
-    end
-    
-    def on_success(source_request, request, body)
-      @skin.success(source_request, request, body)
-    end
 
-    def admin(request,body)
-      @skin.admin(request,body)
-    end
-
-    def on_error(request, status, body)
-      @skin.error(request, '500', body)
-    end
-
-    def on_404(request,body)
-      @skin.error(request, '404', body)
+    def skip_slimmer_header?(response)
+      !!response.headers[SKIP_HEADER]
     end
 
     def s(body)
@@ -73,57 +62,34 @@ module Slimmer
       body.each {|a| b << a }
       b
     end
-    
+
     def content_length(rewritten_body)
       size = 0
       rewritten_body.each { |part| size += part.bytesize }
       size.to_s
     end
 
-    def rewrite_response(env, response_to_skin)
-      status, headers, app_body = response_to_skin
-      logger.debug "Slimmer: constructing request object"
-      source_request = Rack::Request.new(env)
-      logger.debug "Slimmer: constructing request headers object"
-      request = Rack::Request.new(headers)
-      content_type = headers['Content-Type'] || headers['content-type']
-      
-      logger.debug "Slimmer: Content-Type: #{content_type}"
-      if content_type =~ /text\/html/
-        logger.debug "Slimmer: Status code = #{status}"
-        case status.to_i
-        when 200
-          logger.debug "Slimmer: I will rewrite this request"
-          logger.debug "Slimmer: #{TEMPLATE_HEADER} = #{headers[TEMPLATE_HEADER].inspect}"
-          logger.debug "Slimmer: Request path = #{source_request.path.inspect}"
-          if headers[TEMPLATE_HEADER] == 'admin' || source_request.path =~ /^\/admin(\/|$)/
-            logger.debug "Slimmer: Rewriting this request as an admin request"
-            rewritten_body = admin(request,s(app_body))
-          else
-            logger.debug "Slimmer: Rewriting this request as a public request"
-            rewritten_body = on_success(source_request, request, s(app_body))
-          end
-        when 301, 302, 304
-          logger.debug "Slimmer: I will not rewrite this request"
-          rewritten_body = app_body
-        when 404
-          logger.debug "Slimmer: Rewriting this request as a 404 error"
-          rewritten_body = on_404(request,s(app_body))
+    def rewrite_response(env, response)
+      request = Rack::Request.new(env)
+
+      rewritten_body = case response.status
+      when 200
+        if response.headers[TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
+          @skin.admin s(response.body)
         else
-          logger.debug "Slimmer: Rewriting this request as a generic error"
-          rewritten_body = on_error(request,status,s(app_body))
+          @skin.success request, response, s(response.body)
         end
+      when 404
+        @skin.error '404', s(response.body)
       else
-        logger.debug "Slimmer: I will not rewrite this request"
-        rewritten_body = app_body
+        @skin.error '500', s(response.body)
       end
+
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
+      response.body = rewritten_body
+      response.headers['Content-Length'] = content_length(response.body)
 
-      headers['Content-Length'] = content_length(rewritten_body)
-
-      logger.debug "Slimmer: Returning final status, headers and body"
-      [status, headers, rewritten_body]
-
+      response.finish
     rescue GdsApi::TimedOutException
       [503, {"Content-Type" => "text/plain"}, ["GDS API request timed out."]]
     end

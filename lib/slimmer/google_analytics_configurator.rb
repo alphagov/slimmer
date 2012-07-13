@@ -11,8 +11,8 @@ module Slimmer
       "ResultCount" => "X-SLIMMER-RESULT-COUNT"
     }
 
-    def initialize(headers)
-      @headers = normalise_headers(headers)
+    def initialize(response)
+      @headers = response.headers
     end
 
     def filter(src, dest)
@@ -26,10 +26,6 @@ module Slimmer
     end
 
   private
-    def normalise_headers(headers)
-      Hash[headers.map { |k, v| [k.upcase, v] }]
-    end
-
     def set_custom_var(slot, name, value)
       return nil unless value
       value.downcase!

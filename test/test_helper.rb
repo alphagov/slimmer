@@ -30,7 +30,7 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
   def self.given_response(code, body, headers={}, app_options={})
     define_method(:app) do
       inner_app = proc { |env|
-        [code, headers.merge("Content-Type" => "text/html"), body]
+        [code, {"Content-Type" => "text/html"}.merge(headers), body]
       }
       Slimmer::App.new inner_app, {asset_host: "http://template.local"}.merge(app_options)
     end
@@ -55,17 +55,17 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
     setup_template if respond_to? :setup_template
     fetch_page
   end
-  
+
   def fetch_page
     get "/"
   end
-    
+
   def use_template(template_name)
     template = File.read File.dirname(__FILE__) + "/fixtures/#{template_name}.html.erb"
     stub_request(:get, "http://template.local/templates/#{template_name}.html.erb").
       to_return(:body => template)
   end
-    
+
   private
 
   def assert_not_rendered_in_template(content)
