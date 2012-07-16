@@ -24,15 +24,6 @@ class SkinTest < MiniTest::Unit::TestCase
     assert_same first_access, second_access
   end
 
-  def test_should_interpolate_values_for_prefix
-    skin = Slimmer::Skin.new asset_host: "http://example.local/", use_cache: false, prefix: "this-is-the-prefix"
-    expected_url = "http://example.local/templates/example.html.erb"
-    stub_request(:get, expected_url).to_return :body => "<p><%= prefix %></p>"
-
-    template = skin.template 'example'
-    assert_equal "<p>this-is-the-prefix</p>", template
-  end
-
   def test_should_raise_appropriate_exception_when_template_not_found
     skin = Slimmer::Skin.new asset_host: "http://example.local/"
     expected_url = "http://example.local/templates/example.html.erb"

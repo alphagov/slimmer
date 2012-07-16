@@ -1,6 +1,6 @@
 module Slimmer
   class Skin
-    attr_accessor :use_cache, :template_cache, :asset_host, :prefix, :logger, :strict, :options
+    attr_accessor :use_cache, :template_cache, :asset_host, :logger, :strict, :options
 
     # TODO: Extract the cache to something we can pass in instead of using
     # true/false and an in-memory cache.
@@ -8,7 +8,6 @@ module Slimmer
       @options = options
       @asset_host = options[:asset_host]
       @template_cache = {}
-      @prefix = options[:prefix]
       @use_cache = options[:use_cache] || false
       @logger = options[:logger] || NullLogger.instance
       @strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
