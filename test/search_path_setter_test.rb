@@ -1,6 +1,6 @@
 require "test_helper"
 
-module GoogleAnalyticsTest
+module SearchPathSetterTest
 
   DOCUMENT_WITH_SEARCH = <<-END
     <html>
