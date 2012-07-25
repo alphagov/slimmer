@@ -22,12 +22,23 @@ module GoogleAnalyticsTest
       context.eval("_gaq");
     end
 
+    def govuk
+      js = Nokogiri::HTML(last_response.body).at_css("#ga-params").text
+      context = V8::Context.new
+      context.eval(js)
+      context.eval("GOVUK.Analytics");
+    end
+
     def assert_custom_var(slot, name, value, page_level)
       # Ruby Racer JS arrays don't accept range indexing, so we must
       # use a slightly longer workaround
       vars = gaq.select { |a| a[0] == "_setCustomVar" }.
                  map { |a| (1..4).map { |i| a[i] } }
       assert_includes vars, [slot, name, value, page_level]
+    end
+
+    def assert_set_var(name, value, object)
+      assert_equal value, object.find { |each| each[0] == name }[1]
     end
 
     def refute_custom_var(name)
@@ -54,20 +65,40 @@ module GoogleAnalyticsTest
       assert_custom_var 1, "Section", "rhubarb", PAGE_LEVEL_EVENT
     end
 
+    def test_should_set_section_in_GOVUK_object
+      assert_set_var "Section", "rhubarb", govuk
+    end
+
     def test_should_pass_internal_format_name_to_GA
       assert_custom_var 2, "Format", "custard", PAGE_LEVEL_EVENT
+    end
+
+    def test_should_set_section_in_GOVUK_object
+      assert_set_var "Format", "custard", govuk
     end
 
     def test_should_pass_need_ID_to_GA
       assert_custom_var 3, "NeedID", "42", PAGE_LEVEL_EVENT
     end
 
+    def test_should_set_section_in_GOVUK_object
+      assert_set_var "NeedID", "42", govuk
+    end
+
     def test_should_pass_proposition_to_GA
       assert_custom_var 4, "Proposition", "trifle", PAGE_LEVEL_EVENT
     end
 
+    def test_should_set_section_in_GOVUK_object
+      assert_set_var "Proposition", "trifle", govuk
+    end
+
     def test_should_pass_result_count_to_GA
       assert_custom_var 5, "ResultCount", "3", PAGE_LEVEL_EVENT
+    end
+
+    def test_should_set_section_in_GOVUK_object
+      assert_set_var "ResultCount", "3", govuk
     end
   end
 
