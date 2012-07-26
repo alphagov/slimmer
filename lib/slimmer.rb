@@ -22,6 +22,7 @@ module Slimmer
   autoload :AdminTitleInserter, 'slimmer/admin_title_inserter'
   autoload :SectionInserter, 'slimmer/section_inserter'
   autoload :TagMover, 'slimmer/tag_mover'
+  autoload :ConditionalCommentMover, 'slimmer/conditional_comment_mover'
   autoload :FooterRemover, 'slimmer/footer_remover'
   autoload :BodyInserter, 'slimmer/body_inserter'
   autoload :BodyClassCopier, 'slimmer/body_class_copier'
