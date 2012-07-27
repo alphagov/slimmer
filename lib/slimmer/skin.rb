@@ -125,6 +125,7 @@ module Slimmer
       processors = [
         TitleInserter.new(),
         TagMover.new(),
+        ConditionalCommentMover.new(),
         BodyInserter.new(options[:wrapper_id] || 'wrapper'),
         BodyClassCopier.new,
         HeaderContextInserter.new(),
