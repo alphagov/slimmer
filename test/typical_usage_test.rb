@@ -78,6 +78,7 @@ module TypicalUsage
       <meta name="x-section-name" content="This section">
       <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
+      <!--[if lt IE 9]><link href="app-ie.css" rel="stylesheet" type="text/css"><![endif]-->
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
       <body class="body_class">
@@ -104,6 +105,11 @@ module TypicalUsage
 
     def test_should_move_stylesheet_tags_into_the_head
       assert_rendered_in_template "head link[href='app.css']"
+    end
+
+    def test_should_move_conditional_comments_into_the_head
+      element = Nokogiri::HTML.parse(last_response.body).at_xpath('//comment()')
+      assert_match /app-ie\.css/, element.to_s, 'Not found conditional comment in output'
     end
 
     def test_should_copy_the_class_of_the_body_element
