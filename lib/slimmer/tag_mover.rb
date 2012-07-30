@@ -16,6 +16,11 @@ module Slimmer
       end.compact.sort
     end
 
+    def wrap_node(node)
+      wrap = node.delete('slimmer-wrap-with')
+      "<!--[if #{wrap}]>-->#{node.to_s}<!--<![endif]-->"
+    end
+
     def move_tags(src, dest, type, opts)
       comparison_attrs = opts[:keys] || opts[:must_have]
       min_attrs = opts[:must_have]
@@ -26,6 +31,9 @@ module Slimmer
       src.css(type).each do |node|
         if include_tag?(node, min_attrs) && !already_there.include?(tag_fingerprint(node, comparison_attrs))
           node.remove
+          if node['slimmer-wrap-with']
+            node = wrap_node(node)
+          end
           dest.at_xpath('/html/head') << node
         end
       end
