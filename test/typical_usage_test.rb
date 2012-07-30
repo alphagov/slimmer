@@ -124,7 +124,7 @@ module TypicalUsage
       </head>
       </html>
     }
-    def test_should_move_conditional_comments_into_the_head
+    def test_should_find_conditional_comments_copied_into_the_head
       element = Nokogiri::HTML.parse(last_response.body).at_xpath('//comment()')
       assert_match element.to_s, /app-ie\.css/, 'Not found conditional comment in output'
     end
@@ -138,7 +138,7 @@ module TypicalUsage
       </head>
       </html>
     }
-    def test_should_move_stylesheet_and_wrap_with_conditional_comment
+    def test_should_find_stylesheet_wrapped_with_conditional_comments
       assert_rendered_in_template "head link[href='app.css']"
       element = Nokogiri::HTML.parse(last_response.body).at_xpath('/html/head')
       assert_match element.to_s, /<!--\[if gt IE 8\]>-->.*app\.css.*<!--<!\[endif\]-->/m, 'Not found conditional comment in output'
