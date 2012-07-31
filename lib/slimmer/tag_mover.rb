@@ -16,9 +16,11 @@ module Slimmer
       end.compact.sort
     end
 
-    def wrap_node(node)
-      wrap = node.delete('slimmer-wrap-with')
-      "<!--[if #{wrap}]>-->#{node.to_s}<!--<![endif]-->"
+    def wrap_node(src, node)
+      if node.previous_sibling.to_s =~ /<!--\[if[^\]]+\]>-->/ and node.next_sibling.to_s == '<!--<![endif]-->'
+        node = Nokogiri::XML::NodeSet.new(src, [node.previous_sibling, node, node.next_sibling])
+      end
+      node
     end
 
     def move_tags(src, dest, type, opts)
@@ -30,10 +32,8 @@ module Slimmer
 
       src.css(type).each do |node|
         if include_tag?(node, min_attrs) && !already_there.include?(tag_fingerprint(node, comparison_attrs))
+          node = wrap_node(src, node)
           node.remove
-          if node['slimmer-wrap-with']
-            node = wrap_node(node)
-          end
           dest.at_xpath('/html/head') << node
         end
       end

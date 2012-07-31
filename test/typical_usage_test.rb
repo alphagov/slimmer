@@ -134,7 +134,7 @@ module TypicalUsage
     given_response 200, %{
       <html>
       <head>
-      <!--[if gt IE 8]>--><link href="app.css" rel="stylesheet" type="text/css" slimmer-wrap-with="gt IE 8"><!--<![endif]-->
+      <!--[if gt IE 8]>--><link href="app.css" rel="stylesheet" type="text/css"><!--<![endif]-->
       </head>
       </html>
     }
