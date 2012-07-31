@@ -16,6 +16,13 @@ module Slimmer
       end.compact.sort
     end
 
+    def wrap_node(src, node)
+      if node.previous_sibling.to_s =~ /<!--\[if[^\]]+\]>-->/ and node.next_sibling.to_s == '<!--<![endif]-->'
+        node = Nokogiri::XML::NodeSet.new(src, [node.previous_sibling, node, node.next_sibling])
+      end
+      node
+    end
+
     def move_tags(src, dest, type, opts)
       comparison_attrs = opts[:keys] || opts[:must_have]
       min_attrs = opts[:must_have]
@@ -25,6 +32,7 @@ module Slimmer
 
       src.css(type).each do |node|
         if include_tag?(node, min_attrs) && !already_there.include?(tag_fingerprint(node, comparison_attrs))
+          node = wrap_node(src, node)
           node.remove
           dest.at_xpath('/html/head') << node
         end
