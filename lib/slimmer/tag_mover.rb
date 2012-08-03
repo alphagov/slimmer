@@ -17,7 +17,7 @@ module Slimmer
     end
 
     def wrap_node(src, node)
-      if node.previous_sibling.to_s =~ /<!--\[if[^\]]+\]>-->/ and node.next_sibling.to_s == '<!--<![endif]-->'
+      if node.previous_sibling.to_s =~ /<!--\[if[^\]]+\]><!-->/ and node.next_sibling.to_s == '<!--<![endif]-->'
         node = Nokogiri::XML::NodeSet.new(src, [node.previous_sibling, node, node.next_sibling])
       end
       node

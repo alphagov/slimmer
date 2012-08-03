@@ -134,14 +134,14 @@ module TypicalUsage
     given_response 200, %{
       <html>
       <head>
-      <!--[if gt IE 8]>--><link href="app.css" rel="stylesheet" type="text/css"><!--<![endif]-->
+      <!--[if gt IE 8]><!--><link href="app.css" rel="stylesheet" type="text/css"><!--<![endif]-->
       </head>
       </html>
     }
     def test_should_find_stylesheet_wrapped_with_conditional_comments
       assert_rendered_in_template "head link[href='app.css']"
       element = Nokogiri::HTML.parse(last_response.body).at_xpath('/html/head')
-      assert_match element.to_s, /<!--\[if gt IE 8\]>-->.*app\.css.*<!--<!\[endif\]-->/m, 'Not found conditional comment in output'
+      assert_match element.to_s, /<!--\[if gt IE 8\]><!-->.*app\.css.*<!--<!\[endif\]-->/m, 'Not found conditional comment in output'
     end
   end
 
