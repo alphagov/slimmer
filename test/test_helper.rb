@@ -22,6 +22,13 @@ class MiniTest::Unit::TestCase
   def assert_not_in(template, selector, message="didn't exist to find #{selector}")
     refute template.at_css(selector), message
   end
+
+  def allowing_real_web_connections(&block)
+    WebMock.allow_net_connect!
+    result = yield
+    WebMock.disable_net_connect!
+    result
+  end
 end
 
 class SlimmerIntegrationTest < MiniTest::Unit::TestCase
