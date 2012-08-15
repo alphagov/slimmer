@@ -16,7 +16,7 @@ module Slimmer
         list_item = Nokogiri::XML::Node.new('li', dest)
         list_item.add_child(link_node)
 
-        list.first_element_child.after(list_item)
+        list.add_child(list_item)
       end
     end
   end
