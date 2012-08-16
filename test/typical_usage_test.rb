@@ -166,10 +166,10 @@ module TypicalUsage
     end
   end
 
-  class CitizenRelatedItemsTest < ResponseWithRelatedItemsTest
+  class MainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
     given_response 200, %{
       <html>
-      <body class="citizen">
+      <body class="mainstream">
       <div id="wrapper">The body of the page<div id="related-items"></div></div>
       </body>
       </html>
@@ -185,10 +185,10 @@ module TypicalUsage
     end
   end
 
-  class NonCitizentRelatedItemsTest < ResponseWithRelatedItemsTest
+  class NonMainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
     given_response 200, %{
       <html>
-      <body class="noncitizen">
+      <body class="nonmainstream">
       <div id="wrapper">The body of the page<div id="related-items"></div></div>
       </body>
       </html>
@@ -330,7 +330,7 @@ module TypicalUsage
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
-      <body class="body_class citizen">
+      <body class="body_class mainstream">
       <div id="wrapper">The body of the page</div>
       <div id="related-items"></div>
       </body>
