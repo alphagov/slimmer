@@ -5,6 +5,7 @@ require 'plek'
 require 'null_logger'
 require 'openssl'
 
+require 'slimmer/version'
 require 'slimmer/railtie' if defined? Rails
 
 module Slimmer
@@ -12,7 +13,6 @@ module Slimmer
   SKIP_HEADER = 'X-Slimmer-Skip'
   SEARCH_PATH_HEADER = 'X-Slimmer-Search-Path'
 
-  autoload :Version, 'slimmer/version'
   autoload :Railtie, 'slimmer/railtie'
   autoload :Skin, 'slimmer/skin'
 
