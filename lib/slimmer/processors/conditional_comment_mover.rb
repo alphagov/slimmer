@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class ConditionalCommentMover
     def filter(src, dest)
       src.xpath('//comment()').each do |comment|

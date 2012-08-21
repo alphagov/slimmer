@@ -111,28 +111,28 @@ module Slimmer
 
     def admin(body)
       processors = [
-        TitleInserter.new(),
-        TagMover.new(),
-        AdminTitleInserter.new,
-        FooterRemover.new,
-        BodyInserter.new(),
-        BodyClassCopier.new,
+        Processors::TitleInserter.new(),
+        Processors::TagMover.new(),
+        Processors::AdminTitleInserter.new,
+        Processors::FooterRemover.new,
+        Processors::BodyInserter.new(),
+        Processors::BodyClassCopier.new,
       ]
       process(processors, body, template('admin'))
     end
 
     def success(source_request, response, body)
       processors = [
-        TitleInserter.new(),
-        TagMover.new(),
-        ConditionalCommentMover.new(),
-        BodyInserter.new(options[:wrapper_id] || 'wrapper'),
-        BodyClassCopier.new,
-        HeaderContextInserter.new(),
-        SectionInserter.new(),
-        GoogleAnalyticsConfigurator.new(response),
-        SearchPathSetter.new(response),
-        RelatedItemsInserter.new(template('related.raw'), source_request),
+        Processors::TitleInserter.new(),
+        Processors::TagMover.new(),
+        Processors::ConditionalCommentMover.new(),
+        Processors::BodyInserter.new(options[:wrapper_id] || 'wrapper'),
+        Processors::BodyClassCopier.new,
+        Processors::HeaderContextInserter.new(),
+        Processors::SectionInserter.new(),
+        Processors::GoogleAnalyticsConfigurator.new(response),
+        Processors::SearchPathSetter.new(response),
+        Processors::RelatedItemsInserter.new(template('related.raw'), source_request),
       ]
 
       template_name = response.headers[TEMPLATE_HEADER] || 'wrapper'
@@ -141,7 +141,7 @@ module Slimmer
 
     def error(template_name, body)
       processors = [
-        TitleInserter.new()
+        Processors::TitleInserter.new()
       ]
       process(processors, body, template(template_name))
     end

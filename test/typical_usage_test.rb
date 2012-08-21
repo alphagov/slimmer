@@ -338,7 +338,7 @@ module TypicalUsage
     }
 
     def setup
-      ::Slimmer::RelatedItemsInserter.any_instance.stubs(:metadata_from_panopticon).raises(GdsApi::TimedOutException)
+      ::Slimmer::Processors::RelatedItemsInserter.any_instance.stubs(:metadata_from_panopticon).raises(GdsApi::TimedOutException)
       super
     end
 

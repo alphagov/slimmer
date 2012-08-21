@@ -20,7 +20,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    Slimmer::SectionInserter.new.filter(:any_source, template)
+    Slimmer::Processors::SectionInserter.new.filter(:any_source, template)
     assert_in template, "nav[role=navigation] ol li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in template, "nav[role=navigation] ol li:nth-child(2)", %{<a href="/browse/business">Business</a>}
   end
@@ -43,7 +43,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    Slimmer::SectionInserter.new.filter(:any_source, template)
+    Slimmer::Processors::SectionInserter.new.filter(:any_source, template)
     assert_in template, "nav[role=navigation] ol li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in template, "nav[role=navigation] ol li:nth-child(2)", %{<a href="/browse">All Sections</a>}
     assert_in template, "nav[role=navigation] ol li:nth-child(3)", %{<a href="/browse/business">Business</a>}
@@ -63,7 +63,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    Slimmer::SectionInserter.new.filter(:any_source, template)
+    Slimmer::Processors::SectionInserter.new.filter(:any_source, template)
     assert_in template, "nav[role=navigation] ol li:nth-child(1)", %{<a href="/">Home</a>}
     assert_not_in template, "nav[role=navigation] ol li:nth-child(2)"
   end
@@ -82,7 +82,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    Slimmer::SectionInserter.new.filter(:any_source, template)
+    Slimmer::Processors::SectionInserter.new.filter(:any_source, template)
     assert_in template, "nav[role=navigation] ol li:nth-child(1)", %{<a href="/">Home</a>}
     assert_not_in template, "nav[role=navigation] ol li:nth-child(2)"
   end
@@ -99,7 +99,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    Slimmer::SectionInserter.new.filter(:any_source, template)
+    Slimmer::Processors::SectionInserter.new.filter(:any_source, template)
     assert_not_in template, "nav[role=navigation]"
   end
 end

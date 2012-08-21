@@ -18,19 +18,22 @@ module Slimmer
 
   autoload :Template, 'slimmer/template'
   autoload :App, 'slimmer/app'
-  autoload :TitleInserter, 'slimmer/title_inserter'
-  autoload :AdminTitleInserter, 'slimmer/admin_title_inserter'
-  autoload :SectionInserter, 'slimmer/section_inserter'
-  autoload :TagMover, 'slimmer/tag_mover'
-  autoload :ConditionalCommentMover, 'slimmer/conditional_comment_mover'
-  autoload :FooterRemover, 'slimmer/footer_remover'
-  autoload :BodyInserter, 'slimmer/body_inserter'
-  autoload :BodyClassCopier, 'slimmer/body_class_copier'
-  autoload :UrlRewriter, 'slimmer/url_rewriter'
-  autoload :HeaderContextInserter, 'slimmer/header_context_inserter'
-  autoload :GoogleAnalyticsConfigurator, 'slimmer/google_analytics_configurator'
-  autoload :RelatedItemsInserter, 'slimmer/related_items_inserter'
-  autoload :SearchPathSetter, 'slimmer/search_path_setter'
+
+  module Processors
+    autoload :TitleInserter, 'slimmer/processors/title_inserter'
+    autoload :AdminTitleInserter, 'slimmer/processors/admin_title_inserter'
+    autoload :SectionInserter, 'slimmer/processors/section_inserter'
+    autoload :TagMover, 'slimmer/processors/tag_mover'
+    autoload :ConditionalCommentMover, 'slimmer/processors/conditional_comment_mover'
+    autoload :FooterRemover, 'slimmer/processors/footer_remover'
+    autoload :BodyInserter, 'slimmer/processors/body_inserter'
+    autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
+    autoload :UrlRewriter, 'slimmer/processors/url_rewriter'
+    autoload :HeaderContextInserter, 'slimmer/processors/header_context_inserter'
+    autoload :GoogleAnalyticsConfigurator, 'slimmer/processors/google_analytics_configurator'
+    autoload :RelatedItemsInserter, 'slimmer/processors/related_items_inserter'
+    autoload :SearchPathSetter, 'slimmer/processors/search_path_setter'
+  end
 
   class TemplateNotFoundException < StandardError; end
   class CouldNotRetrieveTemplate < StandardError; end

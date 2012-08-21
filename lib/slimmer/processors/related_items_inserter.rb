@@ -1,6 +1,6 @@
 require 'gds_api/helpers'
 
-class Slimmer::RelatedItemsInserter
+class Slimmer::Processors::RelatedItemsInserter
   include GdsApi::Helpers
   include ERB::Util
   

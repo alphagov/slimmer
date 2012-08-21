@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class UrlRewriter
     def initialize(request)
       @request = request
