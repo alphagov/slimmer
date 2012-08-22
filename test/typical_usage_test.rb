@@ -1,5 +1,4 @@
 require "test_helper"
-require "gds_api/test_helpers/panopticon"
 
 module TypicalUsage
 

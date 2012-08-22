@@ -1,5 +1,3 @@
-require "gds_api/exceptions"
-
 module Slimmer
   class App
     attr_accessor :logger
@@ -90,8 +88,6 @@ module Slimmer
       response.headers['Content-Length'] = content_length(response.body)
 
       response.finish
-    rescue GdsApi::TimedOutException
-      [503, {"Content-Type" => "text/plain"}, ["GDS API request timed out."]]
     end
   end
 end

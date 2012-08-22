@@ -1,5 +1,3 @@
-require 'gds_api/helpers'
-
 module Slimmer::Processors
   class SearchPathSetter
     def initialize(response)
