@@ -18,6 +18,7 @@ module Slimmer
 
   autoload :Template, 'slimmer/template'
   autoload :App, 'slimmer/app'
+  autoload :Headers, 'slimmer/headers'
 
   module Processors
     autoload :TitleInserter, 'slimmer/processors/title_inserter'

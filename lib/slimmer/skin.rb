@@ -122,6 +122,7 @@ module Slimmer
     end
 
     def success(source_request, response, body)
+      artefact = artefact_from_header(response)
       processors = [
         Processors::TitleInserter.new(),
         Processors::TagMover.new(),
@@ -132,7 +133,7 @@ module Slimmer
         Processors::SectionInserter.new(),
         Processors::GoogleAnalyticsConfigurator.new(response),
         Processors::SearchPathSetter.new(response),
-        Processors::RelatedItemsInserter.new(template('related.raw'), source_request),
+        Processors::RelatedItemsInserter.new(template('related.raw'), artefact),
       ]
 
       template_name = response.headers[TEMPLATE_HEADER] || 'wrapper'
@@ -144,6 +145,14 @@ module Slimmer
         Processors::TitleInserter.new()
       ]
       process(processors, body, template(template_name))
+    end
+
+    def artefact_from_header(response)
+      if response.headers.include?(Headers::ARTEFACT_HEADER)
+        JSON.parse(response.headers[Headers::ARTEFACT_HEADER])
+      else
+        nil
+      end
     end
   end
 end

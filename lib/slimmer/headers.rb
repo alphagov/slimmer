@@ -2,6 +2,8 @@ module Slimmer
   module Headers
     InvalidHeader = Class.new(RuntimeError)
 
+    HEADER_PREFIX = "X-Slimmer"
+
     SLIMMER_HEADER_MAPPING = {
       section:      "Section",
       need_id:      "Need-ID",
@@ -12,11 +14,13 @@ module Slimmer
       skip:         "Skip",
     }
 
+    ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
+
     def set_slimmer_headers(hash)
       raise InvalidHeader if (hash.keys - SLIMMER_HEADER_MAPPING.keys).any?
       SLIMMER_HEADER_MAPPING.each do |hash_key, header_suffix|
         value = hash[hash_key]
-        headers["X-Slimmer-#{header_suffix}"] = value.to_s if value
+        headers["#{HEADER_PREFIX}-#{header_suffix}"] = value.to_s if value
       end
     end
   end
