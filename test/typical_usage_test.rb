@@ -329,4 +329,43 @@ module TypicalUsage
       assert_no_selector "#wrapper"
     end
   end
+
+  class StrippingHeadersTest < SlimmerIntegrationTest
+    def test_should_strip_all_slimmer_headers_from_final_response
+      given_response 200, %{
+        <html>
+        <body>
+        <div id="wrapper">The body of the page</div>
+        </body>
+        </html>
+      }, {
+        "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
+        Slimmer::Headers::ARTEFACT_HEADER => "{}",
+        "X-Custom-Header" => "Something else"
+      }
+
+      refute last_response.headers.has_key?(Slimmer::Headers::ARTEFACT_HEADER)
+      refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
+      assert_equal "Something else", last_response.headers["X-Custom-Header"]
+    end
+
+    def test_should_strip_slimmer_headers_even_when_skipping_slimmer
+      given_response 200, %{
+        <html>
+        <body>
+        <div id="wrapper">The body of the page</div>
+        </body>
+        </html>
+      }, {
+        "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
+        Slimmer::Headers::ARTEFACT_HEADER => "{}",
+        "X-Custom-Header" => "Something else",
+        Slimmer::Headers::SKIP_HEADER => "1"
+      }
+
+      refute last_response.headers.has_key?(Slimmer::Headers::ARTEFACT_HEADER)
+      refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
+      assert_equal "Something else", last_response.headers["X-Custom-Header"]
+    end
+  end
 end

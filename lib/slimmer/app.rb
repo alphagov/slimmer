@@ -27,10 +27,10 @@ module Slimmer
       response = Rack::Response.new(body, status, headers)
 
       if response_can_be_rewritten?(response) && !skip_slimmer?(env, response)
-        rewrite_response(env, response)
-      else
-        [status, headers, body]
+        status, headers, body = rewrite_response(env, response)
       end
+
+      [status, strip_slimmer_headers(headers), body]
     end
 
     def response_can_be_rewritten?(response)
@@ -88,6 +88,10 @@ module Slimmer
       response.headers['Content-Length'] = content_length(response.body)
 
       response.finish
+    end
+
+    def strip_slimmer_headers(headers)
+      headers.reject {|k, v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
     end
   end
 end
