@@ -9,9 +9,6 @@ require 'slimmer/version'
 require 'slimmer/railtie' if defined? Rails
 
 module Slimmer
-  TEMPLATE_HEADER = 'X-Slimmer-Template'
-  SKIP_HEADER = 'X-Slimmer-Skip'
-  SEARCH_PATH_HEADER = 'X-Slimmer-Search-Path'
 
   autoload :Railtie, 'slimmer/railtie'
   autoload :Skin, 'slimmer/skin'

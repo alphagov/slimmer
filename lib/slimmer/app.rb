@@ -51,7 +51,7 @@ module Slimmer
     end
 
     def skip_slimmer_header?(response)
-      !!response.headers[SKIP_HEADER]
+      !!response.headers[Headers::SKIP_HEADER]
     end
 
     def s(body)
@@ -72,7 +72,7 @@ module Slimmer
 
       rewritten_body = case response.status
       when 200
-        if response.headers[TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
+        if response.headers[Headers::TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
           @skin.admin s(response.body)
         else
           @skin.success request, response, s(response.body)

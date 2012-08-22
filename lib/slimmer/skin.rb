@@ -134,7 +134,7 @@ module Slimmer
         Processors::RelatedItemsInserter.new(template('related.raw'), artefact),
       ]
 
-      template_name = response.headers[TEMPLATE_HEADER] || 'wrapper'
+      template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
       process(processors, body, template(template_name))
     end
 

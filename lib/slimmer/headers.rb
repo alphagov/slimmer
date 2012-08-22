@@ -14,6 +14,9 @@ module Slimmer
       skip:         "Skip",
     }
 
+    TEMPLATE_HEADER = "#{HEADER_PREFIX}-Template"
+    SKIP_HEADER = "#{HEADER_PREFIX}-Skip"
+    SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
 
     def set_slimmer_headers(hash)

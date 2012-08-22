@@ -11,7 +11,7 @@ module Slimmer::Processors
     end
 
     def search_scope
-      @response.headers[Slimmer::SEARCH_PATH_HEADER]
+      @response.headers[Slimmer::Headers::SEARCH_PATH_HEADER]
     end
   end
 end
