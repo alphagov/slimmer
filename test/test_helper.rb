@@ -15,11 +15,17 @@ class MiniTest::Unit::TestCase
     Nokogiri::HTML.parse(html_string.strip)
   end
 
-  def assert_in(template, selector, content, message=nil)
-    assert_equal content, template.at_css(selector).inner_html.to_s, message
+  def assert_in(template, selector, content=nil, message=nil)
+    message ||= "Expected to find #{content ? "#{content.inspect} at " : ""}#{selector.inspect} in the output template"
+
+    assert template.at_css(selector), message + ", but selector not found."
+
+    if content
+      assert_equal content, template.at_css(selector).inner_html.to_s, message
+    end
   end
 
-  def assert_not_in(template, selector, message="didn't exist to find #{selector}")
+  def assert_not_in(template, selector, message="didn't expect to find #{selector}")
     refute template.at_css(selector), message
   end
 
