@@ -83,8 +83,10 @@ module TypicalUsage
             }
           }
         ],
+        'tag_ids' => ['this_section', 'directgov'],
         'tags' => [
           {"id" => "this_section", "title" => 'This section'},
+          {"id" => "directgov", "title" => 'Directgov'},
         ]
       }
       given_response 200, %{
@@ -129,6 +131,9 @@ module TypicalUsage
       assert_rendered_in_template "nav[role=navigation] li a[href='/browse/this_section']", "This section"
     end
 
+    def test_should_add_logo_classes_to_wrapper
+      assert_rendered_in_template "#wrapper.directgov"
+    end
   end
 
   class ConditionalCommentTest < SlimmerIntegrationTest
