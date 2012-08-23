@@ -52,8 +52,6 @@ module TypicalUsage
       <html>
       <head><title>The title of the page</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -64,26 +62,44 @@ module TypicalUsage
     }
 
     def test_should_set_correct_content_length_header
-      assert_equal "791", last_response.headers['Content-Length']
+      expected = last_response.body.bytesize
+      assert_equal expected.to_s, last_response.headers['Content-Length']
     end
-
   end
 
   class NormalResponseTest < SlimmerIntegrationTest
-    given_response 200, %{
-      <html>
-      <head><title>The title of the page</title>
-      <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
-      <script src="blah.js"></script>
-      <link href="app.css" rel="stylesheet" type="text/css">
-      </head>
-      <body class="body_class">
-      <div id="wrapper">The body of the page</div>
-      </body>
-      </html>
-    }
+    def setup
+      super
+      @artefact = {
+        'slug' => 'some-slug',
+        'title' => 'Example document',
+        'primary_section' => 'this_section',
+        'related_items' => [
+          {
+          'artefact' => {
+            'kind' => 'guide',
+            'name' => 'How to test computer software automatically & ensure that 2>1',
+            'slug' => 'how-to-test-computer-software-automatically',
+            }
+          }
+        ],
+        'tags' => [
+          {"id" => "this_section", "title" => 'This section'},
+        ]
+      }
+      given_response 200, %{
+        <html>
+        <head><title>The title of the page</title>
+        <meta name="something" content="yes">
+        <script src="blah.js"></script>
+        <link href="app.css" rel="stylesheet" type="text/css">
+        </head>
+        <body class="body_class">
+        <div id="wrapper">The body of the page</div>
+        </body>
+        </html>
+      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
+    end
 
     def test_should_replace_the_wrapper_using_the_app_response
       assert_rendered_in_template "#wrapper", "The body of the page"
@@ -110,7 +126,7 @@ module TypicalUsage
     end
 
     def test_should_insert_meta_navigation_links_into_the_navigation
-      assert_rendered_in_template "nav[role=navigation] li a[href='/this_section']", "This section"
+      assert_rendered_in_template "nav[role=navigation] li a[href='/browse/this_section']", "This section"
     end
 
   end
@@ -204,8 +220,6 @@ module TypicalUsage
       <html>
       <head><title>The title of the page</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -228,8 +242,6 @@ module TypicalUsage
       <html>
       <head><title>500 Error</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -259,8 +271,6 @@ module TypicalUsage
       <html>
       <head><title>404 Missing</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -290,8 +300,6 @@ module TypicalUsage
       <html>
       <head><title>406 Not Acceptable</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
