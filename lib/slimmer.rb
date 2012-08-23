@@ -26,7 +26,6 @@ module Slimmer
     autoload :FooterRemover, 'slimmer/processors/footer_remover'
     autoload :BodyInserter, 'slimmer/processors/body_inserter'
     autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
-    autoload :UrlRewriter, 'slimmer/processors/url_rewriter'
     autoload :HeaderContextInserter, 'slimmer/processors/header_context_inserter'
     autoload :GoogleAnalyticsConfigurator, 'slimmer/processors/google_analytics_configurator'
     autoload :RelatedItemsInserter, 'slimmer/processors/related_items_inserter'
