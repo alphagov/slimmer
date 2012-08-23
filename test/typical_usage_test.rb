@@ -65,7 +65,7 @@ module TypicalUsage
     }
 
     def test_should_set_correct_content_length_header
-      assert_equal "791", last_response.headers['Content-Length']
+      assert_equal "869", last_response.headers['Content-Length']
     end
 
   end
