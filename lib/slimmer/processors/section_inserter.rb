@@ -20,7 +20,7 @@ module Slimmer::Processors
     end
 
     def get_section_details
-      return nil unless @artefact["primary_section"] and @artefact["tags"]
+      return nil unless @artefact and @artefact["primary_section"] and @artefact["tags"]
       base_section_id = @artefact["primary_section"].split('/').first
       @artefact["tags"].detect {|t| t["id"] == base_section_id }
     end

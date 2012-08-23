@@ -8,7 +8,7 @@ module Slimmer
       end
 
       def filter(source, dest)
-        return unless @artefact["tag_ids"]
+        return unless @artefact and @artefact["tag_ids"]
         logo_classes = LOGO_CLASSES & @artefact["tag_ids"]
         wrapper = dest.css('#wrapper')
         logo_classes.each do |klass|

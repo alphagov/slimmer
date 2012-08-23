@@ -46,4 +46,10 @@ describe Slimmer::Processors::LogoClassInserter do
     @processor.filter(:any_source, @template)
     assert_in @template, "div#wrapper"
   end
+
+  it "should not blow up without an artefact" do
+    processor = Slimmer::Processors::LogoClassInserter.new(nil)
+    # assert_nothing_raised
+    processor.filter(:any_source, @template)
+  end
 end
