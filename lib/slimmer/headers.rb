@@ -28,19 +28,23 @@ module Slimmer
     end
 
     def set_slimmer_artefact(artefact_input)
-      if artefact_input.is_a?(Hash)
+      if artefact_input.is_a?(Hash) or artefact_input.is_a?(OpenStruct)
         artefact = artefact_input.dup
-      elsif artefact_input.respond_to?(:to_hash)
+      elsif artefact_input.respond_to?(:to_hash) # e.g. GdsApi::Response
         artefact = artefact_input.to_hash.dup
       end
 
-      # Temporary deletions until the actions are removed from the API.
-      # The actions increase the size of the artefact significantly, and will
-      # only grow over time.
-      artefact.delete("actions")
-      if artefact["related_items"]
-        artefact["related_items"].each do |ri|
-          ri["artefact"].delete("actions") if ri["artefact"]
+      if artefact.is_a?(Hash)
+        # Temporary deletions until the actions are removed from the API.
+        # The actions increase the size of the artefact significantly, and will
+        # only grow over time.
+        #
+        # We skip this when given an OpenStruct as they won't have actions etc...
+        artefact.delete("actions")
+        if artefact["related_items"]
+          artefact["related_items"].each do |ri|
+            ri["artefact"].delete("actions") if ri["artefact"]
+          end
         end
       end
 
