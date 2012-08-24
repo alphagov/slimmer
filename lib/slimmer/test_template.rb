@@ -15,7 +15,13 @@ module Slimmer::TestTemplate
         <script src="http://static.preview.alphagov.co.uk/static/customisation-settings.js" defer></script>
       </head>
       <body>
-        <div class="header-context">Header</div>
+        <nav role="navigation" class="header-context">
+          <ol class="group">
+            <li><a href="/">Home</a></li>
+            <li><a href="/browse">All sections</a></li>
+          </ol>
+        </nav>
+
         <div id="wrapper"></div>
       </body>
     </html>

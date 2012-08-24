@@ -92,8 +92,6 @@ module Slimmer
         logger.debug "Slimmer: Processor #{p} started at #{processor_start_time}"
         begin
           p.filter(src,dest)
-        rescue GdsApi::TimedOutException
-          raise
         rescue => e
           logger.error "Slimmer: Failed while processing #{p}: #{[ e.message, e.backtrace ].flatten.join("\n")}"
         end
@@ -111,39 +109,49 @@ module Slimmer
 
     def admin(body)
       processors = [
-        TitleInserter.new(),
-        TagMover.new(),
-        AdminTitleInserter.new,
-        FooterRemover.new,
-        BodyInserter.new(),
-        BodyClassCopier.new,
+        Processors::TitleInserter.new(),
+        Processors::TagMover.new(),
+        Processors::AdminTitleInserter.new,
+        Processors::FooterRemover.new,
+        Processors::BodyInserter.new(),
+        Processors::BodyClassCopier.new,
       ]
       process(processors, body, template('admin'))
     end
 
     def success(source_request, response, body)
+      artefact = artefact_from_header(response)
       processors = [
-        TitleInserter.new(),
-        TagMover.new(),
-        ConditionalCommentMover.new(),
-        BodyInserter.new(options[:wrapper_id] || 'wrapper'),
-        BodyClassCopier.new,
-        HeaderContextInserter.new(),
-        SectionInserter.new(),
-        GoogleAnalyticsConfigurator.new(response),
-        SearchPathSetter.new(response),
-        RelatedItemsInserter.new(template('related.raw'), source_request),
+        Processors::TitleInserter.new(),
+        Processors::TagMover.new(),
+        Processors::ConditionalCommentMover.new(),
+        Processors::BodyInserter.new(options[:wrapper_id] || 'wrapper'),
+        Processors::BodyClassCopier.new,
+        Processors::HeaderContextInserter.new(),
+        Processors::SectionInserter.new(),
+        Processors::GoogleAnalyticsConfigurator.new(response),
+        Processors::SearchPathSetter.new(response),
+        Processors::RelatedItemsInserter.new(template('related.raw'), artefact),
+        Processors::LogoClassInserter.new(artefact),
       ]
 
-      template_name = response.headers[TEMPLATE_HEADER] || 'wrapper'
+      template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
       process(processors, body, template(template_name))
     end
 
     def error(template_name, body)
       processors = [
-        TitleInserter.new()
+        Processors::TitleInserter.new()
       ]
       process(processors, body, template(template_name))
+    end
+
+    def artefact_from_header(response)
+      if response.headers.include?(Headers::ARTEFACT_HEADER)
+        JSON.parse(response.headers[Headers::ARTEFACT_HEADER])
+      else
+        nil
+      end
     end
   end
 end

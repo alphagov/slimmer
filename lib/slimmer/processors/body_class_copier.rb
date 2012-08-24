@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class BodyClassCopier
     def filter(src, dest)
       src_body_tag = src.at_css("body")

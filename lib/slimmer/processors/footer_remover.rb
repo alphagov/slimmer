@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class FooterRemover
     def filter(src,dest)
       footer = src.at_css("#footer")

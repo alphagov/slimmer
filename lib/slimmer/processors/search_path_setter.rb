@@ -1,6 +1,4 @@
-require 'gds_api/helpers'
-
-module Slimmer
+module Slimmer::Processors
   class SearchPathSetter
     def initialize(response)
       @response = response
@@ -13,7 +11,7 @@ module Slimmer
     end
 
     def search_scope
-      @response.headers[SEARCH_PATH_HEADER]
+      @response.headers[Slimmer::Headers::SEARCH_PATH_HEADER]
     end
   end
 end

@@ -1,4 +1,4 @@
-require "test_helper"
+require_relative "test_helper"
 require "slimmer/headers"
 
 class HeadersTest < MiniTest::Unit::TestCase
@@ -52,6 +52,61 @@ class HeadersTest < MiniTest::Unit::TestCase
   def test_should_raise_an_exception_if_a_header_has_a_typo
     assert_raises Slimmer::Headers::InvalidHeader do
       set_slimmer_headers seccion: "wrong"
+    end
+  end
+end
+
+describe Slimmer::Headers do
+  include Slimmer::Headers
+  attr_accessor :headers
+
+  before do
+    self.headers = {}
+  end
+
+  describe "setting the artefact header" do
+
+    it "should convert a hash to JSON and insert into the header" do
+      artefact = {"foo" => "bar", "slug" => "vat-rates"}
+      self.set_slimmer_artefact(artefact)
+      assert_equal artefact.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
+    end
+
+    it "should convert an OpenStruct to JSON and insert into the header" do
+      artefact = OpenStruct.new(section: 'missing', need_id: 'missing', kind: 'missing')
+      self.set_slimmer_artefact(artefact)
+      assert_equal artefact.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
+    end
+
+    it "should handle an object that responds to :to_hash" do
+      hash = {"foo" => "bar", "slug" => "vat-rates"}
+      artefact = stub("Response", :to_hash => hash)
+      self.set_slimmer_artefact(artefact)
+      assert_equal hash.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
+    end
+
+    it "should strip the actions from the artefact" do
+      artefact = {"foo" => "bar", "slug" => "vat-rates", "actions" => "some_actions"}
+      self.set_slimmer_artefact(artefact)
+      assert_equal ({"foo" => "bar", "slug" => "vat-rates"}).to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
+    end
+
+    it "should strip the actions from any related items" do
+      artefact = {"slug" => "vat-rates", "related_items" => [
+        {"artefact" => {"slug" => 'a-thing', "actions" => "something"}},
+        {"artefact" => {"slug" => 'another-thing', "actions" => "something else"}}
+      ]}
+      self.set_slimmer_artefact(artefact)
+      assert_equal ({"slug" => "vat-rates", "related_items" => [
+        {"artefact" => {"slug" => 'a-thing'}}, {"artefact" => {"slug" => 'another-thing'}}
+      ]}).to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
+    end
+
+    it "should not have side-effects on the passed in hash" do
+      artefact = {"foo" => "bar", "slug" => "vat-rates", "actions" => "some_actions"}
+      artefact_copy = artefact.dup
+      self.set_slimmer_artefact(artefact)
+      assert_equal artefact_copy, artefact
     end
   end
 end

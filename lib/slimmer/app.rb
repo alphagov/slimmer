@@ -1,5 +1,3 @@
-require "gds_api/exceptions"
-
 module Slimmer
   class App
     attr_accessor :logger
@@ -29,10 +27,10 @@ module Slimmer
       response = Rack::Response.new(body, status, headers)
 
       if response_can_be_rewritten?(response) && !skip_slimmer?(env, response)
-        rewrite_response(env, response)
-      else
-        [status, headers, body]
+        status, headers, body = rewrite_response(env, response)
       end
+
+      [status, strip_slimmer_headers(headers), body]
     end
 
     def response_can_be_rewritten?(response)
@@ -53,7 +51,7 @@ module Slimmer
     end
 
     def skip_slimmer_header?(response)
-      !!response.headers[SKIP_HEADER]
+      !!response.headers[Headers::SKIP_HEADER]
     end
 
     def s(body)
@@ -74,7 +72,7 @@ module Slimmer
 
       rewritten_body = case response.status
       when 200
-        if response.headers[TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
+        if response.headers[Headers::TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
           @skin.admin s(response.body)
         else
           @skin.success request, response, s(response.body)
@@ -90,8 +88,10 @@ module Slimmer
       response.headers['Content-Length'] = content_length(response.body)
 
       response.finish
-    rescue GdsApi::TimedOutException
-      [503, {"Content-Type" => "text/plain"}, ["GDS API request timed out."]]
+    end
+
+    def strip_slimmer_headers(headers)
+      headers.reject {|k, v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
     end
   end
 end

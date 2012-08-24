@@ -1,5 +1,4 @@
 require "test_helper"
-require "gds_api/test_helpers/panopticon"
 
 module TypicalUsage
 
@@ -65,26 +64,48 @@ module TypicalUsage
     }
 
     def test_should_set_correct_content_length_header
-      assert_equal "869", last_response.headers['Content-Length']
+      expected = last_response.body.bytesize
+      assert_equal expected.to_s, last_response.headers['Content-Length']
     end
-
   end
 
   class NormalResponseTest < SlimmerIntegrationTest
-    given_response 200, %{
-      <html>
-      <head><title>The title of the page</title>
-      <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
-      <script src="blah.js"></script>
-      <link href="app.css" rel="stylesheet" type="text/css">
-      </head>
-      <body class="body_class">
-      <div id="wrapper">The body of the page</div>
-      </body>
-      </html>
-    }
+    def setup
+      super
+      @artefact = {
+        'slug' => 'some-slug',
+        'title' => 'Example document',
+        'primary_section' => 'this_section',
+        'related_items' => [
+          {
+          'artefact' => {
+            'kind' => 'guide',
+            'name' => 'How to test computer software automatically & ensure that 2>1',
+            'slug' => 'how-to-test-computer-software-automatically',
+            }
+          }
+        ],
+        'tag_ids' => ['this_section', 'directgov'],
+        'tags' => [
+          {"id" => "this_section", "title" => 'This section'},
+          {"id" => "directgov", "title" => 'Directgov'},
+        ]
+      }
+      given_response 200, %{
+        <html>
+        <head><title>The title of the page</title>
+        <meta name="something" content="yes">
+        <meta name="x-section-name" content="This section">
+        <meta name="x-section-link" content="/this_section">
+        <script src="blah.js"></script>
+        <link href="app.css" rel="stylesheet" type="text/css">
+        </head>
+        <body class="body_class">
+        <div id="wrapper">The body of the page</div>
+        </body>
+        </html>
+      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
+    end
 
     def test_should_replace_the_wrapper_using_the_app_response
       assert_rendered_in_template "#wrapper", "The body of the page"
@@ -114,6 +135,9 @@ module TypicalUsage
       assert_rendered_in_template "nav[role=navigation] li a[href='/this_section']", "This section"
     end
 
+    def test_should_add_logo_classes_to_wrapper
+      assert_rendered_in_template "#wrapper.directgov"
+    end
   end
 
   class ConditionalCommentTest < SlimmerIntegrationTest
@@ -146,10 +170,10 @@ module TypicalUsage
   end
 
   class ResponseWithRelatedItemsTest < SlimmerIntegrationTest
-    include GdsApi::TestHelpers::Panopticon
 
     def setup
-      panopticon_has_metadata(
+      super
+      @artefact = {
         'slug' => 'some-slug',
         'title' => 'Example document',
         'related_items' => [
@@ -161,22 +185,20 @@ module TypicalUsage
               }
             }
           ]
-        )
-      super
+      }
     end
   end
 
   class MainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
-    given_response 200, %{
-      <html>
-      <body class="mainstream">
-      <div id="wrapper">The body of the page<div id="related-items"></div></div>
-      </body>
-      </html>
-    }, {}
-
-    def fetch_page
-      get "/some-slug"
+    def setup
+      super
+      given_response 200, %{
+        <html>
+        <body class="mainstream">
+        <div id="wrapper">The body of the page<div id="related-items"></div></div>
+        </body>
+        </html>
+      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
     end
 
     def test_should_insert_related_items_block
@@ -186,16 +208,15 @@ module TypicalUsage
   end
 
   class NonMainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
-    given_response 200, %{
-      <html>
-      <body class="nonmainstream">
-      <div id="wrapper">The body of the page<div id="related-items"></div></div>
-      </body>
-      </html>
-    }, {}
-
-    def fetch_page
-      get "/some-slug"
+    def setup
+      super
+      given_response 200, %{
+        <html>
+        <body class="nonmainstream">
+        <div id="wrapper">The body of the page<div id="related-items"></div></div>
+        </body>
+        </html>
+      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
     end
 
     def test_should_not_insert_related_items_block
@@ -318,35 +339,6 @@ module TypicalUsage
     end
   end
 
-  class ApiTimeoutResponseTest < SlimmerIntegrationTest
-    include Rack::Test::Methods
-
-    given_response 200, %{
-      <html>
-      <head><title>The title of the page</title>
-      <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
-      <script src="blah.js"></script>
-      <link href="app.css" rel="stylesheet" type="text/css">
-      </head>
-      <body class="body_class mainstream">
-      <div id="wrapper">The body of the page</div>
-      <div id="related-items"></div>
-      </body>
-      </html>
-    }
-
-    def setup
-      ::Slimmer::RelatedItemsInserter.any_instance.stubs(:metadata_from_panopticon).raises(GdsApi::TimedOutException)
-      super
-    end
-
-    def test_should_return_503_if_an_API_call_times_out
-      assert_equal 503, last_response.status
-    end
-  end
-
   class ArbitraryWrapperIdTest < SlimmerIntegrationTest
 
     given_response 200, %{
@@ -360,6 +352,45 @@ module TypicalUsage
     def test_should_replace_wrapper_with_custom_wrapper
       assert_rendered_in_template "body .content #custom_wrapper", "The body of the page"
       assert_no_selector "#wrapper"
+    end
+  end
+
+  class StrippingHeadersTest < SlimmerIntegrationTest
+    def test_should_strip_all_slimmer_headers_from_final_response
+      given_response 200, %{
+        <html>
+        <body>
+        <div id="wrapper">The body of the page</div>
+        </body>
+        </html>
+      }, {
+        "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
+        Slimmer::Headers::ARTEFACT_HEADER => "{}",
+        "X-Custom-Header" => "Something else"
+      }
+
+      refute last_response.headers.has_key?(Slimmer::Headers::ARTEFACT_HEADER)
+      refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
+      assert_equal "Something else", last_response.headers["X-Custom-Header"]
+    end
+
+    def test_should_strip_slimmer_headers_even_when_skipping_slimmer
+      given_response 200, %{
+        <html>
+        <body>
+        <div id="wrapper">The body of the page</div>
+        </body>
+        </html>
+      }, {
+        "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
+        Slimmer::Headers::ARTEFACT_HEADER => "{}",
+        "X-Custom-Header" => "Something else",
+        Slimmer::Headers::SKIP_HEADER => "1"
+      }
+
+      refute last_response.headers.has_key?(Slimmer::Headers::ARTEFACT_HEADER)
+      refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
+      assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end
   end
 end

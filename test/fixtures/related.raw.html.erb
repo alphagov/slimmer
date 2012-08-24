@@ -1,31 +1,35 @@
-<% if artefact && artefact.present? && artefact.related_items.size > 0 %>
+<% if artefact %>
 
 <!-- related -->
 <div class="related-positioning">
-	<div class="related-container">
+  <div class="related-container">
 
-		<div class="related">
-			<div class="inner group">
-				<h2>Related tools &amp; topics</h2>
-				<nav role="navigation">
-				  <ul>
-				      <% (artefact.related_items || []).each do |item| %>
-  				      <% if item.artefact %>
-  				      <li class="<%= h(item.artefact.kind) %>">
-  				        <a href="/<%= h(item.artefact.slug) %>"><%= h(item.artefact.name) %></a>
-  				      </li>
-  				      <% end %>
+    <div class="related">
+      <div class="inner group">
+        <h2>Related topics</h2>
+        <nav role="navigation">
+          <ul>
+            <% if artefact["related_items"].any? %>
+              <% artefact["related_items"].each do |item| %>
+                <% if item["artefact"] %>
+                <li class="<%= h item["artefact"]["kind"] %>">
+                  <a href="/<%= h item["artefact"]["slug"] %>"><%= h item["artefact"]["name"] %></a>
+                </li>
+                <% end %>
               <% end %>
-				      <% if artefact.section %>
-                <li class="related-topic"><a href="/browse/<%= h(artefact.section.parameterize) %>"
-                  >More from the <span><%= h(artefact.section) %></span> section</a></li>
-				      <% end %>
-				  </ul>
-				</nav>
-	   </div>
-	 </div>
+            <% end %>
 
-	</div>
+            <% if artefact["section"] %>
+              <% section, subsection = artefact["section"].split(':', 2) %>
+              <li class="related-topic"><a href="/browse/<%= h section.parameterize %>"
+                >More from the <span><%= h section %></span> section</a></li>
+            <% end %>
+          </ul>
+        </nav>
+     </div>
+   </div>
+
+  </div>
 </div>
 <!-- end related -->
 <% end %>

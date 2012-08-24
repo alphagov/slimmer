@@ -9,7 +9,7 @@ class HeaderContextInserterTest < MiniTest::Unit::TestCase
       <html><body><nav></nav><div class="header-context"><p>this should be moved</p></div></body></html>
     }
 
-    Slimmer::HeaderContextInserter.new.filter(source, template)
+    Slimmer::Processors::HeaderContextInserter.new.filter(source, template)
     assert_in template, ".header-context", %{<p>this should be moved</p>}
   end
 
@@ -21,7 +21,7 @@ class HeaderContextInserterTest < MiniTest::Unit::TestCase
       <html><body><nav></nav><div class="header-context app-class"><p>this should be moved</p></div></body></html>
     }
 
-    Slimmer::HeaderContextInserter.new.filter(source, template)
+    Slimmer::Processors::HeaderContextInserter.new.filter(source, template)
     assert_in template, ".header-context.app-class", %{<p>this should be moved</p>}
     assert_not_in template, ".header-context.template-class"
   end
@@ -34,7 +34,7 @@ class HeaderContextInserterTest < MiniTest::Unit::TestCase
       <html><body><nav></nav></body></html>
     }
 
-    Slimmer::HeaderContextInserter.new.filter(source, template)
+    Slimmer::Processors::HeaderContextInserter.new.filter(source, template)
     assert_in template, ".header-context", %{should not be removed}
   end
 
@@ -46,6 +46,6 @@ class HeaderContextInserterTest < MiniTest::Unit::TestCase
       <html><body><div><div class="header-context">should be ignored</div></div></body></html>
     }
 
-    Slimmer::HeaderContextInserter.new.filter(source, template) # should not raise
+    Slimmer::Processors::HeaderContextInserter.new.filter(source, template) # should not raise
   end
 end
