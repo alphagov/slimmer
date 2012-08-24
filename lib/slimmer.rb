@@ -1,3 +1,8 @@
+       #########################################
+   ####### Look, Rounded corners....  It's 2.0 #####
+ #####################################################
+#######################################################
+
 require 'nokogiri'
 require 'erb'
 require 'open-uri'
@@ -5,33 +10,39 @@ require 'plek'
 require 'null_logger'
 require 'openssl'
 
+require 'slimmer/version'
 require 'slimmer/railtie' if defined? Rails
 
 module Slimmer
-  TEMPLATE_HEADER = 'X-Slimmer-Template'
-  SKIP_HEADER = 'X-Slimmer-Skip'
-  SEARCH_PATH_HEADER = 'X-Slimmer-Search-Path'
 
-  autoload :Version, 'slimmer/version'
   autoload :Railtie, 'slimmer/railtie'
   autoload :Skin, 'slimmer/skin'
 
   autoload :Template, 'slimmer/template'
   autoload :App, 'slimmer/app'
-  autoload :TitleInserter, 'slimmer/title_inserter'
-  autoload :AdminTitleInserter, 'slimmer/admin_title_inserter'
-  autoload :SectionInserter, 'slimmer/section_inserter'
-  autoload :TagMover, 'slimmer/tag_mover'
-  autoload :ConditionalCommentMover, 'slimmer/conditional_comment_mover'
-  autoload :FooterRemover, 'slimmer/footer_remover'
-  autoload :BodyInserter, 'slimmer/body_inserter'
-  autoload :BodyClassCopier, 'slimmer/body_class_copier'
-  autoload :UrlRewriter, 'slimmer/url_rewriter'
-  autoload :HeaderContextInserter, 'slimmer/header_context_inserter'
-  autoload :GoogleAnalyticsConfigurator, 'slimmer/google_analytics_configurator'
-  autoload :RelatedItemsInserter, 'slimmer/related_items_inserter'
-  autoload :SearchPathSetter, 'slimmer/search_path_setter'
+  autoload :Headers, 'slimmer/headers'
+
+  module Processors
+    autoload :AdminTitleInserter, 'slimmer/processors/admin_title_inserter'
+    autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
+    autoload :BodyInserter, 'slimmer/processors/body_inserter'
+    autoload :ConditionalCommentMover, 'slimmer/processors/conditional_comment_mover'
+    autoload :FooterRemover, 'slimmer/processors/footer_remover'
+    autoload :GoogleAnalyticsConfigurator, 'slimmer/processors/google_analytics_configurator'
+    autoload :HeaderContextInserter, 'slimmer/processors/header_context_inserter'
+    autoload :LogoClassInserter, 'slimmer/processors/logo_class_inserter'
+    autoload :RelatedItemsInserter, 'slimmer/processors/related_items_inserter'
+    autoload :SearchPathSetter, 'slimmer/processors/search_path_setter'
+    autoload :SectionInserter, 'slimmer/processors/section_inserter'
+    autoload :TagMover, 'slimmer/processors/tag_mover'
+    autoload :TitleInserter, 'slimmer/processors/title_inserter'
+  end
 
   class TemplateNotFoundException < StandardError; end
   class CouldNotRetrieveTemplate < StandardError; end
 end
+
+#######################################################
+ #####################################################
+   #################################################
+       #########################################

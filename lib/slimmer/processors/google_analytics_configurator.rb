@@ -1,6 +1,6 @@
 require "json"
 
-module Slimmer
+module Slimmer::Processors
   class GoogleAnalyticsConfigurator
     PAGE_LEVEL_EVENT = 3
     HEADER_MAPPING = {

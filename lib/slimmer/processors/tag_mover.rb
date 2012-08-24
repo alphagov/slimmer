@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class TagMover
     def filter(src,dest)
       move_tags(src, dest, 'script', :must_have => ['src'])

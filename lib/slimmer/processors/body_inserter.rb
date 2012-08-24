@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class BodyInserter
     def initialize(source_id='wrapper', destination_id='wrapper')
       @source_selector = '#' + source_id

@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class HeaderContextInserter
     def initialize(path='.header-context')
       @path = path

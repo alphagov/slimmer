@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class SectionInserter
     def filter(src,dest)
       meta_name = dest.at_css('meta[name="x-section-name"]')

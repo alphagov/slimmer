@@ -1,4 +1,4 @@
-module Slimmer
+module Slimmer::Processors
   class AdminTitleInserter
     def filter(src,dest)
       title = src.at_css('#site-title')

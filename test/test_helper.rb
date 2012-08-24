@@ -15,11 +15,17 @@ class MiniTest::Unit::TestCase
     Nokogiri::HTML.parse(html_string.strip)
   end
 
-  def assert_in(template, selector, content, message=nil)
-    assert_equal content, template.at_css(selector).inner_html.to_s, message
+  def assert_in(template, selector, content=nil, message=nil)
+    message ||= "Expected to find #{content ? "#{content.inspect} at " : ""}#{selector.inspect} in the output template"
+
+    assert template.at_css(selector), message + ", but selector not found."
+
+    if content
+      assert_equal content, template.at_css(selector).inner_html.to_s, message
+    end
   end
 
-  def assert_not_in(template, selector, message="didn't exist to find #{selector}")
+  def assert_not_in(template, selector, message="didn't expect to find #{selector}")
     refute template.at_css(selector), message
   end
 
@@ -34,32 +40,35 @@ end
 class SlimmerIntegrationTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods
 
+  # given_response can either be called from a setup method, or in the class scope.
+  # The setup method variant is necessary if you want to pass variables into the call that
+  # are created in higher setup methods.
   def self.given_response(code, body, headers={}, app_options={})
-    define_method(:app) do
-      inner_app = proc { |env|
-        [code, {"Content-Type" => "text/html"}.merge(headers), body]
-      }
-      Slimmer::App.new inner_app, {asset_host: "http://template.local"}.merge(app_options)
-    end
-
-    define_method :teardown do
-      WebMock.reset!
-    end
-
-    define_method(:setup_template) do
-      template_name = case code
-      when 200 then 'wrapper'
-      when 404 then '404'
-      else          '500'
-      end
-
-      use_template(template_name)
-      use_template('related.raw')
+    define_method(:setup) do
+      super()
+      given_response(code, body, headers, app_options)
     end
   end
 
-  def setup
-    setup_template if respond_to? :setup_template
+  def given_response(code, body, headers={}, app_options={})
+    self.class.class_eval do
+      define_method(:app) do
+        inner_app = proc { |env|
+          [code, {"Content-Type" => "text/html"}.merge(headers), body]
+        }
+        Slimmer::App.new inner_app, {asset_host: "http://template.local"}.merge(app_options)
+      end
+    end
+
+    template_name = case code
+    when 200 then 'wrapper'
+    when 404 then '404'
+    else          '500'
+    end
+
+    use_template(template_name)
+    use_template('related.raw')
+
     fetch_page
   end
 

@@ -9,7 +9,7 @@ class BodyInserterTest < MiniTest::Unit::TestCase
       <html><body><nav></nav><div id="wrapper"><p>this should be moved</p></div></body></html>
     }
 
-    Slimmer::BodyInserter.new.filter(source, template)
+    Slimmer::Processors::BodyInserter.new.filter(source, template)
     assert_in template, "#wrapper", %{<p>this should be moved</p>}
   end
 
@@ -22,7 +22,7 @@ class BodyInserterTest < MiniTest::Unit::TestCase
       <html><body><nav></nav><div id="wrapper"><p>#{unicode_endash}</p></div></body></html>
     }
 
-    Slimmer::BodyInserter.new.filter(source, template)
+    Slimmer::Processors::BodyInserter.new.filter(source, template)
     assert_equal unicode_endash, template.at_css("#wrapper p").inner_text
   end
 
@@ -36,7 +36,7 @@ class BodyInserterTest < MiniTest::Unit::TestCase
       <html><body><div id="some_other_id"><p>this should be moved</p></div></body></html>
     }
 
-    Slimmer::BodyInserter.new("some_other_id").filter(source, template)
+    Slimmer::Processors::BodyInserter.new("some_other_id").filter(source, template)
     assert_not_in template, "#wrapper"
     assert_in template, "#some_other_id", %{<p>this should be moved</p>}
   end
