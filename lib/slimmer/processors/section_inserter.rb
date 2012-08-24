@@ -1,28 +1,20 @@
 module Slimmer::Processors
   class SectionInserter
-    def initialize(artefact)
-      @artefact = artefact
-    end
-
     def filter(src,dest)
+      meta_name = dest.at_css('meta[name="x-section-name"]')
+      meta_link = dest.at_css('meta[name="x-section-link"]')
       list = dest.at_css('nav[role=navigation] ol')
 
-      if list && (section = get_section_details)
+      if meta_name && meta_link && list
         link_node = Nokogiri::XML::Node.new('a', dest)
-        link_node['href'] = "/browse/#{section["id"]}"
-        link_node.content = section["title"]
+        link_node['href'] = meta_link['content']
+        link_node.content = meta_name['content']
 
         list_item = Nokogiri::XML::Node.new('li', dest)
         list_item.add_child(link_node)
 
         list.add_child(list_item)
       end
-    end
-
-    def get_section_details
-      return nil unless @artefact and @artefact["primary_section"] and @artefact["tags"]
-      base_section_id = @artefact["primary_section"].split('/').first
-      @artefact["tags"].detect {|t| t["id"] == base_section_id }
     end
   end
 end

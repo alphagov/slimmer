@@ -128,7 +128,7 @@ module Slimmer
         Processors::BodyInserter.new(options[:wrapper_id] || 'wrapper'),
         Processors::BodyClassCopier.new,
         Processors::HeaderContextInserter.new(),
-        Processors::SectionInserter.new(artefact),
+        Processors::SectionInserter.new(),
         Processors::GoogleAnalyticsConfigurator.new(response),
         Processors::SearchPathSetter.new(response),
         Processors::RelatedItemsInserter.new(template('related.raw'), artefact),

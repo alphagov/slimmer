@@ -52,6 +52,8 @@ module TypicalUsage
       <html>
       <head><title>The title of the page</title>
       <meta name="something" content="yes">
+      <meta name="x-section-name" content="This section">
+      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -93,6 +95,8 @@ module TypicalUsage
         <html>
         <head><title>The title of the page</title>
         <meta name="something" content="yes">
+        <meta name="x-section-name" content="This section">
+        <meta name="x-section-link" content="/this_section">
         <script src="blah.js"></script>
         <link href="app.css" rel="stylesheet" type="text/css">
         </head>
@@ -128,7 +132,7 @@ module TypicalUsage
     end
 
     def test_should_insert_meta_navigation_links_into_the_navigation
-      assert_rendered_in_template "nav[role=navigation] li a[href='/browse/this_section']", "This section"
+      assert_rendered_in_template "nav[role=navigation] li a[href='/this_section']", "This section"
     end
 
     def test_should_add_logo_classes_to_wrapper
@@ -225,6 +229,8 @@ module TypicalUsage
       <html>
       <head><title>The title of the page</title>
       <meta name="something" content="yes">
+      <meta name="x-section-name" content="This section">
+      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -247,6 +253,8 @@ module TypicalUsage
       <html>
       <head><title>500 Error</title>
       <meta name="something" content="yes">
+      <meta name="x-section-name" content="This section">
+      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -276,6 +284,8 @@ module TypicalUsage
       <html>
       <head><title>404 Missing</title>
       <meta name="something" content="yes">
+      <meta name="x-section-name" content="This section">
+      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -305,6 +315,8 @@ module TypicalUsage
       <html>
       <head><title>406 Not Acceptable</title>
       <meta name="something" content="yes">
+      <meta name="x-section-name" content="This section">
+      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
