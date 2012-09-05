@@ -131,7 +131,7 @@ module Slimmer
         Processors::SectionInserter.new(),
         Processors::GoogleAnalyticsConfigurator.new(response),
         Processors::SearchPathSetter.new(response),
-        Processors::RelatedItemsInserter.new(template('related.raw'), artefact),
+        Processors::RelatedItemsInserter.new(self, artefact),
         Processors::LogoClassInserter.new(artefact),
       ]
 
