@@ -133,6 +133,7 @@ module Slimmer
         Processors::SearchPathSetter.new(response),
         Processors::RelatedItemsInserter.new(self, artefact),
         Processors::LogoClassInserter.new(artefact),
+        Processors::ReportAProblemInserter.new(self, source_request.url),
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
