@@ -32,6 +32,7 @@ module Slimmer
     autoload :HeaderContextInserter, 'slimmer/processors/header_context_inserter'
     autoload :LogoClassInserter, 'slimmer/processors/logo_class_inserter'
     autoload :RelatedItemsInserter, 'slimmer/processors/related_items_inserter'
+    autoload :ReportAProblemInserter, 'slimmer/processors/report_a_problem_inserter'
     autoload :SearchPathSetter, 'slimmer/processors/search_path_setter'
     autoload :SectionInserter, 'slimmer/processors/section_inserter'
     autoload :TagMover, 'slimmer/processors/tag_mover'

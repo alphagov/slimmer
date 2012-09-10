@@ -5,6 +5,7 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
   def setup
     super
     @related_template = File.read( File.dirname(__FILE__) + "/../fixtures/related.raw.html.erb" )
+    @skin = stub("Skin", :template => @related_template)
     @artefact = {
       'slug' => 'vat',
       'title' => 'VAT',
@@ -32,7 +33,7 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    Slimmer::Processors::RelatedItemsInserter.new(@related_template, @artefact).filter(source, template)
+    Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact).filter(source, template)
     assert_in template, "div.related h2", "Related topics"
     assert_in template, "div.related nav[role=navigation] ul li.answer:nth-child(1) a[href='/vat-rates']", "VAT rates"
     assert_in template, "div.related nav[role=navigation] ul li.guide:nth-child(2) a[href='/starting-to-import']", "Starting to import"
@@ -55,7 +56,9 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    Slimmer::Processors::RelatedItemsInserter.new(@related_template, @artefact).filter(source, template)
+    @skin.expects(:template).never # Shouldn't fetch template when not inserting block
+
+    Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact).filter(source, template)
     assert_not_in template, "div.related"
   end
 end

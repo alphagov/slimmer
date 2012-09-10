@@ -1,8 +1,8 @@
 class Slimmer::Processors::RelatedItemsInserter
   include ERB::Util
   
-  def initialize(related_block_template, artefact)
-    @related_block_template = related_block_template
+  def initialize(skin, artefact)
+    @skin = skin
     @artefact = artefact
   end
   
@@ -14,7 +14,8 @@ class Slimmer::Processors::RelatedItemsInserter
   
   def related_item_block
     artefact = @artefact
-    html = ERB.new(@related_block_template).result(binding)
+    related_block_template = @skin.template('related.raw')
+    html = ERB.new(related_block_template).result(binding)
     Nokogiri::HTML.fragment(html)
   end
 end

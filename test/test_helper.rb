@@ -68,6 +68,7 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
 
     use_template(template_name)
     use_template('related.raw')
+    use_template('report_a_problem.raw')
 
     fetch_page
   end
