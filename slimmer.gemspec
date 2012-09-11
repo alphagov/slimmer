@@ -29,7 +29,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'webmock', '~> 1.7'
   s.add_development_dependency 'therubyracer'
   s.add_development_dependency 'gem_publisher', '~> 1.1.1'
-
+  # TODO check version
+  # s.add_development_dependency 'gds-api-adapters', '1.7.1'
   s.files         = Dir[
     'README.md',
     'CHANGELOG.md',

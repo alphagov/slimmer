@@ -1,3 +1,5 @@
+<% raise "Foo2" %>
+<!-- Whilst they are both in use, this and the copy in static should be kept in sync -->
 <% if artefact %>
 
 <!-- related -->
@@ -9,23 +11,45 @@
         <h2>Related topics</h2>
         <nav role="navigation">
           <ul>
-            <% if artefact["related_items"].any? %>
-              <% artefact["related_items"].each do |item| %>
-                <% if item["artefact"] %>
-                <li class="<%= h item["artefact"]["kind"] %>">
-                  <a href="/<%= h item["artefact"]["slug"] %>"><%= h item["artefact"]["name"] %></a>
-                </li>
+            <% if artefact["related"] %>
+              <% if artefact["related"].any? %>
+                <% artefact["related"].each do |item| %>
+                  <li>
+                    <a href="<%= h item["web_url"] %>"><%= h item["title"] %></a>
+                  </li>
                 <% end %>
               <% end %>
-            <% end %>
+              <% primary_section = artefact["tags"].detect { |tag| tag["details"]["type"] == "section" } %>
+              <% if primary_section %>
+                <li class="related-topic"><a href="<%= tag["web_url"] %>"
+                  >More from the <span><%= h tag["title"] %></span> section</a></li>
+              <% end %>
+            <% else %>
+              <% if artefact["related_items"].any? %>
+                <% artefact["related_items"].each do |item| %>
+                  <% if item["artefact"] %>
+                  <li class="<%= h item["artefact"]["kind"] %>">
+                    <a href="/<%= h item["artefact"]["slug"] %>"><%= h item["artefact"]["name"] %></a>
+                  </li>
+                  <% end %>
+                <% end %>
+              <% end %>
 
-            <% if artefact["section"] %>
-              <% section, subsection = artefact["section"].split(':', 2) %>
-              <li class="related-topic"><a href="/browse/<%= h section.parameterize %>"
-                >More from the <span><%= h section %></span> section</a></li>
+              <% if artefact["section"] and artefact["section"] != "" %>
+                <% section, subsection = artefact["section"].split(':', 2) %>
+                <li class="related-topic"><a href="/browse/<%= h section.parameterize %>"
+                  >More from the <span><%= h section %></span> section</a></li>
+              <% end %>
             <% end %>
           </ul>
         </nav>
+     </div>
+     <div id="legacy-sources">
+       <p>Information from</p>
+       <ul>
+         <li class="directgov">Directgov</li>
+         <li class="businesslink">BusinessLink</li>
+       </ul>
      </div>
    </div>
 
