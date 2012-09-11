@@ -13,6 +13,10 @@ module Slimmer::TestTemplate
         <script src="http://static.preview.alphagov.co.uk/static/popup.js" defer></script>
         <script src="http://static.preview.alphagov.co.uk/static/geo-locator.js" defer></script>
         <script src="http://static.preview.alphagov.co.uk/static/customisation-settings.js" defer></script>
+        <script src="http://static.preview.alphagov.co.uk/static/welcome.js" defer></script>
+        <script src="http://static.preview.alphagov.co.uk/static/browse.js" defer></script>
+        <script src="http://static.preview.alphagov.co.uk/static/jquery.history.js" defer></script>
+        <script src="http://static.preview.alphagov.co.uk/static/jquery.tabs.js" defer></script>
       </head>
       <body>
         <nav role="navigation" class="header-context">
