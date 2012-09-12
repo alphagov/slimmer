@@ -65,41 +65,16 @@ describe Slimmer::Headers do
   end
 
   describe "setting the artefact header" do
-
     it "should convert a hash to JSON and insert into the header" do
-      artefact = {"foo" => "bar", "slug" => "vat-rates"}
+      artefact = {"foo" => "bar"}
       self.set_slimmer_artefact(artefact)
       assert_equal artefact.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
     end
 
-    it "should convert an OpenStruct to JSON and insert into the header" do
-      artefact = OpenStruct.new(section: 'missing', need_id: 'missing', kind: 'missing')
+    it "should convert an OpenStruct to JSON" do
+      artefact = OpenStruct.new("foo" => "bar")
       self.set_slimmer_artefact(artefact)
-      assert_equal artefact.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
-    end
-
-    it "should handle an object that responds to :to_hash" do
-      hash = {"foo" => "bar", "slug" => "vat-rates"}
-      artefact = stub("Response", :to_hash => hash)
-      self.set_slimmer_artefact(artefact)
-      assert_equal hash.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
-    end
-
-    it "should strip the actions from the artefact" do
-      artefact = {"foo" => "bar", "slug" => "vat-rates", "actions" => "some_actions"}
-      self.set_slimmer_artefact(artefact)
-      assert_equal ({"foo" => "bar", "slug" => "vat-rates"}).to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
-    end
-
-    it "should strip the actions from any related items" do
-      artefact = {"slug" => "vat-rates", "related_items" => [
-        {"artefact" => {"slug" => 'a-thing', "actions" => "something"}},
-        {"artefact" => {"slug" => 'another-thing', "actions" => "something else"}}
-      ]}
-      self.set_slimmer_artefact(artefact)
-      assert_equal ({"slug" => "vat-rates", "related_items" => [
-        {"artefact" => {"slug" => 'a-thing'}}, {"artefact" => {"slug" => 'another-thing'}}
-      ]}).to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
+      assert_equal({"foo" => "bar"}.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER])
     end
 
     it "should not have side-effects on the passed in hash" do

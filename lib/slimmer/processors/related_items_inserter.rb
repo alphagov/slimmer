@@ -14,8 +14,27 @@ class Slimmer::Processors::RelatedItemsInserter
   
   def related_item_block
     artefact = @artefact
+    root_primary_section = root_primary_section(artefact)
     related_block_template = @skin.template('related.raw')
     html = ERB.new(related_block_template).result(binding)
     Nokogiri::HTML.fragment(html)
   end
+
+  # Duplicated in Frontend
+  def root_primary_section(artefact)
+    primary_section = artefact["tags"].detect do |tag| 
+      tag["details"]["type"] == "section"
+    end
+
+    if primary_section.nil?
+      nil
+    else
+      if primary_section["parent"]
+        primary_section["parent"]
+      else
+        primary_section
+      end
+    end
+  end
+
 end
