@@ -102,19 +102,4 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     Slimmer::Processors::SectionInserter.new.filter(:any_source, template)
     assert_not_in template, "nav[role=navigation]"
   end
-
-  def test_should_not_blow_up_without_an_artefact
-    template = as_nokogiri %{
-      <html>
-        <body>
-          <nav role="navigation">
-            <ol><li><a href="/">Home</a></li></ol>
-          </nav>
-        </body>
-      </html>
-    }
-
-    # assert_nothing_raised do
-    Slimmer::Processors::SectionInserter.new(nil).filter(:any_source, template)
-  end
 end

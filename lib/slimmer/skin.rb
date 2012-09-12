@@ -131,8 +131,9 @@ module Slimmer
         Processors::SectionInserter.new(),
         Processors::GoogleAnalyticsConfigurator.new(response),
         Processors::SearchPathSetter.new(response),
-        Processors::RelatedItemsInserter.new(template('related.raw'), artefact),
+        Processors::RelatedItemsInserter.new(self, artefact),
         Processors::LogoClassInserter.new(artefact),
+        Processors::ReportAProblemInserter.new(self, source_request.url),
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'

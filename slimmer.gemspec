@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
   s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
-  s.add_development_dependency 'mocha', '~> 0.9.12'
+  s.add_development_dependency 'mocha', '~> 0.12.4'
   s.add_development_dependency 'webmock', '~> 1.7'
   s.add_development_dependency 'therubyracer'
   s.add_development_dependency 'gem_publisher', '~> 1.1.1'
