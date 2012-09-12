@@ -1,3 +1,8 @@
+# 3.0.0
+
+Backwards-incompatible changes:
+* Artefact is expected to follow the format emitted by the Content API
+
 # 2.0.0
 
 Backwards-incompatible changes:
