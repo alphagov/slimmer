@@ -9,6 +9,34 @@ describe Slimmer::Artefact do
     assert_equal 'vat-rates', a.slug
   end
 
+  describe "Primary section" do
+    before do
+      @data = artefact_for_slug('something')
+      @tag1 = tag_for_slug("fooey", "section")
+      @tag2 = tag_for_slug("gooey", "section")
+      @data["tags"] << @tag1 << @tag2
+    end
+
+    it "should return the first section tag" do
+      assert_equal @tag1, Slimmer::Artefact.new(@data).primary_section
+    end
+
+    it "should ignore other tag types" do
+      @data["tags"].unshift(tag_for_slug("businesslink", "legacy_source"))
+      assert_equal @tag1, Slimmer::Artefact.new(@data).primary_section
+    end
+
+    it "should return nil if there are no sections" do
+      @data["tags"] = [tag_for_slug("businesslink", "legacy_source")]
+      assert_equal nil, Slimmer::Artefact.new(@data).primary_section
+    end
+
+    it "should return nil if there is no tags element" do
+      @data.delete("tags")
+      assert_equal nil, Slimmer::Artefact.new(@data).primary_section
+    end
+  end
+
   describe "Related artefacts" do
     before do
       @data = artefact_for_slug('something')

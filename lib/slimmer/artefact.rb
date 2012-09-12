@@ -14,6 +14,10 @@ class Slimmer::Artefact
     end
   end
 
+  def primary_section
+    tags_of_type("section").first
+  end
+
   def legacy_sources
     tags_of_type('legacy_source').map do |t|
       id_to_slug(t["id"])
