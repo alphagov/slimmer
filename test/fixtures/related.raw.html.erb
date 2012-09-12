@@ -7,22 +7,24 @@
 
     <div class="related">
       <div class="inner group">
-        <h2>Related topics</h2>
+        <h2>More like this:</h2>
         <nav role="navigation">
           <ul>
+            <!-- Content API style Artefact -->
             <% if artefact["related"] %>
               <% if artefact["related"].any? %>
                 <% artefact["related"].each do |item| %>
+
                   <li>
                     <a href="<%= h item["web_url"] %>"><%= h item["title"] %></a>
                   </li>
                 <% end %>
               <% end %>
               <% if root_primary_section %>
-                <li class="related-topic"><a href="<%= root_primary_section["web_url"] %>"
-                  >More from the <span><%= h root_primary_section["title"] %></span> section</a></li>
+                <li class="related-topic"><a href="<%= root_primary_section["content_with_tag"]["web_url"] %>"
+                  >More from the <span><%= h root_primary_section["title"] %></span> category</a></li>
               <% end %>
-            <% else %>
+            <% else %> <!-- Panopticon API style Artefact (deprecated) -->
               <% if artefact["related_items"].any? %>
                 <% artefact["related_items"].each do |item| %>
                   <% if item["artefact"] %>
@@ -36,7 +38,7 @@
               <% if artefact["section"] and artefact["section"] != "" %>
                 <% section, subsection = artefact["section"].split(':', 2) %>
                 <li class="related-topic"><a href="/browse/<%= h section.parameterize %>"
-                  >More from the <span><%= h section %></span> section</a></li>
+                  >More from the <span><%= h section %></span> category</a></li>
               <% end %>
             <% end %>
           </ul>
