@@ -14,8 +14,7 @@ class Slimmer::Processors::RelatedItemsInserter
   
   def related_item_block
     artefact = @artefact
-    root_primary_section = root_primary_section(@artefact)
-    is_content_api_artefact = artefact.has_key?("related")
+    root_primary_section = root_primary_section(artefact)
     related_block_template = @skin.template('related.raw')
     html = ERB.new(related_block_template).result(binding)
     Nokogiri::HTML.fragment(html)
