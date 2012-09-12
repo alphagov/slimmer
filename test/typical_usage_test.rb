@@ -31,8 +31,8 @@ module TypicalUsage
       assert_rendered_in_template '#unskinned', "Unskinned"
     end
 
-    def test_not_skip_slimmer_in_production
-      with_rails_env('production') do
+    def test_not_skip_slimmer_in_test
+      with_rails_env('test') do
         get "/some-slug?skip_slimmer=1"
       end
       assert_rendered_in_template '#wrapper', "Don't template me"
@@ -72,25 +72,8 @@ module TypicalUsage
   class NormalResponseTest < SlimmerIntegrationTest
     def setup
       super
-      @artefact = {
-        'slug' => 'some-slug',
-        'title' => 'Example document',
-        'primary_section' => 'this_section',
-        'related_items' => [
-          {
-          'artefact' => {
-            'kind' => 'guide',
-            'name' => 'How to test computer software automatically & ensure that 2>1',
-            'slug' => 'how-to-test-computer-software-automatically',
-            }
-          }
-        ],
-        'tag_ids' => ['this_section', 'directgov'],
-        'tags' => [
-          {"id" => "this_section", "title" => 'This section'},
-          {"id" => "directgov", "title" => 'Directgov'},
-        ]
-      }
+      @artefact = artefact_for_slug("some-slug")
+      @artefact["tags"] << tag_for_slug("directgov", "legacy_source")
       given_response 200, %{
         <html>
         <head><title>The title of the page</title>
@@ -173,19 +156,7 @@ module TypicalUsage
 
     def setup
       super
-      @artefact = {
-        'slug' => 'some-slug',
-        'title' => 'Example document',
-        'related_items' => [
-            {
-            'artefact' => {
-              'kind' => 'guide',
-              'name' => 'How to test computer software automatically & ensure that 2>1',
-              'slug' => 'how-to-test-computer-software-automatically',
-              }
-            }
-          ]
-      }
+      @artefact = artefact_for_slug_with_related_artefacts("some-slug", ["how-to-test-computer-software-automatically"])
     end
   end
 
@@ -202,8 +173,8 @@ module TypicalUsage
     end
 
     def test_should_insert_related_items_block
-      assert_rendered_in_template "div.related nav li.guide a", "How to test computer software automatically &amp; ensure that 2&gt;1"
-      assert_rendered_in_template "div.related nav li.guide", %r{href="/how-to-test-computer-software-automatically"}
+      assert_rendered_in_template "div.related nav li a", "How to test computer software automatically"
+      assert_rendered_in_template "div.related nav li", %r{href="https://www.test.gov.uk/how-to-test-computer-software-automatically"}
     end
   end
 

@@ -6,6 +6,7 @@ require 'webmock/minitest'
 require 'json'
 require 'logger'
 require 'mocha'
+require 'gds_api/test_helpers/content_api'
 
 WebMock.disable_net_connect!
 ENV['FACTER_govuk_platform'] = 'test'
@@ -39,6 +40,7 @@ end
 
 class SlimmerIntegrationTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods
+  include GdsApi::TestHelpers::ContentApi
 
   # given_response can either be called from a setup method, or in the class scope.
   # The setup method variant is necessary if you want to pass variables into the call that

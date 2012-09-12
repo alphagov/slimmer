@@ -21,6 +21,7 @@ module Slimmer
   autoload :Template, 'slimmer/template'
   autoload :App, 'slimmer/app'
   autoload :Headers, 'slimmer/headers'
+  autoload :Artefact, 'slimmer/artefact'
 
   module Processors
     autoload :AdminTitleInserter, 'slimmer/processors/admin_title_inserter'

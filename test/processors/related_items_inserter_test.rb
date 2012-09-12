@@ -1,19 +1,14 @@
 require_relative '../test_helper'
+require 'gds_api/test_helpers/content_api'
 
 class RelatedItemsInserterTest < MiniTest::Unit::TestCase
+  include GdsApi::TestHelpers::ContentApi
 
   def setup
     super
     @related_template = File.read( File.dirname(__FILE__) + "/../fixtures/related.raw.html.erb" )
     @skin = stub("Skin", :template => @related_template)
-    @artefact = {
-      'slug' => 'vat',
-      'title' => 'VAT',
-      'related_items' => [
-        { 'artefact' => { 'kind' => 'answer', 'name' => 'VAT rates', 'slug' => 'vat-rates' } },
-        { 'artefact' => { 'kind' => 'guide', 'name' => 'Starting to import', 'slug' => 'starting-to-import' } },
-      ]
-    }
+    @artefact = artefact_for_slug_with_related_artefacts("vat", ["vat-rates", "starting-to-import"])
   end
   
   def test_should_add_related_items
@@ -34,9 +29,9 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
     }
 
     Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact).filter(source, template)
-    assert_in template, "div.related h2", "Related topics"
-    assert_in template, "div.related nav[role=navigation] ul li.answer:nth-child(1) a[href='/vat-rates']", "VAT rates"
-    assert_in template, "div.related nav[role=navigation] ul li.guide:nth-child(2) a[href='/starting-to-import']", "Starting to import"
+    assert_in template, "div.related h2", "More like this:"
+    assert_in template, "div.related nav[role=navigation] ul li:nth-child(1) a[href='https://www.test.gov.uk/vat-rates']", "Vat rates"
+    assert_in template, "div.related nav[role=navigation] ul li:nth-child(2) a[href='https://www.test.gov.uk/starting-to-import']", "Starting to import"
   end
 
   def test_should_not_add_related_items_for_non_mainstream_source
