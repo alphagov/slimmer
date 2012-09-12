@@ -18,10 +18,9 @@
                   </li>
                 <% end %>
               <% end %>
-              <% primary_section = artefact["tags"].detect { |tag| tag["details"]["type"] == "section" } %>
-              <% if primary_section %>
-                <li class="related-topic"><a href="<%= tag["web_url"] %>"
-                  >More from the <span><%= h tag["title"] %></span> section</a></li>
+              <% if root_primary_section %>
+                <li class="related-topic"><a href="<%= root_primary_section["web_url"] %>"
+                  >More from the <span><%= h root_primary_section["title"] %></span> section</a></li>
               <% end %>
             <% else %>
               <% if artefact["related_items"].any? %>
