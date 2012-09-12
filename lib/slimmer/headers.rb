@@ -29,7 +29,6 @@ module Slimmer
 
     def set_slimmer_artefact(artefact_input)
       artefact = artefact_input.dup
-      artefact["details"].delete("parts") if artefact["details"].has_key?("parts") # Alex Tomlins said something about nginx limits?
       headers[ARTEFACT_HEADER] = artefact.to_json
     end
   end
