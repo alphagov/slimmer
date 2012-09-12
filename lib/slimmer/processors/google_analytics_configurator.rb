@@ -28,9 +28,8 @@ module Slimmer::Processors
   private
     def set_custom_var(slot, name, value)
       return nil unless value
-      value.downcase!
-      response = "_gaq.push(#{JSON.dump([ "_setCustomVar", slot, name, value, PAGE_LEVEL_EVENT])});\n"
-      response + "GOVUK.Analytics.#{name} = \"#{value}\";"
+      response = "_gaq.push(#{JSON.dump([ "_setCustomVar", slot, name, value.downcase, PAGE_LEVEL_EVENT])});\n"
+      response + "GOVUK.Analytics.#{name} = \"#{value.downcase}\";"
     end
   end
 end
