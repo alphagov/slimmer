@@ -7,7 +7,7 @@ describe Slimmer::Processors::LogoClassInserter do
   def artefact_with_legacy_source_tags(legacy_sources)
     artefact = artefact_for_slug("vat")
     legacy_sources.each do |legacy_source|
-      artefact["tags"] << basic_tag_for_slug(legacy_source, "legacy_source")
+      artefact["tags"] << tag_for_slug(legacy_source, "legacy_source")
     end
     artefact
   end

@@ -73,7 +73,7 @@ module TypicalUsage
     def setup
       super
       @artefact = artefact_for_slug("some-slug")
-      @artefact["tags"] << basic_tag_for_slug("directgov", "legacy_source")
+      @artefact["tags"] << tag_for_slug("directgov", "legacy_source")
       given_response 200, %{
         <html>
         <head><title>The title of the page</title>
