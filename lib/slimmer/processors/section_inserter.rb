@@ -1,20 +1,36 @@
 module Slimmer::Processors
   class SectionInserter
+    def initialize(artefact)
+      @artefact = artefact
+    end
+
     def filter(src,dest)
-      meta_name = dest.at_css('meta[name="x-section-name"]')
-      meta_link = dest.at_css('meta[name="x-section-link"]')
-      list = dest.at_css('nav[role=navigation] ol')
-
-      if meta_name && meta_link && list
-        link_node = Nokogiri::XML::Node.new('a', dest)
-        link_node['href'] = meta_link['content']
-        link_node.content = meta_name['content']
-
-        list_item = Nokogiri::XML::Node.new('li', dest)
-        list_item.add_child(link_node)
-
-        list.add_child(list_item)
+      if @artefact and (list = dest.at_css('nav[role=navigation] ol'))
+        section = @artefact.primary_section
+        append_tag(list, section["parent"]) if section["parent"]
+        append_tag(list, section)
+        append_text(list, @artefact.title)
       end
+    end
+
+    private
+
+    def append_tag(list, tag)
+      link_node = Nokogiri::XML::Node.new('a', list)
+      link_node['href'] = tag["content_with_tag"]["web_url"]
+      link_node.content = tag["title"]
+
+      list_item = Nokogiri::XML::Node.new('li', list)
+      list_item.add_child(link_node)
+
+      list.add_child(list_item)
+    end
+
+    def append_text(list, text)
+      list_item = Nokogiri::XML::Node.new('li', list)
+      list_item.content = text
+
+      list.add_child(list_item)
     end
   end
 end
