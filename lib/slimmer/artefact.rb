@@ -8,8 +8,8 @@ class Slimmer::Artefact
   end
 
   def tags_of_type(type)
-    return [] unless @data.has_key?("tags")
-    @data["tags"].select do |t|
+    return [] unless self.tags
+    self.tags.select do |t|
       t["details"]["type"] == type
     end
   end
@@ -33,8 +33,8 @@ class Slimmer::Artefact
   end
 
   def related_artefacts
-    return [] unless @data.has_key?("related")
-    @data["related"].map do |r|
+    return [] unless self.related
+    self.related.map do |r|
       self.class.new(r)
     end
   end
