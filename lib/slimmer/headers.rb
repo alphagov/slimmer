@@ -31,5 +31,19 @@ module Slimmer
       artefact = artefact_input.dup
       headers[ARTEFACT_HEADER] = artefact.to_json
     end
+
+    def set_slimmer_dummy_artefact(details = {})
+      artefact = {}
+      artefact["title"] = details[:title] if details[:title]
+      if details[:section_name] and details[:section_link]
+        tag = {
+          "title" => details[:section_name],
+          "details" => {"type" => "section"},
+          "content_with_tag" => {"web_url" => details[:section_link]},
+        }
+        artefact["tags"] = [tag]
+      end
+      headers[ARTEFACT_HEADER] = artefact.to_json
+    end
   end
 end
