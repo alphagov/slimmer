@@ -5,7 +5,7 @@ module Slimmer::Processors
     end
 
     def filter(src,dest)
-      if @artefact and (list = dest.at_css('nav[role=navigation] ol'))
+      if @artefact and (list = dest.at_css('.header-context nav[role=navigation] ol'))
         section = @artefact.primary_section
         append_tag(list, section["parent"]) if section["parent"]
         append_tag(list, section)
