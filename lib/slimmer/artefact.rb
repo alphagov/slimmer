@@ -40,7 +40,9 @@ class Slimmer::Artefact
   end
 
   def method_missing(name, *args)
-    @data[name.to_s] || @data["details"][name.to_s]
+    value = @data[name.to_s]
+    value ||= @data["details"][name.to_s] if @data["details"]
+    value
   end
 
   private

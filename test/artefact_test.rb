@@ -134,5 +134,10 @@ describe Slimmer::Artefact do
     it "should return nil if the field doesn't exist" do
       assert_equal nil, @a.non_existent
     end
+
+    it "should not blow up if the details attribute doesn't exist" do
+      @data.delete("details")
+      assert_equal nil, @a.non_existent
+    end
   end
 end
