@@ -37,6 +37,38 @@ describe Slimmer::Artefact do
     end
   end
 
+  describe "Primary root section" do
+    before do
+      @artefact = Slimmer::Artefact.new(artefact_for_slug('something'))
+      @tag1 = tag_for_slug("fooey", "section")
+      @tag2 = tag_for_slug("gooey", "section")
+      @tag3 = tag_for_slug("kablooie", "section")
+    end
+
+    it "should return the primary section if it has no parent" do
+      @artefact.stubs(:primary_section).returns(@tag1)
+      assert_equal @tag1, @artefact.primary_root_section
+    end
+
+    it "should return the primary section's parent" do
+      @tag1["parent"] = @tag2
+      @artefact.stubs(:primary_section).returns(@tag1)
+      assert_equal @tag2, @artefact.primary_root_section
+    end
+
+    it "should support arbitrarily deep heirarchies" do
+      @tag1["parent"] = @tag3
+      @tag3["parent"] = @tag2
+      @artefact.stubs(:primary_section).returns(@tag1)
+      assert_equal @tag2, @artefact.primary_root_section
+    end
+
+    it "should return nil if there is no primary section" do
+      @artefact.stubs(:primary_section).returns(nil)
+      assert_equal nil, @artefact.primary_root_section
+    end
+  end
+
   describe "Related artefacts" do
     before do
       @data = artefact_for_slug('something')

@@ -8,7 +8,7 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
     super
     @related_template = File.read( File.dirname(__FILE__) + "/../fixtures/related.raw.html.erb" )
     @skin = stub("Skin", :template => @related_template)
-    @artefact = artefact_for_slug_with_related_artefacts("vat", ["vat-rates", "starting-to-import"])
+    @artefact = Slimmer::Artefact.new artefact_for_slug_with_related_artefacts("vat", ["vat-rates", "starting-to-import"])
   end
   
   def test_should_add_related_items
