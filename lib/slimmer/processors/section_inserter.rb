@@ -6,9 +6,10 @@ module Slimmer::Processors
 
     def filter(src,dest)
       if @artefact and (list = dest.at_css('.header-context nav[role=navigation] ol'))
-        section = @artefact.primary_section
-        append_tag(list, section["parent"]) if section["parent"]
-        append_tag(list, section)
+        if (section = @artefact.primary_section)
+          append_tag(list, section["parent"]) if section["parent"]
+          append_tag(list, section)
+        end
         append_text(list, @artefact.title) if @artefact.title and @artefact.title !~ /\A\s*\z/
       end
     end
