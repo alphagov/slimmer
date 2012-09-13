@@ -69,6 +69,38 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     assert_in list, "li:nth-child(4)", %{Something gooey}
   end
 
+  def test_should_not_append_title_if_its_blank
+    artefact = create_artefact("something",
+                               "section_slug" => "business",
+                               "subsection_slug" => "employing-people",
+                               "title" => nil)
+
+    template = as_nokogiri %{
+      <html>
+        <body>
+          <div class="header-context">
+            <nav role="navigation">
+              <ol class="group"><li><a href="/">Home</a></li></ol>
+            </nav>
+          </div>
+        </body>
+      </html>
+    }
+
+    t = template.dup
+    Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, t)
+    list = t.at_css(".header-context nav[role=navigation] ol")
+    assert_not_in list, "li:nth-child(4)"
+
+    artefact = create_artefact("something",
+                               "section_slug" => "business",
+                               "subsection_slug" => "employing-people",
+                               "title" => "")
+    Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
+    list = template.at_css(".header-context nav[role=navigation] ol")
+    assert_not_in list, "li:nth-child(4)"
+  end
+
   def test_should_add_links_after_last_item_in_breadcrumb
     artefact = create_artefact("something",
                                "section_slug" => "business",

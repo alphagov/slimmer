@@ -9,7 +9,7 @@ module Slimmer::Processors
         section = @artefact.primary_section
         append_tag(list, section["parent"]) if section["parent"]
         append_tag(list, section)
-        append_text(list, @artefact.title)
+        append_text(list, @artefact.title) if @artefact.title and @artefact.title !~ /\A\s*\z/
       end
     end
 
