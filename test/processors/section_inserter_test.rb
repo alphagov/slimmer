@@ -19,8 +19,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
 
   def test_should_add_section_link_and_title_to_breadcrumb
     artefact = create_artefact("something",
-                               "section_slug" => "business",
-                               "title" => "Something gooey")
+                               "section_slug" => "business")
 
     template = as_nokogiri %{
       <html>
@@ -40,14 +39,12 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     list = template.at_css(".header-context nav[role=navigation] ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in list, "li:nth-child(2)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
-    assert_in list, "li:nth-child(3)", %{Something gooey}
   end
 
   def test_should_add_section_link_subsection_link_and_title_to_breadcrumb
     artefact = create_artefact("something",
                                "section_slug" => "business",
-                               "subsection_slug" => "employing-people",
-                               "title" => "Something gooey")
+                               "subsection_slug" => "employing-people")
 
     template = as_nokogiri %{
       <html>
@@ -66,47 +63,12 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in list, "li:nth-child(2)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
     assert_in list, "li:nth-child(3)", %{<a href="https://www.test.gov.uk/browse/business/employing-people">Employing people</a>}
-    assert_in list, "li:nth-child(4)", %{Something gooey}
-  end
-
-  def test_should_not_append_title_if_its_blank
-    artefact = create_artefact("something",
-                               "section_slug" => "business",
-                               "subsection_slug" => "employing-people",
-                               "title" => nil)
-
-    template = as_nokogiri %{
-      <html>
-        <body>
-          <div class="header-context">
-            <nav role="navigation">
-              <ol class="group"><li><a href="/">Home</a></li></ol>
-            </nav>
-          </div>
-        </body>
-      </html>
-    }
-
-    t = template.dup
-    Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, t)
-    list = t.at_css(".header-context nav[role=navigation] ol")
-    assert_not_in list, "li:nth-child(4)"
-
-    artefact = create_artefact("something",
-                               "section_slug" => "business",
-                               "subsection_slug" => "employing-people",
-                               "title" => "")
-
-    Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
-    list = template.at_css(".header-context nav[role=navigation] ol")
-    assert_not_in list, "li:nth-child(4)"
   end
 
   def test_should_add_links_after_last_item_in_breadcrumb
     artefact = create_artefact("something",
                                "section_slug" => "business",
-                               "subsection_slug" => "employing-people",
-                               "title" => "Something gooey")
+                               "subsection_slug" => "employing-people")
 
     template = as_nokogiri %{
       <html>
@@ -129,7 +91,6 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     assert_in list, "li:nth-child(2)", %{<a href="/browse">All Sections</a>}
     assert_in list, "li:nth-child(3)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
     assert_in list, "li:nth-child(4)", %{<a href="https://www.test.gov.uk/browse/business/employing-people">Employing people</a>}
-    assert_in list, "li:nth-child(5)", %{Something gooey}
   end
 
   def test_should_do_nothing_if_navigation_not_in_template
@@ -165,8 +126,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
   end
 
   def test_should_not_fail_with_no_sections
-    artefact = create_artefact("something",
-                               "title" => "Something gooey")
+    artefact = create_artefact("something")
 
     template = as_nokogiri %{
       <html>
@@ -185,6 +145,5 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
     list = template.at_css(".header-context nav[role=navigation] ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
-    assert_in list, "li:nth-child(2)", %{Something gooey}
   end
 end

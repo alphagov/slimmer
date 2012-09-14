@@ -10,7 +10,6 @@ module Slimmer::Processors
           append_tag(list, section["parent"]) if section["parent"]
           append_tag(list, section)
         end
-        append_text(list, @artefact.title) if @artefact.title and @artefact.title !~ /\A\s*\z/
       end
     end
 
@@ -23,13 +22,6 @@ module Slimmer::Processors
 
       list_item = Nokogiri::XML::Node.new('li', list)
       list_item.add_child(link_node)
-
-      list.add_child(list_item)
-    end
-
-    def append_text(list, text)
-      list_item = Nokogiri::XML::Node.new('li', list)
-      list_item.content = text
 
       list.add_child(list_item)
     end
