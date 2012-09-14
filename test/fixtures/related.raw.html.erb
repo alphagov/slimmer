@@ -17,7 +17,7 @@
                   <a href="<%= h item.web_url %>"><%= h item.title %></a>
                 </li>
               <% end %>
-              <% if root_section = artefact.root_primary_section %>
+              <% if root_section = artefact.primary_root_section %>
                 <li class="related-topic"><a href="<%= h root_section["content_with_tag"]["web_url"] %>"
                   >More from the <span><%= h root_section["title"] %></span> category</a></li>
               <% end %>
