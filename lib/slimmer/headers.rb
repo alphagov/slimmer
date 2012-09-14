@@ -18,6 +18,7 @@ module Slimmer
     SKIP_HEADER = "#{HEADER_PREFIX}-Skip"
     SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
+    FORMAT_HEADER = "#{HEADER_PREFIX}-Format"
     RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-Result-Count"
 
     def set_slimmer_headers(hash)

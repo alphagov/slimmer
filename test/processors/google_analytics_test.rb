@@ -57,10 +57,10 @@ module GoogleAnalyticsTest
       artefact = artefact_for_slug_in_a_section("something", "rhubarb")
       artefact["details"].merge!(
         "need_id" => "42",
-        "format" => "Custard",
         "business_proposition" => true
       )
       headers = {
+        Slimmer::Headers::FORMAT_HEADER => "custard",
         Slimmer::Headers::RESULT_COUNT_HEADER => "3",
         Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json
       }

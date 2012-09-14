@@ -13,10 +13,10 @@ module Slimmer::Processors
       custom_vars = []
       if @artefact
         custom_vars << set_custom_var(1, "Section", @artefact.primary_section["title"]) if @artefact.primary_section
-        custom_vars << set_custom_var(2, "Format", @artefact.format)
         custom_vars << set_custom_var(3, "NeedID", @artefact.need_id)
         custom_vars << set_custom_var(4, "Proposition", (@artefact.business_proposition ? 'business' : 'citizen')) unless @artefact.business_proposition.nil?
       end
+      custom_vars << set_custom_var(2, "Format", @headers[Slimmer::Headers::FORMAT_HEADER])
       custom_vars << set_custom_var(5, "ResultCount", @headers[Slimmer::Headers::RESULT_COUNT_HEADER])
 
       if dest.at_css("#ga-params")
