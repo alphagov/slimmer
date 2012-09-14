@@ -84,4 +84,24 @@ describe Slimmer::Headers do
       assert_equal artefact_copy, artefact
     end
   end
+
+  describe "setting a dummy artefact in the artefact header" do
+    it "should setup an artefact title" do
+      self.set_slimmer_dummy_artefact(:title => "Foo")
+
+      artefact = JSON.parse(headers[Slimmer::Headers::ARTEFACT_HEADER])
+
+      assert_equal "Foo", artefact["title"]
+    end
+
+    it "should setup a section tag for the given name and link" do
+      self.set_slimmer_dummy_artefact(:section_name => "Foo", :section_link => "/something/foo")
+
+      artefact = JSON.parse(headers[Slimmer::Headers::ARTEFACT_HEADER])
+
+      assert_equal "Foo", artefact["tags"][0]["title"]
+      assert_equal "section", artefact["tags"][0]["details"]["type"]
+      assert_equal "/something/foo", artefact["tags"][0]["content_with_tag"]["web_url"]
+    end
+  end
 end

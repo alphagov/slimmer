@@ -1,4 +1,4 @@
-require "test_helper"
+require_relative "test_helper"
 
 module TypicalUsage
 
@@ -52,8 +52,6 @@ module TypicalUsage
       <html>
       <head><title>The title of the page</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -72,14 +70,12 @@ module TypicalUsage
   class NormalResponseTest < SlimmerIntegrationTest
     def setup
       super
-      @artefact = artefact_for_slug("some-slug")
+      @artefact = artefact_for_slug_in_a_section("some-article", 'this-section')
       @artefact["tags"] << tag_for_slug("directgov", "legacy_source")
       given_response 200, %{
         <html>
         <head><title>The title of the page</title>
         <meta name="something" content="yes">
-        <meta name="x-section-name" content="This section">
-        <meta name="x-section-link" content="/this_section">
         <script src="blah.js"></script>
         <link href="app.css" rel="stylesheet" type="text/css">
         </head>
@@ -114,8 +110,9 @@ module TypicalUsage
       assert_rendered_in_template "body.body_class"
     end
 
-    def test_should_insert_meta_navigation_links_into_the_navigation
-      assert_rendered_in_template "nav[role=navigation] li a[href='/this_section']", "This section"
+    def test_should_insert_section_links_into_the_navigation
+      assert_rendered_in_template "nav[role=navigation] li a[href='https://www.test.gov.uk/browse/this-section']", "This section"
+      assert_rendered_in_template "nav[role=navigation] li:last-child", "Some article"
     end
 
     def test_should_add_logo_classes_to_wrapper
@@ -173,8 +170,8 @@ module TypicalUsage
     end
 
     def test_should_insert_related_items_block
-      assert_rendered_in_template "div.related nav li a", "How to test computer software automatically"
-      assert_rendered_in_template "div.related nav li", %r{href="https://www.test.gov.uk/how-to-test-computer-software-automatically"}
+      assert_rendered_in_template "div.related nav li a[href='https://www.test.gov.uk/how-to-test-computer-software-automatically']",
+        "How to test computer software automatically"
     end
   end
 
@@ -200,8 +197,6 @@ module TypicalUsage
       <html>
       <head><title>The title of the page</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -242,8 +237,6 @@ module TypicalUsage
       <html>
       <head><title>500 Error</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -273,8 +266,6 @@ module TypicalUsage
       <html>
       <head><title>404 Missing</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>
@@ -304,8 +295,6 @@ module TypicalUsage
       <html>
       <head><title>406 Not Acceptable</title>
       <meta name="something" content="yes">
-      <meta name="x-section-name" content="This section">
-      <meta name="x-section-link" content="/this_section">
       <script src="blah.js"></script>
       <link href="app.css" rel="stylesheet" type="text/css">
       </head>

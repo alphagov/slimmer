@@ -128,7 +128,7 @@ module Slimmer
         Processors::BodyInserter.new(options[:wrapper_id] || 'wrapper'),
         Processors::BodyClassCopier.new,
         Processors::HeaderContextInserter.new(),
-        Processors::SectionInserter.new(),
+        Processors::SectionInserter.new(artefact),
         Processors::GoogleAnalyticsConfigurator.new(response),
         Processors::SearchPathSetter.new(response),
         Processors::RelatedItemsInserter.new(self, artefact),
@@ -149,10 +149,13 @@ module Slimmer
 
     def artefact_from_header(response)
       if response.headers.include?(Headers::ARTEFACT_HEADER)
-        JSON.parse(response.headers[Headers::ARTEFACT_HEADER])
+        Artefact.new JSON.parse(response.headers[Headers::ARTEFACT_HEADER])
       else
         nil
       end
+    rescue JSON::ParserError => e
+      logger.error "Slimmer: Failed while parsing artefact header: #{[ e.message, e.backtrace ].flatten.join("\n")}"
+      nil
     end
   end
 end
