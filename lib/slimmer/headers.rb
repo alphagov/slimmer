@@ -30,7 +30,11 @@ module Slimmer
     end
 
     def set_slimmer_artefact(artefact_input)
-      artefact = artefact_input.dup
+      if artefact_input.is_a?(Hash) or artefact_input.is_a?(OpenStruct)
+        artefact = artefact_input.dup
+      elsif artefact_input.respond_to?(:to_hash)
+        artefact = artefact_input.to_hash
+      end
       headers[ARTEFACT_HEADER] = artefact.to_json
     end
 

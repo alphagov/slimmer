@@ -77,6 +77,13 @@ describe Slimmer::Headers do
       assert_equal({"foo" => "bar"}.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER])
     end
 
+    it "should handle an object that responds to :to_hash" do
+      hash = {"foo" => "bar", "slug" => "vat-rates"}
+      artefact = stub("Response", :to_hash => hash)
+      self.set_slimmer_artefact(artefact)
+      assert_equal hash.to_json, headers[Slimmer::Headers::ARTEFACT_HEADER]
+    end
+
     it "should not have side-effects on the passed in hash" do
       artefact = {"foo" => "bar", "slug" => "vat-rates", "actions" => "some_actions"}
       artefact_copy = artefact.dup
