@@ -1,3 +1,8 @@
+# 3.1.0
+
+* 'Breadcrumb' trail is now populated from the artefact data. It adds the section.
+subsection, and title.
+
 # 3.0.0
 
 Backwards-incompatible changes:
