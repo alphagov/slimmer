@@ -8,10 +8,22 @@ class Slimmer::Artefact
   end
 
   def tags_of_type(type)
-    return [] unless @data.has_key?("tags")
-    @data["tags"].select do |t|
+    return [] unless self.tags
+    self.tags.select do |t|
       t["details"]["type"] == type
     end
+  end
+
+  def primary_section
+    tags_of_type("section").first
+  end
+
+  def primary_root_section
+    section = primary_section
+    while section and section["parent"]
+      section = section["parent"]
+    end
+    section
   end
 
   def legacy_sources
@@ -21,14 +33,16 @@ class Slimmer::Artefact
   end
 
   def related_artefacts
-    return [] unless @data.has_key?("related")
-    @data["related"].map do |r|
+    return [] unless self.related
+    self.related.map do |r|
       self.class.new(r)
     end
   end
 
   def method_missing(name, *args)
-    @data[name.to_s] || @data["details"][name.to_s]
+    value = @data[name.to_s]
+    value ||= @data["details"][name.to_s] if @data["details"]
+    value
   end
 
   private

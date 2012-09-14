@@ -9,6 +9,66 @@ describe Slimmer::Artefact do
     assert_equal 'vat-rates', a.slug
   end
 
+  describe "Primary section" do
+    before do
+      @data = artefact_for_slug('something')
+      @tag1 = tag_for_slug("fooey", "section")
+      @tag2 = tag_for_slug("gooey", "section")
+      @data["tags"] << @tag1 << @tag2
+    end
+
+    it "should return the first section tag" do
+      assert_equal @tag1, Slimmer::Artefact.new(@data).primary_section
+    end
+
+    it "should ignore other tag types" do
+      @data["tags"].unshift(tag_for_slug("businesslink", "legacy_source"))
+      assert_equal @tag1, Slimmer::Artefact.new(@data).primary_section
+    end
+
+    it "should return nil if there are no sections" do
+      @data["tags"] = [tag_for_slug("businesslink", "legacy_source")]
+      assert_equal nil, Slimmer::Artefact.new(@data).primary_section
+    end
+
+    it "should return nil if there is no tags element" do
+      @data.delete("tags")
+      assert_equal nil, Slimmer::Artefact.new(@data).primary_section
+    end
+  end
+
+  describe "Primary root section" do
+    before do
+      @artefact = Slimmer::Artefact.new(artefact_for_slug('something'))
+      @tag1 = tag_for_slug("fooey", "section")
+      @tag2 = tag_for_slug("gooey", "section")
+      @tag3 = tag_for_slug("kablooie", "section")
+    end
+
+    it "should return the primary section if it has no parent" do
+      @artefact.stubs(:primary_section).returns(@tag1)
+      assert_equal @tag1, @artefact.primary_root_section
+    end
+
+    it "should return the primary section's parent" do
+      @tag1["parent"] = @tag2
+      @artefact.stubs(:primary_section).returns(@tag1)
+      assert_equal @tag2, @artefact.primary_root_section
+    end
+
+    it "should support arbitrarily deep heirarchies" do
+      @tag1["parent"] = @tag3
+      @tag3["parent"] = @tag2
+      @artefact.stubs(:primary_section).returns(@tag1)
+      assert_equal @tag2, @artefact.primary_root_section
+    end
+
+    it "should return nil if there is no primary section" do
+      @artefact.stubs(:primary_section).returns(nil)
+      assert_equal nil, @artefact.primary_root_section
+    end
+  end
+
   describe "Related artefacts" do
     before do
       @data = artefact_for_slug('something')
@@ -72,6 +132,11 @@ describe Slimmer::Artefact do
     end
 
     it "should return nil if the field doesn't exist" do
+      assert_equal nil, @a.non_existent
+    end
+
+    it "should not blow up if the details attribute doesn't exist" do
+      @data.delete("details")
       assert_equal nil, @a.non_existent
     end
   end

@@ -19,12 +19,13 @@ module Slimmer::TestTemplate
         <script src="http://static.preview.alphagov.co.uk/static/jquery.tabs.js" defer></script>
       </head>
       <body>
-        <nav role="navigation" class="header-context">
-          <ol class="group">
-            <li><a href="/">Home</a></li>
-            <li><a href="/browse">All sections</a></li>
-          </ol>
-        </nav>
+        <div class="header-context">
+          <nav role="navigation">
+            <ol class="group">
+              <li><a href="/">Home</a></li>
+            </ol>
+          </nav>
+        </div>
 
         <div id="wrapper"></div>
       </body>

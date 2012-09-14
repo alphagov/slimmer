@@ -9,7 +9,7 @@ describe Slimmer::Processors::LogoClassInserter do
     legacy_sources.each do |legacy_source|
       artefact["tags"] << tag_for_slug(legacy_source, "legacy_source")
     end
-    artefact
+    Slimmer::Artefact.new(artefact)
   end
 
   def business_link_artefact
@@ -68,7 +68,7 @@ describe Slimmer::Processors::LogoClassInserter do
 
   it "should do nothing if the artefact has no tag_ids" do
     template = example_template
-    artefact = artefact_for_slug("vat")
+    artefact = Slimmer::Artefact.new(artefact_for_slug("vat"))
     process(artefact, template)
     assert_in template, "div#wrapper"
   end

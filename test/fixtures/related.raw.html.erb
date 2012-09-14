@@ -10,21 +10,18 @@
         <h2>More like this:</h2>
         <nav role="navigation">
           <ul>
-            <!-- Content API style Artefact -->
-            <% if artefact["related"] %>
-              <% if artefact["related"].any? %>
-                <% artefact["related"].each do |item| %>
-
-                  <li>
-                    <a href="<%= h item["web_url"] %>"><%= h item["title"] %></a>
-                  </li>
-                <% end %>
+            <%# Content API style Artefact %>
+            <% if artefact.respond_to?(:related_artefacts) %>
+              <% artefact.related_artefacts.each do |item| %>
+                <li>
+                  <a href="<%= h item.web_url %>"><%= h item.title %></a>
+                </li>
               <% end %>
-              <% if root_primary_section %>
-                <li class="related-topic"><a href="<%= root_primary_section["content_with_tag"]["web_url"] %>"
-                  >More from the <span><%= h root_primary_section["title"] %></span> category</a></li>
+              <% if root_section = artefact.root_primary_section %>
+                <li class="related-topic"><a href="<%= h root_section["content_with_tag"]["web_url"] %>"
+                  >More from the <span><%= h root_section["title"] %></span> category</a></li>
               <% end %>
-            <% else %> <!-- Panopticon API style Artefact (deprecated) -->
+            <% else %> <%# Panopticon API style Artefact (deprecated) %>
               <% if artefact["related_items"].any? %>
                 <% artefact["related_items"].each do |item| %>
                   <% if item["artefact"] %>
