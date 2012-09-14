@@ -1,4 +1,4 @@
-require "test_helper"
+require_relative "../test_helper"
 require "v8"
 
 module GoogleAnalyticsTest
@@ -51,15 +51,22 @@ module GoogleAnalyticsTest
     include JavaScriptAssertions
     PAGE_LEVEL_EVENT = 3
 
-    headers = {
-      "X-Slimmer-Section"       => "RHUBARB",
-      "X-Slimmer-Format"        => "custard",
-      "X-Slimmer-Need-ID"       => "42",
-      "X-Slimmer-Proposition"   => "trifle",
-      "X-Slimmer-Result-Count"  => "3"
-    }
+    def setup
+      super
 
-    given_response 200, GENERIC_DOCUMENT, headers
+      artefact = artefact_for_slug_in_a_section("something", "rhubarb")
+      artefact["details"].merge!(
+        "need_id" => "42",
+        "format" => "Custard",
+        "business_proposition" => true
+      )
+      headers = {
+        Slimmer::Headers::RESULT_COUNT_HEADER => "3",
+        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json
+      }
+
+      given_response 200, GENERIC_DOCUMENT, headers
+    end
 
     def test_should_pass_section_to_GA
       assert_custom_var 1, "Section", "rhubarb", PAGE_LEVEL_EVENT
@@ -86,7 +93,7 @@ module GoogleAnalyticsTest
     end
 
     def test_should_pass_proposition_to_GA
-      assert_custom_var 4, "Proposition", "trifle", PAGE_LEVEL_EVENT
+      assert_custom_var 4, "Proposition", "business", PAGE_LEVEL_EVENT
     end
 
     def test_should_set_section_in_GOVUK_object

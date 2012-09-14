@@ -3,25 +3,24 @@ require "json"
 module Slimmer::Processors
   class GoogleAnalyticsConfigurator
     PAGE_LEVEL_EVENT = 3
-    HEADER_MAPPING = {
-      "Section"     => "X-SLIMMER-SECTION",
-      "Format"      => "X-SLIMMER-FORMAT",
-      "NeedID"      => "X-SLIMMER-NEED-ID",
-      "Proposition" => "X-SLIMMER-PROPOSITION",
-      "ResultCount" => "X-SLIMMER-RESULT-COUNT"
-    }
 
-    def initialize(response)
+    def initialize(response, artefact)
       @headers = response.headers
+      @artefact = artefact
     end
 
     def filter(src, dest)
-      custom_vars = HEADER_MAPPING.map.with_index(1) { |(name, key), slot|
-        set_custom_var(slot, name, @headers[key])
-      }.compact.join("\n");
+      custom_vars = []
+      if @artefact
+        custom_vars << set_custom_var(1, "Section", @artefact.primary_section["title"]) if @artefact.primary_section
+        custom_vars << set_custom_var(2, "Format", @artefact.format)
+        custom_vars << set_custom_var(3, "NeedID", @artefact.need_id)
+        custom_vars << set_custom_var(4, "Proposition", (@artefact.business_proposition ? 'business' : 'citizen')) unless @artefact.business_proposition.nil?
+      end
+      custom_vars << set_custom_var(5, "ResultCount", @headers[Slimmer::Headers::RESULT_COUNT_HEADER])
 
       if dest.at_css("#ga-params")
-        dest.at_css("#ga-params").content += custom_vars
+        dest.at_css("#ga-params").content += custom_vars.compact.join("\n")
       end
     end
 
