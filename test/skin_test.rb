@@ -14,16 +14,77 @@ describe Slimmer::Skin do
       assert_equal "<foo />", template
     end
 
-    it "should cache the template" do
-      skin = Slimmer::Skin.new asset_host: "http://example.local/", use_cache: true
-      expected_url = "http://example.local/templates/example.html.erb"
-      stub_request(:get, expected_url).to_return :body => "<foo />"
+    describe "template caching" do
+      it "should not cache the template by default" do
+        skin = Slimmer::Skin.new asset_host: "http://example.local/"
+        expected_url = "http://example.local/templates/example.html.erb"
+        stub_request(:get, expected_url).to_return :body => "<foo />"
 
-      first_access = skin.template 'example'
-      second_access = skin.template 'example'
+        first_access = skin.template 'example'
+        second_access = skin.template 'example'
 
-      assert_requested :get, "http://example.local/templates/example.html.erb", times: 1
-      assert_same first_access, second_access
+        assert_requested :get, "http://example.local/templates/example.html.erb", times: 2
+      end
+
+      it "should cache the template when requested" do
+        skin = Slimmer::Skin.new asset_host: "http://example.local/", use_cache: true
+        expected_url = "http://example.local/templates/example.html.erb"
+        stub_request(:get, expected_url).to_return :body => "<foo />"
+
+        first_access = skin.template 'example'
+        second_access = skin.template 'example'
+
+        assert_requested :get, "http://example.local/templates/example.html.erb", times: 1
+        assert_same first_access, second_access
+      end
+
+      it "should only cache the template for 15 mins by default" do
+        skin = Slimmer::Skin.new asset_host: "http://example.local/", use_cache: true
+        expected_url = "http://example.local/templates/example.html.erb"
+        stub_request(:get, expected_url).to_return :body => "<foo />"
+
+        first_access = skin.template 'example'
+        second_access = skin.template 'example'
+
+        assert_requested :get, "http://example.local/templates/example.html.erb", times: 1
+        assert_same first_access, second_access
+
+        Timecop.travel( 15 * 60 - 30) do # now + 14 mins 30 secs
+          third_access = skin.template 'example'
+          assert_requested :get, "http://example.local/templates/example.html.erb", times: 1
+          assert_same first_access, third_access
+        end
+
+        Timecop.travel( 15 * 60 + 30) do # now + 15 mins 30 secs
+          fourth_access = skin.template 'example'
+          assert_requested :get, "http://example.local/templates/example.html.erb", times: 2
+          assert_equal first_access, fourth_access
+        end
+      end
+
+      it "should allow overriding the cache ttl" do
+        skin = Slimmer::Skin.new asset_host: "http://example.local/", use_cache: true, cache_ttl: 5 * 60
+        expected_url = "http://example.local/templates/example.html.erb"
+        stub_request(:get, expected_url).to_return :body => "<foo />"
+
+        first_access = skin.template 'example'
+        second_access = skin.template 'example'
+
+        assert_requested :get, "http://example.local/templates/example.html.erb", times: 1
+        assert_same first_access, second_access
+
+        Timecop.travel( 5 * 60 - 30) do # now + 4 mins 30 secs
+          third_access = skin.template 'example'
+          assert_requested :get, "http://example.local/templates/example.html.erb", times: 1
+          assert_same first_access, third_access
+        end
+
+        Timecop.travel( 5 * 60 + 30) do # now + 5 mins 30 secs
+          fourth_access = skin.template 'example'
+          assert_requested :get, "http://example.local/templates/example.html.erb", times: 2
+          assert_equal first_access, fourth_access
+        end
+      end
     end
 
     it "should raise appropriate exception when template not found" do

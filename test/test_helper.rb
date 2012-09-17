@@ -2,13 +2,12 @@ require_relative '../lib/slimmer'
 require 'minitest/autorun'
 require 'minitest/unit'
 require 'rack/test'
-require 'webmock/minitest'
 require 'json'
 require 'logger'
 require 'mocha'
+require 'timecop'
 require 'gds_api/test_helpers/content_api'
 
-WebMock.disable_net_connect!
 ENV['FACTER_govuk_platform'] = 'test'
 
 class MiniTest::Unit::TestCase
@@ -36,7 +35,14 @@ class MiniTest::Unit::TestCase
     WebMock.disable_net_connect!
     result
   end
+
+  def teardown
+    Timecop.return
+  end
 end
+
+require 'webmock/minitest'
+WebMock.disable_net_connect!
 
 class SlimmerIntegrationTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods

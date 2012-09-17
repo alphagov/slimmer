@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'plek', '>= 0.1.8'
   s.add_dependency 'json'
   s.add_dependency 'null_logger'
+  s.add_dependency 'lrucache', '~> 0.1.3'
 
   s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'rake', '~> 0.9.2.2'
@@ -30,6 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'therubyracer'
   s.add_development_dependency 'gem_publisher', '~> 1.1.1'
   s.add_development_dependency 'gds-api-adapters', '1.9.2'
+  s.add_development_dependency 'timecop', '~> 0.5.1'
   s.files         = Dir[
     'README.md',
     'CHANGELOG.md',
