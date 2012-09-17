@@ -54,7 +54,7 @@ module GoogleAnalyticsTest
     def setup
       super
 
-      artefact = artefact_for_slug_in_a_section("something", "rhubarb")
+      artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
       artefact["details"].merge!(
         "need_id" => "42",
         "business_proposition" => true

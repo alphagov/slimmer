@@ -12,7 +12,7 @@ module Slimmer::Processors
     def filter(src, dest)
       custom_vars = []
       if @artefact
-        custom_vars << set_custom_var(1, "Section", @artefact.primary_section["title"]) if @artefact.primary_section
+        custom_vars << set_custom_var(1, "Section", @artefact.primary_root_section["title"]) if @artefact.primary_root_section
         custom_vars << set_custom_var(3, "NeedID", @artefact.need_id)
         custom_vars << set_custom_var(4, "Proposition", (@artefact.business_proposition ? 'business' : 'citizen')) unless @artefact.business_proposition.nil?
       end
