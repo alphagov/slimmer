@@ -7,15 +7,20 @@ module Slimmer
     def initialize options = {}
       @options = options
       @asset_host = options[:asset_host]
-      @template_cache = {}
+
       @use_cache = options[:use_cache] || false
+      @cache_ttl = options[:cache_ttl] || (15 * 60) # 15 mins
+      @template_cache = LRUCache.new(:ttl => @cache_ttl) if @use_cache
+
       @logger = options[:logger] || NullLogger.instance
       @strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
     end
 
     def template(template_name)
       if use_cache
-        template_cache[template_name] ||= load_template(template_name)
+        template_cache.fetch(template_name) do
+          load_template(template_name)
+        end
       else
         load_template(template_name)
       end
