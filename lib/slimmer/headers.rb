@@ -18,6 +18,8 @@ module Slimmer
     SKIP_HEADER = "#{HEADER_PREFIX}-Skip"
     SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
+    FORMAT_HEADER = "#{HEADER_PREFIX}-Format"
+    RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-Result-Count"
 
     def set_slimmer_headers(hash)
       raise InvalidHeader if (hash.keys - SLIMMER_HEADER_MAPPING.keys).any?
@@ -28,7 +30,11 @@ module Slimmer
     end
 
     def set_slimmer_artefact(artefact_input)
-      artefact = artefact_input.dup
+      if artefact_input.is_a?(Hash) or artefact_input.is_a?(OpenStruct)
+        artefact = artefact_input.dup
+      elsif artefact_input.respond_to?(:to_hash)
+        artefact = artefact_input.to_hash
+      end
       headers[ARTEFACT_HEADER] = artefact.to_json
     end
 

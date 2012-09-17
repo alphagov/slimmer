@@ -38,7 +38,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
     list = template.at_css(".header-context nav[role=navigation] ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
-    assert_in list, "li:nth-child(2)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
+    assert_in list, "li:nth-child(2)", %{<strong><a href="https://www.test.gov.uk/browse/business">Business</a></strong>}
   end
 
   def test_should_add_section_link_subsection_link_and_title_to_breadcrumb
@@ -62,7 +62,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     list = template.at_css(".header-context nav[role=navigation] ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in list, "li:nth-child(2)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
-    assert_in list, "li:nth-child(3)", %{<a href="https://www.test.gov.uk/browse/business/employing-people">Employing people</a>}
+    assert_in list, "li:nth-child(3)", %{<strong><a href="https://www.test.gov.uk/browse/business/employing-people">Employing people</a></strong>}
   end
 
   def test_should_add_links_after_last_item_in_breadcrumb
@@ -90,7 +90,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in list, "li:nth-child(2)", %{<a href="/browse">All Sections</a>}
     assert_in list, "li:nth-child(3)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
-    assert_in list, "li:nth-child(4)", %{<a href="https://www.test.gov.uk/browse/business/employing-people">Employing people</a>}
+    assert_in list, "li:nth-child(4)", %{<strong><a href="https://www.test.gov.uk/browse/business/employing-people">Employing people</a></strong>}
   end
 
   def test_should_do_nothing_if_navigation_not_in_template
