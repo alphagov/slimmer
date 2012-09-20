@@ -1,7 +1,6 @@
 module Slimmer
   class App
     attr_accessor :logger
-    private :logger=, :logger
 
     def initialize(app, *args, &block)
       options = args.first || {}
@@ -9,6 +8,15 @@ module Slimmer
 
       logger = options[:logger] || NullLogger.instance
       self.logger = logger
+      begin
+        if logger.level == 0 # Log set to debug level
+          unless options[:enable_debugging]
+            self.logger = logger.dup
+            self.logger.level = 1 # info
+          end
+        end
+      rescue NoMethodError # In case logger doesn't respond_to? :level
+      end
 
       if options.key? :template_path
         raise "Template path should not be used. Use asset_host instead."
@@ -18,7 +26,7 @@ module Slimmer
         options[:asset_host] = Plek.current.find("assets")
       end
 
-      @skin = Skin.new options.merge(logger: logger)
+      @skin = Skin.new options.merge(logger: self.logger)
     end
 
     def call(env)
