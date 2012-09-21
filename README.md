@@ -53,6 +53,25 @@ To get this, include Slimmer::Template in your controller:
       include Slimmer::Template
     end
 
+## Logging
+
+Slimmer can be configured with a logger by passing in a logger instance (anything that quacks like an instance of Logger).
+For example to log to the Rails log, put the following in an initializer:
+
+    YourApp::Application.configure do
+      config.slimmer.logger = Rails.logger
+    end
+
+**Note:** This can't be in `application.rb` because the Rails logger hasn't been initialized by then.
+
+**Debug logging**
+
+By default if you pass in a logger with its log level set to debug, slimmer will dup this logger and reduce the level to info. (Slimmer's debug logging is very noisy).  To prevent this, set the `enable_debugging` option to true.  e.g. for Rails:
+
+    YourApp::Application.configure do
+      config.slimmer.enable_debugging = true
+    end
+
 ## The name
 
 Slimmer was extracted from a much larger project called 'skinner'. 'slimmer' referred to the size 
