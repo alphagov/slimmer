@@ -4,16 +4,30 @@ module Slimmer::Processors
       @artefact = artefact
     end
 
-    def filter(src,dest)
+    def filter(src, dest)
       if @artefact and (list = dest.at_css('.header-context nav[role=navigation] ol'))
         if (section = @artefact.primary_section)
-          append_tag(list, section["parent"]) if section["parent"]
-          append_tag(list, section, :strong => true)
+          sections = recurse_sections(section)
+          current = sections.pop
+          sections.each do |section|
+            append_tag(list, section)
+          end
+          append_tag(list, current, :strong => true)
         end
       end
     end
 
     private
+
+    def recurse_sections(section, current = nil)
+      current = [section] unless current
+
+      if section['parent']
+        current.unshift(section['parent'])
+        current = recurse_sections(section['parent'], current)
+      end
+      current
+    end
 
     def append_tag(list, tag, opts = {})
       link_node = Nokogiri::XML::Node.new('a', list)

@@ -146,4 +146,34 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     list = template.at_css(".header-context nav[role=navigation] ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
   end
+
+  def test_should_support_multiple_levels_of_navigation
+    artefact = create_artefact("something",
+                               "section_slug" => "business",
+                               "subsection_slug" => "employing-people/deep-section")
+
+    template = as_nokogiri %{
+      <html>
+        <body>
+          <div class="header-context">
+            <nav role="navigation">
+              <ol class="group">
+                <li><a href="/">Home</a></li>
+                <li><a href="/browse">All Sections</a></li>
+              </ol>
+            </nav>
+          </div>
+        </body>
+      </html>
+    }
+
+    Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
+    list = template.at_css(".header-context nav[role=navigation] ol")
+    assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
+    assert_in list, "li:nth-child(2)", %{<a href="/browse">All Sections</a>}
+    assert_in list, "li:nth-child(3)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
+    assert_in list, "li:nth-child(4)", %{<a href="https://www.test.gov.uk/browse/business/employing-people">Employing people</a>}
+    assert_in list, "li:nth-child(5)", %{<strong><a href="https://www.test.gov.uk/browse/business/employing-people/deep-section">Deep section</a></strong>}
+  end
+
 end
