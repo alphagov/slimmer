@@ -47,6 +47,12 @@ module Slimmer
           "details" => {"type" => "section"},
           "content_with_tag" => {"web_url" => details[:section_link]},
         }
+        if details[:parent]
+          tag["parent"] = {"title" => details[:parent][:section_name],
+                            "details" => {"type" => "section"},
+                            "content_with_tag" => {"web_url" => details[:parent][:section_link]},
+                          }
+        end
         artefact["tags"] = [tag]
       end
       headers[ARTEFACT_HEADER] = artefact.to_json
