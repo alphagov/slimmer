@@ -5,22 +5,22 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
-      section:      "Section",
-      need_id:      "Need-ID",
       format:       "Format",
+      need_id:      "Need-ID",
       proposition:  "Proposition",
       result_count: "Result-Count",
-      template:     "Template",
+      section:      "Section",
       skip:         "Skip",
+      template:     "Template",
     }
 
-    TEMPLATE_HEADER = "#{HEADER_PREFIX}-Template"
-    SKIP_HEADER = "#{HEADER_PREFIX}-Skip"
-    SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
-    SEARCH_INDEX_HEADER = "#{HEADER_PREFIX}-Search-Index"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
     FORMAT_HEADER = "#{HEADER_PREFIX}-Format"
     RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-Result-Count"
+    SEARCH_INDEX_HEADER = "#{HEADER_PREFIX}-Search-Index"
+    SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
+    SKIP_HEADER = "#{HEADER_PREFIX}-Skip"
+    TEMPLATE_HEADER = "#{HEADER_PREFIX}-Template"
 
     def set_slimmer_headers(hash)
       raise InvalidHeader if (hash.keys - SLIMMER_HEADER_MAPPING.keys).any?
