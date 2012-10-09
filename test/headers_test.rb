@@ -54,6 +54,15 @@ class HeadersTest < MiniTest::Unit::TestCase
       set_slimmer_headers seccion: "wrong"
     end
   end
+
+  def test_should_not_have_meta_viewport_header_set
+    assert_equal nil, headers["X-Slimmer-Remove-Meta-Viewport"]
+  end
+
+  def test_should_set_meta_viewport_header
+    set_slimmer_headers remove_meta_viewport: true
+    assert_equal "true", headers["X-Slimmer-Remove-Meta-Viewport"]
+  end
 end
 
 describe Slimmer::Headers do
