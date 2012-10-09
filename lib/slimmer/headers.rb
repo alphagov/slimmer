@@ -5,17 +5,19 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
-      format:       "Format",
-      need_id:      "Need-ID",
-      proposition:  "Proposition",
-      result_count: "Result-Count",
-      section:      "Section",
-      skip:         "Skip",
-      template:     "Template",
+      format:               "Format",
+      need_id:              "Need-ID",
+      proposition:          "Proposition",
+      remove_meta_viewport: "Remove-Meta-Viewport",
+      result_count:         "Result-Count",
+      section:              "Section",
+      skip:                 "Skip",
+      template:             "Template",
     }
 
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
     FORMAT_HEADER = "#{HEADER_PREFIX}-Format"
+    REMOVE_META_VIEWPORT = "#{HEADER_PREFIX}-Remove-Meta-Viewport"
     RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-Result-Count"
     SEARCH_INDEX_HEADER = "#{HEADER_PREFIX}-Search-Index"
     SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
