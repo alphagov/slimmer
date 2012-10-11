@@ -48,6 +48,12 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
   include Rack::Test::Methods
   include GdsApi::TestHelpers::ContentApi
 
+  def setup
+    stub_request(:get, "http://template.local/templates/campaign.html.erb").
+      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
+      to_return(:status => 200, :body => "", :headers => {})
+  end
+
   # given_response can either be called from a setup method, or in the class scope.
   # The setup method variant is necessary if you want to pass variables into the call that
   # are created in higher setup methods.

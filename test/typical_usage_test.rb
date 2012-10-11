@@ -370,4 +370,29 @@ module TypicalUsage
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end
   end
+
+  class CampaignNotificationInserterTest < SlimmerIntegrationTest
+    def test_should_update_the_campaign_with_a_notification
+      campaign_response = as_nokogiri %{
+        <section id="campaign-notification"><p>testing...</p></section>
+      }
+
+      stub_request(:get, "http://template.local/templates/campaign.html.erb").
+        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
+        to_return(:status => 200, :body => campaign_response.to_html, :headers => {})
+
+      given_response 200, %{
+        <html>
+          <body>
+            <div id="wrapper">
+              <section class="main-campaign group"><a href="/tour">A tour!</a></section>
+            </div>
+          </body>
+        </html>
+      },
+      {Slimmer::Headers::CAMPAIGN_NOTIFICATION => "true"}
+
+      assert_rendered_in_template "#campaign-notification", "<p>testing...</p>"
+    end
+  end
 end
