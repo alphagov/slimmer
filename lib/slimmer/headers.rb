@@ -5,7 +5,6 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
-      campaign_notification:"Campaign-Notification",
       format:               "Format",
       need_id:              "Need-ID",
       proposition:          "Proposition",
