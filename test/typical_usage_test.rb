@@ -373,10 +373,6 @@ module TypicalUsage
 
   class CampaignNotificationInserterTest < SlimmerIntegrationTest
     def test_should_update_the_campaign_with_a_notification
-      campaign_response = as_nokogiri %{
-        <section id="campaign-notification"><p>testing...</p></section>
-      }
-
       given_response 200, %{
         <html>
           <body>
