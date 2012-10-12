@@ -29,8 +29,8 @@ class CampaignNotificationInserterTest < MiniTest::Unit::TestCase
   end
 
   def test_should_replace_campaign_with_notification_if_header_set
-    campaign = as_nokogiri %{ <section id="campaign-notification"><p>testing...</p></section> }
-    @skin.expects(:template).with('campaign').returns(campaign.to_html.strip)
+    campaign = '<section id="campaign-notification"><p>testing...</p></section>'
+    @skin.expects(:template).with('campaign').returns(campaign)
 
     headers = {Slimmer::Headers::CAMPAIGN_NOTIFICATION => "true"}
     campaign_inserter = Slimmer::Processors::CampaignNotificationInserter.new(@skin, headers)
@@ -40,7 +40,7 @@ class CampaignNotificationInserterTest < MiniTest::Unit::TestCase
     }
 
     expected = as_nokogiri %{
-      <html><body> <section id="campaign-notification"><p>testing...</p></section> </body></html>
+      <html><body><section id="campaign-notification"><p>testing...</p></section></body></html>
     }
 
     campaign_inserter.filter(:any_source, source)
