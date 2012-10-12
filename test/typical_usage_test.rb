@@ -377,10 +377,6 @@ module TypicalUsage
         <section id="campaign-notification"><p>testing...</p></section>
       }
 
-      stub_request(:get, "http://template.local/templates/campaign.html.erb").
-        with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => campaign_response.to_html, :headers => {})
-
       given_response 200, %{
         <html>
           <body>
