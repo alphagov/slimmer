@@ -1,22 +1,27 @@
 module Slimmer::Processors
   class CampaignNotificationInserter
-    def initialize(headers)
+    def initialize(skin, headers)
       @headers = headers
-      @old_campaign = ".main-campaign"
-      @new_campaign = "#campaign-notification"
+      @skin = skin
+      @old_campaign_selector = ".main-campaign"
+      @new_campaign_selector = "#campaign-notification"
     end
 
-    def filter(source, campaign_template)
-      parsed_source = Nokogiri::HTML.parse(source)
-      campaign = Nokogiri::HTML.parse(campaign_template)
+    def filter(content_document, page_template)
       if @headers[Slimmer::Headers::CAMPAIGN_NOTIFICATION] == "true" &&
-          parsed_source.at_css(@old_campaign) &&
-          campaign.at_css(@new_campaign)
-        notification = Nokogiri::HTML.fragment(campaign.at_css(@new_campaign).to_html)
-        parsed_source.at_css(@old_campaign).replace(notification)
-        return parsed_source.to_html
+          old_campaign = page_template.at_css(@old_campaign_selector)
+        new_campaign_block = campaign_notification_block
+        if new_campaign_block.at_css(@new_campaign_selector)
+          old_campaign.replace(new_campaign_block)
+        end
       end
-      return source
+    end
+
+    private
+
+    def campaign_notification_block
+      html = @skin.template('campaign')
+      Nokogiri::HTML.fragment(html)
     end
   end
 end

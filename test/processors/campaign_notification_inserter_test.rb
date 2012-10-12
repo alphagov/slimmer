@@ -1,8 +1,14 @@
 require "test_helper"
 
 class CampaignNotificationInserterTest < MiniTest::Unit::TestCase
+  def setup
+    @skin = stub("Skin", :template => nil)
+  end
+
   def test_should_not_replace_campaign_if_header_not_set
-    campaign = '<section id="campaign-notification"><p>testing...</p></section>'
+    @skin.expects(:template).with("campaign").never
+    campaign_inserter = Slimmer::Processors::CampaignNotificationInserter.new(@skin, {})
+
     source = as_nokogiri %{
       <html>
         <body>
@@ -18,31 +24,26 @@ class CampaignNotificationInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    assert_equal expected.to_html.strip,
-                 Slimmer::Processors::CampaignNotificationInserter.new({})
-                   .filter(source.to_html, campaign).strip
+    campaign_inserter.filter(:any_source, source)
+    assert_equal expected.to_html, source.to_html
   end
 
   def test_should_replace_campaign_with_notification_if_header_set
-    campaign = '<section id="campaign-notification"><p>testing...</p></section>'
-    source = as_nokogiri %{
-      <html>
-        <body>
-          <section class="main-campaign group"><a href="/tour">A tour!</a></section>
-        </body>
-      </html>
-    }
+    campaign = as_nokogiri %{ <section id="campaign-notification"><p>testing...</p></section> }
+    @skin.expects(:template).with('campaign').returns(campaign.to_html.strip)
 
     headers = {Slimmer::Headers::CAMPAIGN_NOTIFICATION => "true"}
-    expected = as_nokogiri %{
-      <html>
-        <body>
-          <section id="campaign-notification"><p>testing...</p></section>
-        </body>
-      </html>
+    campaign_inserter = Slimmer::Processors::CampaignNotificationInserter.new(@skin, headers)
+
+    source = as_nokogiri %{
+      <html><body><section class="main-campaign group"><a href="/tour">A tour!</a></section></body></html>
     }
-    assert_equal expected.to_html.strip,
-                 Slimmer::Processors::CampaignNotificationInserter.new(headers)
-                   .filter(source.to_html, campaign).strip
+
+    expected = as_nokogiri %{
+      <html><body> <section id="campaign-notification"><p>testing...</p></section> </body></html>
+    }
+
+    campaign_inserter.filter(:any_source, source)
+    assert_equal expected.to_html.gsub(/\n/," ").strip, source.to_html.gsub(/\n/," ").strip
   end
 end

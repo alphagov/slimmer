@@ -141,11 +141,11 @@ module Slimmer
         Processors::ReportAProblemInserter.new(self, source_request.url),
         Processors::SearchIndexSetter.new(response),
         Processors::MetaViewportRemover.new(response),
+        Processors::CampaignNotificationInserter.new(self, response.headers),
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
-      processed_template = process(processors, body, template(template_name))
-      campaign_notification(response, processed_template)
+      process(processors, body, template(template_name))
     end
 
     def error(template_name, body)
@@ -153,10 +153,6 @@ module Slimmer
         Processors::TitleInserter.new()
       ]
       process(processors, body, template(template_name))
-    end
-
-    def campaign_notification(response, body)
-      Processors::CampaignNotificationInserter.new(response.headers).filter(body, template("campaign"))
     end
 
     def artefact_from_header(response)
