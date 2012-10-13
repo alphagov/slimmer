@@ -63,6 +63,15 @@ class HeadersTest < MiniTest::Unit::TestCase
     set_slimmer_headers remove_meta_viewport: true
     assert_equal "true", headers["X-Slimmer-Remove-Meta-Viewport"]
   end
+
+  def test_should_not_have_campaign_notification_set
+    assert_equal nil, headers["X-Slimmer-Campaign-Notification"]
+  end
+
+  def test_should_set_campaign_notification_header
+    set_slimmer_headers campaign_notification: true
+    assert_equal "true", headers["X-Slimmer-Campaign-Notification"]
+  end
 end
 
 describe Slimmer::Headers do

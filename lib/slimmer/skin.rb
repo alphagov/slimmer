@@ -141,6 +141,7 @@ module Slimmer
         Processors::ReportAProblemInserter.new(self, source_request.url),
         Processors::SearchIndexSetter.new(response),
         Processors::MetaViewportRemover.new(response),
+        Processors::CampaignNotificationInserter.new(self, response.headers),
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'

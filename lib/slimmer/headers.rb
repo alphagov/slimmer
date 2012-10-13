@@ -5,6 +5,7 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
+      campaign_notification:"Campaign-Notification",
       format:               "Format",
       need_id:              "Need-ID",
       proposition:          "Proposition",
@@ -16,13 +17,14 @@ module Slimmer
     }
 
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
-    FORMAT_HEADER = "#{HEADER_PREFIX}-Format"
-    REMOVE_META_VIEWPORT = "#{HEADER_PREFIX}-Remove-Meta-Viewport"
-    RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-Result-Count"
+    CAMPAIGN_NOTIFICATION = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:campaign_notification]}"
+    FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
+    REMOVE_META_VIEWPORT = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_meta_viewport]}"
+    RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:result_count]}"
     SEARCH_INDEX_HEADER = "#{HEADER_PREFIX}-Search-Index"
     SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
-    SKIP_HEADER = "#{HEADER_PREFIX}-Skip"
-    TEMPLATE_HEADER = "#{HEADER_PREFIX}-Template"
+    SKIP_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:skip]}"
+    TEMPLATE_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:template]}"
 
     def set_slimmer_headers(hash)
       raise InvalidHeader if (hash.keys - SLIMMER_HEADER_MAPPING.keys).any?
