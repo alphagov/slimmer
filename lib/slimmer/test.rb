@@ -7,6 +7,8 @@ module Slimmer
       logger.debug "Slimmer: TEST MODE - Loading fixture template from #{__FILE__}"
       if name =~ /\A(.*)\.raw\z/
         %{<div id="test-#{$1}"></div>}
+      elsif name == "campaign"
+        '<section class="black" id="campaign-notification"><div><p>Notifications!</p></div></section>'
       else
         Slimmer::TestTemplate::TEMPLATE
       end

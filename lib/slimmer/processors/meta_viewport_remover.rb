@@ -5,7 +5,7 @@ module Slimmer::Processors
     end
 
     def filter(src, dest)
-      if @response.headers["X-Slimmer-Remove-Meta-Viewport"] == "true"
+      if @response.headers[Slimmer::Headers::REMOVE_META_VIEWPORT] == "true"
         dest.at_xpath('//head//meta[@name="viewport"]').remove
       end
     end
