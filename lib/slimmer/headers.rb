@@ -9,6 +9,7 @@ module Slimmer
       format:               "Format",
       need_id:              "Need-ID",
       proposition:          "Proposition",
+      organisations:        "Organisations",
       remove_meta_viewport: "Remove-Meta-Viewport",
       result_count:         "Result-Count",
       section:              "Section",

@@ -57,7 +57,8 @@ module GoogleAnalyticsTest
       artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
       artefact["details"].merge!(
         "need_id" => "42",
-        "business_proposition" => true
+        "business_proposition" => true,
+        "organisations" => "<P1><D422>"
       )
       headers = {
         Slimmer::Headers::FORMAT_HEADER => "custard",
@@ -96,6 +97,10 @@ module GoogleAnalyticsTest
       assert_custom_var 4, "Proposition", "business", PAGE_LEVEL_EVENT
     end
 
+    def test_should_pass_proposition_to_GA
+      assert_custom_var 9, "Organisations", "<P1><D422>", PAGE_LEVEL_EVENT
+    end
+
     def test_should_set_section_in_GOVUK_object
       assert_set_var "Proposition", "trifle", govuk
     end
@@ -128,6 +133,10 @@ module GoogleAnalyticsTest
 
     def test_should_omit_proposition
       refute_custom_var "Proposition"
+    end
+
+    def test_should_omit_organisations
+      refute_custom_var "Organisations"
     end
 
     def test_should_omit_result_count
