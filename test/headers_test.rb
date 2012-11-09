@@ -29,6 +29,11 @@ class HeadersTest < MiniTest::Unit::TestCase
     assert_equal "rhubarb", headers["X-Slimmer-Proposition"]
   end
 
+  def test_should_set_organisations_header
+    set_slimmer_headers organisations: "<D123><P1>"
+    assert_equal "<D123><P1>", headers["X-Slimmer-Organisations"]
+  end
+
   def test_should_set_result_count_header
     set_slimmer_headers result_count: 3
     assert_equal "3", headers["X-Slimmer-Result-Count"]
