@@ -58,12 +58,12 @@ module GoogleAnalyticsTest
       artefact["details"].merge!(
         "need_id" => "42",
         "business_proposition" => true,
-        "organisations" => "<P1><D422>"
       )
       headers = {
         Slimmer::Headers::FORMAT_HEADER => "custard",
         Slimmer::Headers::RESULT_COUNT_HEADER => "3",
-        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json
+        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json,
+        Slimmer::Headers::ORGANISATIONS_HEADER => "<P1><D422>"
       }
 
       given_response 200, GENERIC_DOCUMENT, headers
@@ -153,12 +153,12 @@ module GoogleAnalyticsTest
       artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
       artefact["details"].merge!(
         "need_id" => "42",
-        "business_proposition" => true,
-        "organisations" => "<P1><D422>"
+        "business_proposition" => true
       )
       headers = {
         Slimmer::Headers::RESULT_COUNT_HEADER => "3",
-        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json
+        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json,
+        Slimmer::Headers::ORGANISATIONS_HEADER => "<P1><D422>"
       }
 
       given_response 200, GENERIC_DOCUMENT, headers
