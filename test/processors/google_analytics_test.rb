@@ -2,6 +2,7 @@ require_relative "../test_helper"
 require "v8"
 
 module GoogleAnalyticsTest
+  PAGE_LEVEL_EVENT = 3
 
   GENERIC_DOCUMENT = <<-END
     <html>
@@ -49,7 +50,6 @@ module GoogleAnalyticsTest
 
   class WithHeadersTest < SlimmerIntegrationTest
     include JavaScriptAssertions
-    PAGE_LEVEL_EVENT = 3
 
     def setup
       super
@@ -97,7 +97,7 @@ module GoogleAnalyticsTest
       assert_custom_var 4, "Proposition", "business", PAGE_LEVEL_EVENT
     end
 
-    def test_should_pass_proposition_to_GA
+    def test_should_pass_organisation_to_GA
       assert_custom_var 9, "Organisations", "<P1><D422>", PAGE_LEVEL_EVENT
     end
 
@@ -141,6 +141,31 @@ module GoogleAnalyticsTest
 
     def test_should_omit_result_count
       refute_custom_var "ResultCount"
+    end
+  end
+
+  class WithNilHeaderTest < SlimmerIntegrationTest
+    include JavaScriptAssertions
+
+    def setup
+      super
+
+      artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
+      artefact["details"].merge!(
+        "need_id" => "42",
+        "business_proposition" => true,
+        "organisations" => "<P1><D422>"
+      )
+      headers = {
+        Slimmer::Headers::RESULT_COUNT_HEADER => "3",
+        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json
+      }
+
+      given_response 200, GENERIC_DOCUMENT, headers
+    end
+
+    def test_should_pass_organisation_to_GA_without_crashing
+      assert_custom_var 9, "Organisations", "<P1><D422>", PAGE_LEVEL_EVENT
     end
   end
 end
