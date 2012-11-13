@@ -47,6 +47,25 @@ module TypicalUsage
     end
   end
 
+  class SkipDoesntInteractWithNonHtmlBodies < SlimmerIntegrationTest
+    def test_non_html_response_bodies_are_passed_through_untouched
+      # Rack::SendFile doesn't work if to_s, to_str or each are called on the
+      # response body (as happens when building a Rack::Response)
+      body = stub('body')
+      inner_app = proc { |env|
+        [200, {"Content-Type" => "application/json"}, body]
+      }
+      app = Slimmer::App.new inner_app, {asset_host: "http://template.local"}
+
+      body.expects(:to_s).never
+      body.expects(:to_str).never
+      body.expects(:each).never
+      Rack::Response.expects(:new).never
+
+      app.call({})
+    end
+  end
+
   class ContentLengthTest < SlimmerIntegrationTest
     given_response 200, %{
       <html>

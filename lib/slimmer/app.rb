@@ -32,17 +32,20 @@ module Slimmer
     def call(env)
       logger.debug "Slimmer: capturing response"
       status, headers, body = @app.call(env)
-      response = Rack::Response.new(body, status, headers)
 
-      if response_can_be_rewritten?(response) && !skip_slimmer?(env, response)
-        status, headers, body = rewrite_response(env, response)
+      if response_can_be_rewritten?(status, headers)
+        response = Rack::Response.new(body, status, headers)
+
+        if !skip_slimmer?(env, response)
+          status, headers, body = rewrite_response(env, response)
+        end
       end
 
       [status, strip_slimmer_headers(headers), body]
     end
 
-    def response_can_be_rewritten?(response)
-      response.content_type =~ /text\/html/ && ![301, 302, 304].include?(response.status)
+    def response_can_be_rewritten?(status, headers)
+      Rack::Utils::HeaderHash.new(headers)["Content-Type"] =~ /text\/html/ && ![301, 302, 304].include?(status)
     end
 
     def skip_slimmer?(env, response)
