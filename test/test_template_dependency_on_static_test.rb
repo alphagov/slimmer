@@ -7,7 +7,14 @@ class TestTemplateDependencyOnStaticTest < MiniTest::Unit::TestCase
     scripts = doc.search("script").map { |node| node.attributes["src"].value }
     failing_scripts = allowing_real_web_connections do
       scripts.select do |script_src|
-        Net::HTTP.get_response(URI.parse(script_src)).code != "200"
+        uri = URI.parse(script_src)
+        http = Net::HTTP.new(uri.host, uri.port)
+        if uri.scheme == "https"
+          http.use_ssl = true
+          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        end
+        response = http.get(uri.request_uri)
+        response.code != "200"
       end
     end
     assert failing_scripts.empty?, "Some scripts could not be loaded: #{failing_scripts.inspect}"
