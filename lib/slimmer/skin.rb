@@ -135,9 +135,11 @@ module Slimmer
         Processors::HeaderContextInserter.new(),
         Processors::SectionInserter.new(artefact),
         Processors::GoogleAnalyticsConfigurator.new(response, artefact),
+        Processors::SearchPathSetter.new(response),
         Processors::RelatedItemsInserter.new(self, artefact),
         Processors::LogoClassInserter.new(artefact),
         Processors::ReportAProblemInserter.new(self, source_request.url),
+        Processors::SearchIndexSetter.new(response),
         Processors::MetaViewportRemover.new(response),
         Processors::CampaignNotificationInserter.new(self, response.headers),
       ]
