@@ -83,11 +83,7 @@ module Slimmer
 
       rewritten_body = case response.status
       when 200
-        if response.headers[Headers::TEMPLATE_HEADER] == 'admin' || request.path =~ /^\/admin(\/|$)/
-          @skin.admin s(response.body)
-        else
-          @skin.success request, response, s(response.body)
-        end
+        @skin.success request, response, s(response.body)
       when 404
         @skin.error '404', s(response.body)
       else

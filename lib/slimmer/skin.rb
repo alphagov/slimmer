@@ -112,18 +112,6 @@ module Slimmer
       dest.to_html.sub(/<noscript rel=("|')placeholder("|')>/, "")
     end
 
-    def admin(body)
-      processors = [
-        Processors::TitleInserter.new(),
-        Processors::TagMover.new(),
-        Processors::AdminTitleInserter.new,
-        Processors::FooterRemover.new,
-        Processors::BodyInserter.new(),
-        Processors::BodyClassCopier.new,
-      ]
-      process(processors, body, template('admin'))
-    end
-
     def success(source_request, response, body)
       artefact = artefact_from_header(response)
       processors = [
