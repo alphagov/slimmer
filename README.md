@@ -8,7 +8,7 @@ various other details, such as meta, script, and style tags.
 ## Use in a Rails app
 
 Slimmer provides a Railtie so no configuration is necessary. By default it will use the
-Plek gem to look for the 'assets' host for the current environment.
+Plek gem to look for the 'static' (previously 'assets') host for the current environment.
 
 If you want to use your own set of templates you will need to specify the appropriate host
 eg.
