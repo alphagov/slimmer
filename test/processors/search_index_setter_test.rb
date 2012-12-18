@@ -23,8 +23,8 @@ module SearchIndexSetterTest
     given_response 200, DOCUMENT_WITH_SEARCH, headers
 
     def test_should_insert_index_field
-      search_action = Nokogiri::HTML.parse(last_response.body).at_css('#search')['action']
-      assert_equal "/path/to/search#government-results", search_action
+      search_tab_field = Nokogiri::HTML.parse(last_response.body).at_css('input')['value']
+      assert_equal "government-results", search_tab_field
     end
   end
 
@@ -32,7 +32,8 @@ module SearchIndexSetterTest
     given_response 200, DOCUMENT_WITH_SEARCH, {}
 
     def test_should_not_insert_index_field
-      assert_equal Nokogiri::HTML.parse(last_response.body).at_css('#search')['action'], '/path/to/search'
+      search_tab_field = Nokogiri::HTML.parse(last_response.body).css('input')
+      assert_equal 0, search_tab_field.length
     end
   end
 end

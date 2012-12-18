@@ -10,15 +10,18 @@ module Slimmer::Processors
 
     def filter(content_document, page_template)
       if search_index && (form = page_template.at_css('form#search'))
-        uri = URI(form['action'])
-        uri.fragment = search_index_fragment
-        form['action'] = uri.to_s
+        input_html = Nokogiri::HTML.fragment(tab_input_tag)
+        form.add_child(input_html)
       end
     end
 
     private
 
-    def search_index_fragment
+    def tab_input_tag
+      %Q{<input type="hidden" name="tab" value="#{search_index_tab}">}
+    end
+
+    def search_index_tab
       "#{search_index}-results"
     end
 
