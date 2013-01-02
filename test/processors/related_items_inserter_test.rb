@@ -29,7 +29,7 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
     }
 
     Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact).filter(source, template)
-    assert_in template, "div.related h2", "More like this:"
+    assert_in template, "div.related h2", "Other relevant links"
     assert_in template, "div.related nav[role=navigation] ul li:nth-child(1) a[href='https://www.test.gov.uk/vat-rates']", "Vat rates"
     assert_in template, "div.related nav[role=navigation] ul li:nth-child(2) a[href='https://www.test.gov.uk/starting-to-import']", "Starting to import"
   end
