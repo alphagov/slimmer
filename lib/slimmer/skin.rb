@@ -117,6 +117,13 @@ module Slimmer
 
     def success(source_request, response, body)
       artefact = artefact_from_header(response)
+      template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
+      context_url = source_request.url
+      response_headers = response.headers
+      process_success(source_request, response, response_headers, artefact, body, template_name, context_url)
+    end
+
+    def process_success(headers, artefact, body, template_name, context_url)
       processors = [
         Processors::TitleInserter.new(),
         Processors::TagMover.new(),
@@ -125,16 +132,15 @@ module Slimmer
         Processors::BodyClassCopier.new,
         Processors::HeaderContextInserter.new(),
         Processors::SectionInserter.new(artefact),
-        Processors::GoogleAnalyticsConfigurator.new(response, artefact),
+        Processors::GoogleAnalyticsConfigurator.new(headers, artefact),
         Processors::RelatedItemsInserter.new(self, artefact),
         Processors::LogoClassInserter.new(artefact),
-        Processors::ReportAProblemInserter.new(self, source_request.url),
-        Processors::SearchIndexSetter.new(response),
-        Processors::MetaViewportRemover.new(response),
-        Processors::CampaignNotificationInserter.new(self, response.headers),
+        Processors::ReportAProblemInserter.new(self, context_url),
+        Processors::SearchIndexSetter.new(headers),
+        Processors::MetaViewportRemover.new(headers),
+        Processors::CampaignNotificationInserter.new(self, headers),
       ]
 
-      template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
       process(processors, body, template(template_name))
     end
 

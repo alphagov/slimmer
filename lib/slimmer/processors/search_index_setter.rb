@@ -4,8 +4,8 @@ module Slimmer::Processors
   include ERB::Util
 
   class SearchIndexSetter
-    def initialize(response)
-      @response = response
+    def initialize(response_headers)
+      @headers = response_headers
     end
 
     def filter(content_document, page_template)
@@ -26,7 +26,7 @@ module Slimmer::Processors
     end
 
     def search_index
-      @response.headers[Slimmer::Headers::SEARCH_INDEX_HEADER]
+      @headers[Slimmer::Headers::SEARCH_INDEX_HEADER]
     end
   end
 end

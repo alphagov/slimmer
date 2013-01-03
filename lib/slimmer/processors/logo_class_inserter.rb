@@ -8,7 +8,7 @@ module Slimmer
       end
 
       def filter(source, dest)
-        return unless @artefact
+        return unless @artefact && @artefact.respond_to?(:legacy_sources)
         classes_to_use = LOGO_CLASSES & @artefact.legacy_sources
         wrapper = dest.css('#wrapper')
         classes_to_use.each do |klass|
