@@ -30,5 +30,6 @@ class AppTest < MiniTest::Unit::TestCase
     post_as_json('source_content' => source_content)
     assert_equal 200, last_response.status
     assert_match /GOV.UK - The best place to find government services and information/, last_response.body
+    assert_match /#{source_content}/, last_response.body
   end
 end
