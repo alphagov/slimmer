@@ -5,10 +5,8 @@
 
 require 'nokogiri'
 require 'erb'
-require 'open-uri'
 require 'plek'
 require 'null_logger'
-require 'openssl'
 require 'lrucache'
 
 require 'slimmer/version'

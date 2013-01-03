@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'openssl'
+
 module Slimmer
   class Skin
     attr_accessor :use_cache, :template_cache, :asset_host, :logger, :strict, :options
