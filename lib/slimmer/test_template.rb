@@ -17,6 +17,7 @@ module Slimmer::TestTemplate
         <script src="https://static.preview.alphagov.co.uk/static/browse.js" defer></script>
         <script src="https://static.preview.alphagov.co.uk/static/jquery.history.js" defer></script>
         <script src="https://static.preview.alphagov.co.uk/static/jquery.tabs.js" defer></script>
+        <script src="https://static.preview.alphagov.co.uk/static/libs/jquery/plugins/jquery.player.min.js" defer></script>
       </head>
       <body>
         <div class="header-context">
