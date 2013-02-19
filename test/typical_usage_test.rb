@@ -346,7 +346,7 @@ module TypicalUsage
     }, {}, {wrapper_id: "custom_wrapper"}
 
     def test_should_replace_wrapper_with_custom_wrapper
-      assert_rendered_in_template "body .content #custom_wrapper", "The body of the page"
+      assert_rendered_in_template "body #custom_wrapper", "The body of the page"
       assert_no_selector "#wrapper"
     end
   end
