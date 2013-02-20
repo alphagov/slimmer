@@ -5,6 +5,7 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
+      beta:                 "Beta",
       campaign_notification:"Campaign-Notification",
       format:               "Format",
       need_id:              "Need-ID",
@@ -18,6 +19,7 @@ module Slimmer
     }
 
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
+    BETA_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta]}"
     CAMPAIGN_NOTIFICATION = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:campaign_notification]}"
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
