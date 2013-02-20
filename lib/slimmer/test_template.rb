@@ -7,7 +7,8 @@ module Slimmer::TestTemplate
         <script src="https://static.preview.alphagov.co.uk/static/application.js" type="text/javascript" defer="defer"></script>
       </head>
       <body>
-        <div class="header-context">
+        <header id="global-header"><header>
+        <div id="global-navigation" class="header-context">
           <nav role="navigation">
             <ol class="group">
               <li><a href="/">Home</a></li>
@@ -16,6 +17,8 @@ module Slimmer::TestTemplate
         </div>
 
         <div id="wrapper"></div>
+
+        <footer id="footer"></footer>
       </body>
     </html>
   }
