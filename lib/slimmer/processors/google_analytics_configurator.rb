@@ -4,8 +4,8 @@ module Slimmer::Processors
   class GoogleAnalyticsConfigurator
     PAGE_LEVEL_EVENT = 3
 
-    def initialize(response, artefact)
-      @headers = response.headers
+    def initialize(response_headers, artefact)
+      @headers = response_headers
       @artefact = artefact
     end
 
