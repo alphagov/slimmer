@@ -138,6 +138,7 @@ module TypicalUsage
     end
 
     def test_should_not_add_beta_notice_to_non_beta_pages
+      assert_no_selector "body.beta"
       assert_no_selector ".beta-notice"
     end
   end
@@ -256,17 +257,17 @@ module TypicalUsage
     def test_should_add_beta_warnings
       given_response 200, %{
         <html>
-          <body>
+          <body class="wibble">
             <div id="wrapper">The body of the page</div>
           </body>
         </html>
       }, {Slimmer::Headers::BETA_HEADER => '1'}
 
       # beta notice after cookie bar
-      assert_rendered_in_template "#global-cookie-message + div.beta-notice"
+      assert_rendered_in_template "body.beta.wibble #global-cookie-message + div.beta-notice"
 
       # beta notice before footer
-      assert_rendered_in_template "div.beta-notice + #footer"
+      assert_rendered_in_template "body.beta.wibble div.beta-notice + #footer"
     end
   end
 

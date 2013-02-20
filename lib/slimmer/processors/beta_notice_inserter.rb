@@ -7,6 +7,7 @@ module Slimmer::Processors
 
     def filter(content_document, page_template)
       if should_add_beta_notice?
+        page_template.css('body').add_class('beta')
         if cookie_bar = page_template.at_css('#global-cookie-message')
           cookie_bar.add_next_sibling(beta_notice_block)
         end
