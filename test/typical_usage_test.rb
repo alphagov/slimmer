@@ -264,7 +264,7 @@ module TypicalUsage
       }, {Slimmer::Headers::BETA_HEADER => '1'}
 
       # beta notice after cookie bar
-      assert_rendered_in_template "body.beta.wibble #global-cookie-message + div.beta-notice"
+      assert_rendered_in_template "body.beta.wibble #global-header + div.beta-notice"
 
       # beta notice before footer
       assert_rendered_in_template "body.beta.wibble div.beta-notice + #footer"

@@ -8,8 +8,8 @@ module Slimmer::Processors
     def filter(content_document, page_template)
       if should_add_beta_notice?
         page_template.css('body').add_class('beta')
-        if cookie_bar = page_template.at_css('#global-cookie-message')
-          cookie_bar.add_next_sibling(beta_notice_block)
+        if header = page_template.at_css('#global-header')
+          header.add_next_sibling(beta_notice_block)
         end
         if footer = page_template.at_css('footer#footer')
           footer.add_previous_sibling(beta_notice_block)
