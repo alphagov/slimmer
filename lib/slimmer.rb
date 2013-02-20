@@ -25,6 +25,7 @@ module Slimmer
   autoload :Artefact, 'slimmer/artefact'
 
   module Processors
+    autoload :BetaNoticeInserter, 'slimmer/processors/beta_notice_inserter'
     autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
     autoload :BodyInserter, 'slimmer/processors/body_inserter'
     autoload :ConditionalCommentMover, 'slimmer/processors/conditional_comment_mover'

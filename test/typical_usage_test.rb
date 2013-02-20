@@ -136,6 +136,11 @@ module TypicalUsage
     def test_should_add_logo_classes_to_wrapper
       assert_rendered_in_template "#wrapper.directgov"
     end
+
+    def test_should_not_add_beta_notice_to_non_beta_pages
+      assert_no_selector "body.beta"
+      assert_no_selector ".beta-notice"
+    end
   end
 
   class ConditionalCommentTest < SlimmerIntegrationTest
@@ -248,6 +253,24 @@ module TypicalUsage
     end
   end
 
+  class BetaNoticeInserterTest < SlimmerIntegrationTest
+    def test_should_add_beta_warnings
+      given_response 200, %{
+        <html>
+          <body class="wibble">
+            <div id="wrapper">The body of the page</div>
+          </body>
+        </html>
+      }, {Slimmer::Headers::BETA_HEADER => '1'}
+
+      # beta notice after cookie bar
+      assert_rendered_in_template "body.beta.wibble #global-cookie-message + div.beta-notice"
+
+      # beta notice before footer
+      assert_rendered_in_template "body.beta.wibble div.beta-notice + #footer"
+    end
+  end
+
   class Error500ResponseTest < SlimmerIntegrationTest
     include Rack::Test::Methods
 
@@ -346,7 +369,7 @@ module TypicalUsage
     }, {}, {wrapper_id: "custom_wrapper"}
 
     def test_should_replace_wrapper_with_custom_wrapper
-      assert_rendered_in_template "body .content #custom_wrapper", "The body of the page"
+      assert_rendered_in_template "body #custom_wrapper", "The body of the page"
       assert_no_selector "#wrapper"
     end
   end
