@@ -256,17 +256,17 @@ module TypicalUsage
     def test_should_add_beta_warnings
       given_response 200, %{
         <html>
-          <body class="beta">
+          <body>
             <div id="wrapper">The body of the page</div>
           </body>
         </html>
-      }
+      }, {Slimmer::Headers::BETA_HEADER => '1'}
 
       # beta notice after cookie bar
-      assert_rendered_in_template "body.beta #global-cookie-message + div.beta-notice"
+      assert_rendered_in_template "#global-cookie-message + div.beta-notice"
 
       # beta notice before footer
-      assert_rendered_in_template "body.beta div.beta-notice + #footer"
+      assert_rendered_in_template "div.beta-notice + #footer"
     end
   end
 
