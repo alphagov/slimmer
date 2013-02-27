@@ -267,7 +267,7 @@ module TypicalUsage
       assert_rendered_in_template "body.beta.wibble #global-header + div.beta-notice"
 
       # beta notice before footer
-      assert_rendered_in_template "body.beta.wibble div.beta-notice + #footer"
+      assert_rendered_in_template "body.beta.wibble div.beta-notice.js-footer + #footer"
     end
   end
 
