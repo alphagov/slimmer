@@ -46,9 +46,24 @@ module Slimmer
       headers[ARTEFACT_HEADER] = artefact.to_json
     end
 
+    def set_slimmer_artefact_overriding_section(artefact_input, details = {})
+      if tag = slimmer_section_tag_for_details(details)
+        artefact_input = artefact_input.dup
+        artefact_input["tags"] = [tag] + (artefact_input["tags"] || [])
+      end
+      set_slimmer_artefact(artefact_input)
+    end
+
     def set_slimmer_dummy_artefact(details = {})
       artefact = {}
       artefact["title"] = details[:title] if details[:title]
+      if tag = slimmer_section_tag_for_details(details)
+        artefact["tags"] = [tag]
+      end
+      set_slimmer_artefact(artefact)
+    end
+
+    def slimmer_section_tag_for_details(details)
       if details[:section_name] and details[:section_link]
         tag = {
           "title" => details[:section_name],
@@ -61,9 +76,8 @@ module Slimmer
                             "content_with_tag" => {"web_url" => details[:parent][:section_link]},
                           }
         end
-        artefact["tags"] = [tag]
+        tag
       end
-      headers[ARTEFACT_HEADER] = artefact.to_json
     end
   end
 end

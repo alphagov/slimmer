@@ -115,6 +115,35 @@ describe Slimmer::Headers do
     end
   end
 
+  describe "setting the artefact and adding a dummy section" do
+    it "should setup a section tag for the given name and link" do
+      artefact = {"foo" => "bar", "slug" => "vat-rates", "actions" => "some_actions"}
+      self.set_slimmer_artefact_overriding_section(artefact, :section_name => "Foo", :section_link => "/something/foo")
+
+      artefact = JSON.parse(headers[Slimmer::Headers::ARTEFACT_HEADER])
+
+      assert_equal "Foo", artefact["tags"][0]["title"]
+      assert_equal "section", artefact["tags"][0]["details"]["type"]
+      assert_equal "/something/foo", artefact["tags"][0]["content_with_tag"]["web_url"]
+    end
+
+    it "should not overwrite existing tags" do
+      artefact = {"foo" => "bar", "slug" => "vat-rates", "actions" => "some_actions", "tags" => ["foo", "bar"]}
+      self.set_slimmer_artefact_overriding_section(artefact, :section_name => "Foo", :section_link => "/something/foo")
+
+      artefact = JSON.parse(headers[Slimmer::Headers::ARTEFACT_HEADER])
+
+      assert_equal ["foo", "bar"], artefact["tags"][1..-1]
+    end
+
+    it "should not have side-effects on the passed in hash" do
+      artefact = {"foo" => "bar", "slug" => "vat-rates", "actions" => "some_actions"}
+      artefact_copy = artefact.dup
+      self.set_slimmer_artefact_overriding_section(artefact, :section_name => "Foo", :section_link => "/foo")
+      assert_equal artefact_copy, artefact
+    end
+  end
+
   describe "setting a dummy artefact in the artefact header" do
     it "should setup an artefact title" do
       self.set_slimmer_dummy_artefact(:title => "Foo")
