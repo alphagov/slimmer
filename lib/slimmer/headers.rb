@@ -43,24 +43,25 @@ module Slimmer
       elsif artefact_input.respond_to?(:to_hash)
         artefact = artefact_input.to_hash
       end
+      yield artefact if block_given?
       headers[ARTEFACT_HEADER] = artefact.to_json
     end
 
     def set_slimmer_artefact_overriding_section(artefact_input, details = {})
-      if tag = slimmer_section_tag_for_details(details)
-        artefact_input = artefact_input.dup
-        artefact_input["tags"] = [tag] + (artefact_input["tags"] || [])
+      set_slimmer_artefact(artefact_input) do |artefact|
+        if tag = slimmer_section_tag_for_details(details)
+          artefact["tags"] = [tag] + (artefact["tags"] || [])
+        end
       end
-      set_slimmer_artefact(artefact_input)
     end
 
     def set_slimmer_dummy_artefact(details = {})
-      artefact = {}
-      artefact["title"] = details[:title] if details[:title]
-      if tag = slimmer_section_tag_for_details(details)
-        artefact["tags"] = [tag]
+      set_slimmer_artefact({}) do |artefact|
+        artefact["title"] = details[:title] if details[:title]
+        if tag = slimmer_section_tag_for_details(details)
+          artefact["tags"] = [tag]
+        end
       end
-      set_slimmer_artefact(artefact)
     end
 
     def slimmer_section_tag_for_details(details)
