@@ -1,7 +1,7 @@
 module Slimmer::Processors
   class TagMover
     def filter(src,dest)
-      move_tags(src, dest, 'script', :must_have => ['src'])
+      move_tags(src, dest, 'script', :dest_node => 'body', :must_have => ['src'])
       move_tags(src, dest, 'link',   :must_have => ['href'])
       move_tags(src, dest, 'meta',   :must_have => ['name', 'content'], :keys => ['name', 'content', 'http-equiv'])
     end
@@ -29,12 +29,13 @@ module Slimmer::Processors
       already_there = dest.css(type).map { |node|
         tag_fingerprint(node, comparison_attrs)
       }.compact
+      dest_node = opts[:dest_node] || 'head'
 
       src.css(type).each do |node|
         if include_tag?(node, min_attrs) && !already_there.include?(tag_fingerprint(node, comparison_attrs))
           node = wrap_node(src, node)
           node.remove
-          dest.at_xpath('/html/head') << node
+          dest.at_xpath("/html/#{dest_node}") << node
         end
       end
     end
