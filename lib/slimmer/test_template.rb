@@ -8,7 +8,7 @@ module Slimmer::TestTemplate
       </head>
       <body>
         <header id="global-header"></header>
-        <div id="global-navigation" class="header-context">
+        <div id="global-breadcrumb" class="header-context">
           <nav role="navigation">
             <ol class="group">
               <li><a href="/">Home</a></li>
