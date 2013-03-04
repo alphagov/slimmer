@@ -114,7 +114,7 @@ module TypicalUsage
     end
 
     def test_should_move_script_tags_into_the_head
-      assert_rendered_in_template "head script[src='blah.js']"
+      assert_rendered_in_template "body script[src='blah.js']"
     end
 
     def test_should_move_meta_tags_into_the_head
