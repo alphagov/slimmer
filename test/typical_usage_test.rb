@@ -113,7 +113,7 @@ module TypicalUsage
       assert_rendered_in_template "head title", "The title of the page"
     end
 
-    def test_should_move_script_tags_into_the_head
+    def test_should_move_script_tags_into_the_body
       assert_rendered_in_template "body script[src='blah.js']"
     end
 
