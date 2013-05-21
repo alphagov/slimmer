@@ -24,7 +24,29 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     template = as_nokogiri %{
       <html>
         <body>
-          <div class="header-context">
+          <div id="global-breadcrumb" class="header-context">
+            <ol role="navigation">
+              <li><a href="/">Home</a></li>
+            </ol>
+          </div>
+        </body>
+      </html>
+    }
+
+    Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
+    list = template.at_css("#global-breadcrumb ol")
+    assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
+    assert_in list, "li:nth-child(2)", %{<strong><a href="https://www.test.gov.uk/browse/business">Business</a></strong>}
+  end
+
+  def test_should_add_section_link_with_old_version_of_markup
+    artefact = create_artefact("something",
+                               "section_slug" => "business")
+
+    template = as_nokogiri %{
+      <html>
+        <body>
+          <div id="global-breadcrumb" class="header-context">
             <nav role="navigation">
               <ol class="group">
                 <li><a href="/">Home</a></li>
@@ -36,7 +58,7 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     }
 
     Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
-    list = template.at_css(".header-context nav[role=navigation] ol")
+    list = template.at_css("#global-breadcrumb nav[role=navigation] ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in list, "li:nth-child(2)", %{<strong><a href="https://www.test.gov.uk/browse/business">Business</a></strong>}
   end
@@ -49,17 +71,15 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     template = as_nokogiri %{
       <html>
         <body>
-          <div class="header-context">
-            <nav role="navigation">
-              <ol class="group"><li><a href="/">Home</a></li></ol>
-            </nav>
+          <div id="global-breadcrumb" class="header-context">
+            <ol role="navigation"><li><a href="/">Home</a></li></ol>
           </div>
         </body>
       </html>
     }
 
     Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
-    list = template.at_css(".header-context nav[role=navigation] ol")
+    list = template.at_css("#global-breadcrumb ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in list, "li:nth-child(2)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
     assert_in list, "li:nth-child(3)", %{<strong><a href="https://www.test.gov.uk/browse/business/employing-people">Employing people</a></strong>}
@@ -73,20 +93,18 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     template = as_nokogiri %{
       <html>
         <body>
-          <div class="header-context">
-            <nav role="navigation">
-              <ol class="group">
-                <li><a href="/">Home</a></li>
-                <li><a href="/browse">All Sections</a></li>
-              </ol>
-            </nav>
+          <div id="global-breadcrumb" class="header-context">
+            <ol role="navigation">
+              <li><a href="/">Home</a></li>
+              <li><a href="/browse">All Sections</a></li>
+            </ol>
           </div>
         </body>
       </html>
     }
 
     Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
-    list = template.at_css(".header-context nav[role=navigation] ol")
+    list = template.at_css("#global-breadcrumb ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in list, "li:nth-child(2)", %{<a href="/browse">All Sections</a>}
     assert_in list, "li:nth-child(3)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
@@ -94,7 +112,9 @@ class SectionInserterTest < MiniTest::Unit::TestCase
   end
 
   def test_should_do_nothing_if_navigation_not_in_template
-    artefact = create_artefact("something")
+    artefact = create_artefact("something",
+                               "section_slug" => "business",
+                               "subsection_slug" => "employing-people")
     template = as_nokogiri %{
       <html>
         <body>
@@ -103,24 +123,22 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     }
 
     Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
-    assert_not_in template, "nav[role=navigation]"
+    assert_not_in template, "ol[role=navigation]"
   end
 
   def test_should_do_nothing_with_no_artefact
     template = as_nokogiri %{
       <html>
         <body>
-          <div class="header-context">
-            <nav role="navigation">
-              <ol class="group"><li><a href="/">Home</a></li></ol>
-            </nav>
+          <div id="global-breadcrumb" class="header-context">
+            <ol role="navigation"><li><a href="/">Home</a></li></ol>
           </div>
         </body>
       </html>
     }
 
     Slimmer::Processors::SectionInserter.new(nil).filter(:any_source, template)
-    list = template.at_css(".header-context nav[role=navigation] ol")
+    list = template.at_css("#global-breadcrumb ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_not_in list, "li:nth-child(2)"
   end
@@ -131,19 +149,17 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     template = as_nokogiri %{
       <html>
         <body>
-          <div class="header-context">
-            <nav role="navigation">
-              <ol class="group">
-                <li><a href="/">Home</a></li>
-              </ol>
-            </nav>
+          <div id="global-breadcrumb" class="header-context">
+            <ol role="navigation">
+              <li><a href="/">Home</a></li>
+            </ol>
           </div>
         </body>
       </html>
     }
 
     Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
-    list = template.at_css(".header-context nav[role=navigation] ol")
+    list = template.at_css("#global-breadcrumb ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
   end
 
@@ -155,20 +171,18 @@ class SectionInserterTest < MiniTest::Unit::TestCase
     template = as_nokogiri %{
       <html>
         <body>
-          <div class="header-context">
-            <nav role="navigation">
-              <ol class="group">
-                <li><a href="/">Home</a></li>
-                <li><a href="/browse">All Sections</a></li>
-              </ol>
-            </nav>
+          <div id="global-breadcrumb" class="header-context">
+            <ol role="navigation">
+              <li><a href="/">Home</a></li>
+              <li><a href="/browse">All Sections</a></li>
+            </ol>
           </div>
         </body>
       </html>
     }
 
     Slimmer::Processors::SectionInserter.new(artefact).filter(:any_source, template)
-    list = template.at_css(".header-context nav[role=navigation] ol")
+    list = template.at_css("#global-breadcrumb ol")
     assert_in list, "li:nth-child(1)", %{<a href="/">Home</a>}
     assert_in list, "li:nth-child(2)", %{<a href="/browse">All Sections</a>}
     assert_in list, "li:nth-child(3)", %{<a href="https://www.test.gov.uk/browse/business">Business</a>}
