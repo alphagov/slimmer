@@ -5,7 +5,7 @@ module Slimmer::Processors
     end
 
     def filter(src, dest)
-      if @artefact and (list = dest.at_css('.header-context nav[role=navigation] ol'))
+      if @artefact and (list = dest.at_css('#global-breadcrumb ol'))
         if (section = @artefact.primary_section)
           sections = recurse_sections(section)
           current = sections.pop
