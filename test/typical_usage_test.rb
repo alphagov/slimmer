@@ -130,7 +130,7 @@ module TypicalUsage
     end
 
     def test_should_insert_section_links_into_the_navigation
-      assert_rendered_in_template "nav[role=navigation] li a[href='https://www.test.gov.uk/browse/this-section']", "This section"
+      assert_rendered_in_template "#global-breadcrumb ol li a[href='https://www.test.gov.uk/browse/this-section']", "This section"
     end
 
     def test_should_add_logo_classes_to_wrapper
