@@ -5,6 +5,7 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
+      application_name:     "Application-Name",
       beta:                 "Beta",
       campaign_notification:"Campaign-Notification",
       format:               "Format",
@@ -18,6 +19,7 @@ module Slimmer
       template:             "Template",
     }
 
+    APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
     BETA_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta]}"
     CAMPAIGN_NOTIFICATION = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:campaign_notification]}"
