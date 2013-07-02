@@ -17,6 +17,7 @@ module Slimmer::Processors
     def report_a_problem_block
       request_url = @request_url
       source      = @headers[Slimmer::Headers::APPLICATION_NAME_HEADER]
+      page_owner  = @headers[Slimmer::Headers::PAGE_OWNER_HEADER]
       report_a_problem_template = @skin.template('report_a_problem.raw')
       html = ERB.new(report_a_problem_template).result(binding)
       Nokogiri::HTML.fragment(html)
