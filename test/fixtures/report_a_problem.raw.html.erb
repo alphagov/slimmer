@@ -3,6 +3,8 @@
   <form accept-charset="UTF-8" action="/feedback" method="post">
     <div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"></div>
     <input id="url" name="url" type="hidden" value="<%= request_url %>">
+    <input id="url" name="source" type="hidden" value="<%= source %>">
+    <input id="url" name="page_owner" type="hidden" value="<%= page_owner %>">
     <label for="what_doing">
       What were you doing?
       <input id="what_doing" name="what_doing" type="text">
