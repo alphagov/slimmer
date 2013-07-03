@@ -24,9 +24,14 @@ class HeadersTest < MiniTest::Unit::TestCase
     assert_equal "rhubarb", headers["X-Slimmer-Format"]
   end
 
-  def test_should_set_proposition_header
-    set_slimmer_headers proposition: "rhubarb"
-    assert_equal "rhubarb", headers["X-Slimmer-Proposition"]
+  def test_should_set_application_name_header
+    set_slimmer_headers application_name: "whitehall"
+    assert_equal "whitehall", headers["X-Slimmer-Application-Name"]
+  end
+
+  def test_should_set_page_owner_header
+    set_slimmer_headers page_owner: "bobby"
+    assert_equal "bobby", headers["X-Slimmer-Page-Owner"]
   end
 
   def test_should_set_organisations_header

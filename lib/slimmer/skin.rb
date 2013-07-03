@@ -127,7 +127,7 @@ module Slimmer
         Processors::SearchPathSetter.new(response),
         Processors::RelatedItemsInserter.new(self, artefact),
         Processors::LogoClassInserter.new(artefact),
-        Processors::ReportAProblemInserter.new(self, source_request.url),
+        Processors::ReportAProblemInserter.new(self, source_request.url, response.headers),
         Processors::SearchIndexSetter.new(response),
         Processors::MetaViewportRemover.new(response),
         Processors::CampaignNotificationInserter.new(self, response.headers),
