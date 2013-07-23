@@ -77,10 +77,7 @@ module Slimmer
           "content_with_tag" => {"web_url" => details[:section_link]},
         }
         if details[:parent]
-          tag["parent"] = {"title" => details[:parent][:section_name],
-                            "details" => {"type" => "section"},
-                            "content_with_tag" => {"web_url" => details[:parent][:section_link]},
-                          }
+          tag["parent"] = slimmer_section_tag_for_details(details[:parent])
         end
         tag
       end

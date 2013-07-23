@@ -179,5 +179,35 @@ describe Slimmer::Headers do
       assert_equal "section", artefact["tags"][0]["details"]["type"]
       assert_equal "/something/foo", artefact["tags"][0]["content_with_tag"]["web_url"]
     end
+
+    it "can set up a section tag with multiple levels of parents" do
+      self.set_slimmer_dummy_artefact(
+        :section_name => "Foo",
+        :section_link => "/something/baz/bar/foo",
+        :parent => {
+          :section_name => "Bar",
+          :section_link => "/something/baz/bar",
+          :parent => {
+            :section_name => "Baz",
+            :section_link => "/something/baz"
+          }
+        }
+      )
+
+      artefact = JSON.parse(headers[Slimmer::Headers::ARTEFACT_HEADER])
+
+      assert_equal "Foo", artefact["tags"][0]["title"]
+      assert_equal "section", artefact["tags"][0]["details"]["type"]
+      assert_equal "/something/baz/bar/foo", artefact["tags"][0]["content_with_tag"]["web_url"]
+
+      assert_equal "Bar", artefact["tags"][0]["parent"]["title"]
+      assert_equal "section", artefact["tags"][0]["parent"]["details"]["type"]
+      assert_equal "/something/baz/bar", artefact["tags"][0]["parent"]["content_with_tag"]["web_url"]
+
+      assert_equal "Baz", artefact["tags"][0]["parent"]["parent"]["title"]
+      assert_equal "section", artefact["tags"][0]["parent"]["parent"]["details"]["type"]
+      assert_equal "/something/baz", artefact["tags"][0]["parent"]["parent"]["content_with_tag"]["web_url"]
+
+    end
   end
 end
