@@ -4,7 +4,7 @@ class ReportAProblemInserterTest < MiniTest::Unit::TestCase
 
   def setup
     super
-    @report_a_problem_template = File.read( File.dirname(__FILE__) + "/../fixtures/report_a_problem.raw.html.erb" )
+    @report_a_problem_template = File.read( File.dirname(__FILE__) + "/../fixtures/report_a_problem.raw.html.erb", :encoding => 'utf-8')
     @skin = stub("Skin", :template => nil)
   end
 
