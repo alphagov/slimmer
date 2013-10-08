@@ -1,5 +1,4 @@
 require 'slimmer/skin'
-require 'slimmer/test_template'
 
 module Slimmer
   class Skin
@@ -7,12 +6,10 @@ module Slimmer
       logger.debug "Slimmer: TEST MODE - Loading fixture template from #{__FILE__}"
       if name =~ /\A(.*)\.raw\z/
         %{<div id="test-#{$1}"></div>}
-      elsif name == "beta_notice"
-        %{<div class="beta-notice"><p>This page is BETA.</p></div>}
-      elsif name == "campaign"
-        '<section class="black" id="campaign-notification"><div><p>Notifications!</p></div></section>'
+      elsif File.exist?(template_path = File.join(File.dirname(__FILE__), 'test_templates', "#{name}.html"))
+        File.read(template_path)
       else
-        Slimmer::TestTemplate::TEMPLATE
+        File.read(File.join(File.dirname(__FILE__), 'test_templates', "wrapper.html"))
       end
     end
   end
