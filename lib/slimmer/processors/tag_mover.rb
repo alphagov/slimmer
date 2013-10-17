@@ -1,7 +1,7 @@
 module Slimmer::Processors
   class TagMover
     def filter(src,dest)
-      move_tags(src, dest, 'script', :dest_node => 'body', :must_have => ['src'])
+      move_tags(src, dest, 'script', :dest_node => 'body', :keys => ['src', 'inner_html'])
       move_tags(src, dest, 'link',   :must_have => ['href'])
       move_tags(src, dest, 'meta',   :must_have => ['name', 'content'], :keys => ['name', 'content', 'http-equiv'])
     end
@@ -12,7 +12,11 @@ module Slimmer::Processors
 
     def tag_fingerprint(node, attrs)
       attrs.collect do |attr_name|
-        node.has_attribute?(attr_name) ? node.attr(attr_name) : nil
+        if attr_name == 'inner_html'
+          node.content
+        else
+          node.has_attribute?(attr_name) ? node.attr(attr_name) : nil
+        end
       end.compact.sort
     end
 
@@ -25,7 +29,7 @@ module Slimmer::Processors
 
     def move_tags(src, dest, type, opts)
       comparison_attrs = opts[:keys] || opts[:must_have]
-      min_attrs = opts[:must_have]
+      min_attrs = opts[:must_have] || []
       already_there = dest.css(type).map { |node|
         tag_fingerprint(node, comparison_attrs)
       }.compact
