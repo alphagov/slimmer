@@ -107,15 +107,17 @@ class SlimmerIntegrationTest < MiniTest::Unit::TestCase
         message = "Expected to find #{selector.inspect} in the output template"
       end
     end
-    element = Nokogiri::HTML.parse(last_response.body).at_css(selector)
-    assert element, message + ", but selector not found."
+
+    matched_elements = Nokogiri::HTML.parse(last_response.body).css(selector)
+    assert matched_elements.length > 0, message + ", but selector not found."
+
     if content
-      message << ". But found #{element.inner_html.to_s}"
       if content.is_a?(Regexp)
-        assert_match content, element.inner_html.to_s, message
+        found_match = matched_elements.inject(false) { |had_match, element| had_match || element.inner_html.match(content) }
       else
-        assert_equal content, element.inner_html.to_s, message
+        found_match = matched_elements.inject(false) { |had_match, element| had_match || element.inner_html == content }
       end
+      assert found_match, message + ". The selector was found but not with \"#{content}\"."
     end
   end
 
