@@ -96,7 +96,6 @@ module TypicalUsage
         <head><title>The title of the page</title>
         <meta name="something" content="yes">
         <script src="blah.js"></script>
-        <script>executeSomething();</script>
         <link href="app.css" rel="stylesheet" type="text/css">
         </head>
         <body class="body_class">
@@ -116,7 +115,6 @@ module TypicalUsage
 
     def test_should_move_script_tags_into_the_body
       assert_rendered_in_template "body script[src='blah.js']"
-      assert_rendered_in_template "body script", "executeSomething();"
     end
 
     def test_should_move_meta_tags_into_the_head
