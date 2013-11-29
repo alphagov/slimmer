@@ -2,8 +2,8 @@ Slimmer provides rack middleware for applying a standard header and footer aroun
 returned by a ruby (rack) application. 
 
 It does this by taking the page rendered by the application, extracting the contents of
-a div with id 'wrapper' and inserting that into one of its templates. It also transfers
-various other details, such as meta, script, and style tags.
+a div with id 'wrapper' and inserting that into a div with the same id in one of its templates.
+It also transfers various other details, such as meta, script, and style tags.
 
 ## Use in a Rails app
 
@@ -28,6 +28,14 @@ Slimmer will work as standard rack middleware:
 or
 
     use Slimmer::App, :asset_host => "http://my.alternative.host"
+
+## Asset tag helpers
+
+To get asset tag helpers to point to your external asset server, add 
+
+    config.action_controller.asset_host = "http://my.alternative.host"
+    
+to application.rb.
 
 ## Specifying a template
 
