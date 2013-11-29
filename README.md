@@ -31,23 +31,23 @@ or
 
 ## Specifying a template
 
-A specific template can be requested by giving its name in the X-Slimmer-Template HTTP header
+A specific template can be requested by giving its name in the X-Slimmer-Template HTTP header. 
 
-eg in a rails app
+In a controller action, you can do this by calling `slimmer_template`.
 
     class MyController < ApplicationController
       def index
-        headers['X-Slimmer-Template'] = 'homepage'
+        slimmer_template 'homepage'
       end
     end
 
-There's also a macro style method:
+There's also a macro style method which will affect all actions:
 
     class YourController < ApplicationController
       slimmer_template :admin
     end
 
-To get this, include Slimmer::Template in your controller:
+To get this, include Slimmer::Template in your ApplicationController:
 
     class ApplicationController < ActionController::Base
       include Slimmer::Template
