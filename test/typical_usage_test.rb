@@ -412,21 +412,4 @@ module TypicalUsage
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end
   end
-
-  class CampaignNotificationInserterTest < SlimmerIntegrationTest
-    def test_should_update_the_campaign_with_a_notification
-      given_response 200, %{
-        <html>
-          <body>
-            <div id="wrapper">
-              <section class="main-campaign group"><a href="/tour">A tour!</a></section>
-            </div>
-          </body>
-        </html>
-      },
-      {Slimmer::Headers::CAMPAIGN_NOTIFICATION => "true"}
-
-      assert_rendered_in_template "#campaign-notification", "<p>testing...</p>"
-    end
-  end
 end
