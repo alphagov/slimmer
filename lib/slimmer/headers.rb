@@ -7,7 +7,6 @@ module Slimmer
     SLIMMER_HEADER_MAPPING = {
       application_name:     "Application-Name",
       beta:                 "Beta",
-      campaign_notification:"Campaign-Notification",
       format:               "Format",
       need_id:              "Need-ID",
       page_owner:           "Page-Owner",
@@ -23,7 +22,6 @@ module Slimmer
     APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
     BETA_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta]}"
-    CAMPAIGN_NOTIFICATION = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:campaign_notification]}"
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
     PAGE_OWNER_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:page_owner]}"
