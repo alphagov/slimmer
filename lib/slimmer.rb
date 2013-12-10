@@ -29,7 +29,6 @@ module Slimmer
     autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
     autoload :BodyInserter, 'slimmer/processors/body_inserter'
     autoload :ConditionalCommentMover, 'slimmer/processors/conditional_comment_mover'
-    autoload :CampaignNotificationInserter, 'slimmer/processors/campaign_notification_inserter'
     autoload :FooterRemover, 'slimmer/processors/footer_remover'
     autoload :GoogleAnalyticsConfigurator, 'slimmer/processors/google_analytics_configurator'
     autoload :HeaderContextInserter, 'slimmer/processors/header_context_inserter'
