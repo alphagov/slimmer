@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'json'
   s.add_dependency 'null_logger'
   s.add_dependency 'lrucache', '~> 0.1.3'
+  s.add_dependency 'rest-client'
 
   s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'rake', '~> 0.9.2.2'

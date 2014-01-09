@@ -1,3 +1,5 @@
+require 'rest_client'
+
 module Slimmer
   class Skin
     attr_accessor :use_cache, :template_cache, :asset_host, :logger, :strict, :options
@@ -28,14 +30,15 @@ module Slimmer
 
     def load_template(template_name)
       url = template_url(template_name)
-      source = open(url, "r:UTF-8", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
+      response = RestClient.get(url)
+      source = response.body
       if template_name =~ /\.raw/
         template = source
       else
         template = ERB.new(source).result binding
       end
       template
-    rescue OpenURI::HTTPError => e
+    rescue RestClient::Exception => e
       raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     rescue Errno::ECONNREFUSED => e
       raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller

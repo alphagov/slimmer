@@ -10,7 +10,7 @@ describe Slimmer::Skin do
 
       template = skin.template 'example'
 
-      assert_requested :get, "http://example.local/templates/example.html.erb"
+      assert_requested :get, expected_url
       assert_equal "<foo />", template
     end
 
