@@ -1,3 +1,9 @@
+# 3.25.0
+
+* Pass on GOVUK-Request-Id HTTP header when fetching templates
+* Use correct asset host in test templates
+* Remove a redundant ERB pass over fetched templates
+
 # 3.24.0
 
 * Removed CampaignNotificationInserter.  The homepage no longer needs these inserted.
