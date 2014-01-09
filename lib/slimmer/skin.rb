@@ -34,13 +34,7 @@ module Slimmer
       headers = {}
       headers[:govuk_request_id] = GovukRequestId.value if GovukRequestId.set?
       response = RestClient.get(url, headers)
-      source = response.body
-      if template_name =~ /\.raw/
-        template = source
-      else
-        template = ERB.new(source).result binding
-      end
-      template
+      response.body
     rescue RestClient::Exception => e
       raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     rescue Errno::ECONNREFUSED => e
