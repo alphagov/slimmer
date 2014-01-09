@@ -1,3 +1,7 @@
+# 3.24.0
+
+* Removed CampaignNotificationInserter.  The homepage no longer needs these inserted.
+
 # 3.1.0
 
 * 'Breadcrumb' trail is now populated from the artefact data. It adds the section and subsection.
