@@ -1,4 +1,5 @@
 require 'rest_client'
+require 'slimmer/govuk_request_id'
 
 module Slimmer
   class Skin
@@ -30,7 +31,9 @@ module Slimmer
 
     def load_template(template_name)
       url = template_url(template_name)
-      response = RestClient.get(url)
+      headers = {}
+      headers[:govuk_request_id] = GovukRequestId.value if GovukRequestId.set?
+      response = RestClient.get(url, headers)
       source = response.body
       if template_name =~ /\.raw/
         template = source
