@@ -10,8 +10,36 @@ describe Slimmer::Skin do
 
       template = skin.template 'example'
 
-      assert_requested :get, "http://example.local/templates/example.html.erb"
+      assert_requested :get, expected_url
       assert_equal "<foo />", template
+    end
+
+    describe "should pass the GOVUK-Request-Id header when requesting the template" do
+      before do
+        @skin = Slimmer::Skin.new asset_host: "http://example.local/"
+        @expected_url = "http://example.local/templates/example.html.erb"
+        stub_request(:get, @expected_url).to_return :body => "<foo />"
+      end
+
+      it "should pass the value from the original request if set" do
+        Slimmer::GovukRequestId.value = '12345'
+        template = @skin.template('example')
+
+        assert_requested :get, @expected_url do |request|
+          request.headers['Govuk-Request-Id'] == '12345'
+        end
+        assert_equal "<foo />", template
+      end
+
+      it "shouldnot set the header if the value is not set" do
+        Slimmer::GovukRequestId.value = ''
+        template = @skin.template('example')
+
+        assert_requested :get, @expected_url do |request|
+          ! request.headers.has_key?('Govuk-Request-Id')
+        end
+        assert_equal "<foo />", template
+      end
     end
 
     describe "template caching" do

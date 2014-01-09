@@ -1,3 +1,5 @@
+require 'slimmer/govuk_request_id'
+
 module Slimmer
   class App
     attr_accessor :logger
@@ -80,6 +82,9 @@ module Slimmer
 
     def rewrite_response(env, response)
       request = Rack::Request.new(env)
+
+      # Store the request id so it can be passed on with any template requests
+      GovukRequestId.value = env['HTTP_GOVUK_REQUEST_ID']
 
       rewritten_body = case response.status
       when 200

@@ -1,3 +1,6 @@
+require 'rest_client'
+require 'slimmer/govuk_request_id'
+
 module Slimmer
   class Skin
     attr_accessor :use_cache, :template_cache, :asset_host, :logger, :strict, :options
@@ -28,14 +31,17 @@ module Slimmer
 
     def load_template(template_name)
       url = template_url(template_name)
-      source = open(url, "r:UTF-8", :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE).read
+      headers = {}
+      headers[:govuk_request_id] = GovukRequestId.value if GovukRequestId.set?
+      response = RestClient.get(url, headers)
+      source = response.body
       if template_name =~ /\.raw/
         template = source
       else
         template = ERB.new(source).result binding
       end
       template
-    rescue OpenURI::HTTPError => e
+    rescue RestClient::Exception => e
       raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     rescue Errno::ECONNREFUSED => e
       raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
