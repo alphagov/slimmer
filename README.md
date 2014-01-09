@@ -1,9 +1,9 @@
-Slimmer provides rack middleware for applying a standard header and footer around pages 
-returned by a ruby (rack) application. 
+Slimmer provides Rack middleware for applying a standard header and footer around pages 
+returned by a Ruby (Rack) application. 
 
 It does this by taking the page rendered by the application, extracting the contents of
-a div with id 'wrapper' and inserting that into a div with the same id in one of its templates.
-It also transfers various other details, such as meta, script, and style tags.
+a `div` with id 'wrapper' and inserting that into a `div` with the same id in one of its
+templates. It also transfers various other details, such as `meta`, `script`, and `style` tags.
 
 ## Use in a Rails app
 
@@ -35,11 +35,11 @@ To get asset tag helpers to point to your external asset server, add
 
     config.action_controller.asset_host = "http://my.alternative.host"
     
-to application.rb.
+to `application.rb`.
 
 ## Specifying a template
 
-A specific template can be requested by giving its name in the X-Slimmer-Template HTTP header. 
+A specific template can be requested by giving its name in the `X-Slimmer-Template` HTTP header. 
 
 In a controller action, you can do this by calling `slimmer_template`.
 
@@ -63,8 +63,9 @@ To get this, include Slimmer::Template in your ApplicationController:
 
 ## Logging
 
-Slimmer can be configured with a logger by passing in a logger instance (anything that quacks like an instance of Logger).
-For example to log to the Rails log, put the following in an initializer:
+Slimmer can be configured with a logger by passing in a logger instance
+(anything that quacks like an instance of `Logger`). For example, to log
+to the Rails log, put the following in an initializer:
 
     YourApp::Application.configure do
       config.slimmer.logger = Rails.logger
@@ -74,7 +75,7 @@ For example to log to the Rails log, put the following in an initializer:
 
 **Debug logging**
 
-By default if you pass in a logger with its log level set to debug, slimmer will dup this logger and reduce the level to info. (Slimmer's debug logging is very noisy).  To prevent this, set the `enable_debugging` option to true.  e.g. for Rails:
+By default if you pass in a logger with its log level set to `debug`, slimmer will dup this logger and reduce the level to `info`. (Slimmer's debug logging is very noisy).  To prevent this, set the `enable_debugging` option to true.  e.g. for Rails:
 
     YourApp::Application.configure do
       config.slimmer.enable_debugging = true
