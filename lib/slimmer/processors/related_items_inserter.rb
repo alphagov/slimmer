@@ -12,7 +12,11 @@ class Slimmer::Processors::RelatedItemsInserter
       page_template.at_css('body.mainstream div#related-items').replace(related_item_block)
     end
   end
-  
+
+  def show_related_section_titles?
+    @response.headers[Slimmer::Headers::RELATED_SECTION_TITLES_HEADER] != "false"
+  end
+
   private
 
   def related_item_block

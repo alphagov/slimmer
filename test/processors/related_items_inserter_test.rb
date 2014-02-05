@@ -35,6 +35,27 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
     assert_in template, "div.related nav[role=navigation] ul li:nth-child(2) a[href='https://www.test.gov.uk/starting-to-import']", "Starting to import"
   end
 
+  def test_should_default_flag_to_show_related_section_titles_to_true
+    response_with_header = stub("Response", headers: {
+      Slimmer::Headers::RELATED_SECTION_TITLES_HEADER => "something-else"
+    })
+
+    processor = Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact, @response)
+    assert_equal true, processor.show_related_section_titles?
+
+    processor = Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact, response_with_header)
+    assert_equal true, processor.show_related_section_titles?
+  end
+
+  def test_should_set_flag_to_show_related_section_titles_to_false
+    response = stub("Response", headers: {
+      Slimmer::Headers::RELATED_SECTION_TITLES_HEADER => "false"
+    })
+
+    processor = Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact, response)
+    assert_equal false, processor.show_related_section_titles?
+  end
+
   def test_should_not_add_related_items_for_non_mainstream_source
     source = as_nokogiri %{
       <html>
