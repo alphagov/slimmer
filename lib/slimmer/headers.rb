@@ -5,18 +5,19 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
-      application_name:     "Application-Name",
-      beta:                 "Beta",
-      format:               "Format",
-      need_id:              "Need-ID",
-      page_owner:           "Page-Owner",
-      proposition:          "Proposition",
-      organisations:        "Organisations",
-      remove_meta_viewport: "Remove-Meta-Viewport",
-      result_count:         "Result-Count",
-      section:              "Section",
-      skip:                 "Skip",
-      template:             "Template",
+      application_name:       "Application-Name",
+      beta:                   "Beta",
+      format:                 "Format",
+      need_id:                "Need-ID",
+      page_owner:             "Page-Owner",
+      proposition:            "Proposition",
+      organisations:          "Organisations",
+      related_section_titles: "Related-Section-Titles",
+      remove_meta_viewport:   "Remove-Meta-Viewport",
+      result_count:           "Result-Count",
+      section:                "Section",
+      skip:                   "Skip",
+      template:               "Template",
     }
 
     APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
@@ -25,6 +26,7 @@ module Slimmer
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
     PAGE_OWNER_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:page_owner]}"
+    RELATED_SECTION_TITLES_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:related_section_titles]}"
     REMOVE_META_VIEWPORT = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_meta_viewport]}"
     RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:result_count]}"
     SEARCH_INDEX_HEADER = "#{HEADER_PREFIX}-Search-Index"
@@ -36,7 +38,7 @@ module Slimmer
       raise InvalidHeader if (hash.keys - SLIMMER_HEADER_MAPPING.keys).any?
       SLIMMER_HEADER_MAPPING.each do |hash_key, header_suffix|
         value = hash[hash_key]
-        headers["#{HEADER_PREFIX}-#{header_suffix}"] = value.to_s if value
+        headers["#{HEADER_PREFIX}-#{header_suffix}"] = value.to_s if value or value == false
       end
     end
 

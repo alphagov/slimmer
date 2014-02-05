@@ -9,8 +9,9 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
     @related_template = File.read( File.dirname(__FILE__) + "/../fixtures/related.raw.html.erb" )
     @skin = stub("Skin", :template => @related_template)
     @artefact = Slimmer::Artefact.new artefact_for_slug_with_related_artefacts("vat", ["vat-rates", "starting-to-import"])
+    @response = stub("Response", :headers => {})
   end
-  
+
   def test_should_add_related_items
     source = as_nokogiri %{
       <html>
@@ -28,10 +29,31 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
       </html>
     }
 
-    Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact).filter(source, template)
+    Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact, @response).filter(source, template)
     assert_in template, "div.related h2", "Other relevant links"
     assert_in template, "div.related nav[role=navigation] ul li:nth-child(1) a[href='https://www.test.gov.uk/vat-rates']", "Vat rates"
     assert_in template, "div.related nav[role=navigation] ul li:nth-child(2) a[href='https://www.test.gov.uk/starting-to-import']", "Starting to import"
+  end
+
+  def test_should_default_flag_to_show_related_section_titles_to_true
+    response_with_header = stub("Response", headers: {
+      Slimmer::Headers::RELATED_SECTION_TITLES_HEADER => "something-else"
+    })
+
+    processor = Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact, @response)
+    assert_equal true, processor.show_related_section_titles?
+
+    processor = Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact, response_with_header)
+    assert_equal true, processor.show_related_section_titles?
+  end
+
+  def test_should_set_flag_to_show_related_section_titles_to_false
+    response = stub("Response", headers: {
+      Slimmer::Headers::RELATED_SECTION_TITLES_HEADER => "false"
+    })
+
+    processor = Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact, response)
+    assert_equal false, processor.show_related_section_titles?
   end
 
   def test_should_not_add_related_items_for_non_mainstream_source
@@ -53,7 +75,7 @@ class RelatedItemsInserterTest < MiniTest::Unit::TestCase
 
     @skin.expects(:template).never # Shouldn't fetch template when not inserting block
 
-    Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact).filter(source, template)
+    Slimmer::Processors::RelatedItemsInserter.new(@skin, @artefact, @response).filter(source, template)
     assert_not_in template, "div.related"
   end
 end
