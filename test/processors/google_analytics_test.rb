@@ -63,7 +63,8 @@ module GoogleAnalyticsTest
         Slimmer::Headers::FORMAT_HEADER => "custard",
         Slimmer::Headers::RESULT_COUNT_HEADER => "3",
         Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json,
-        Slimmer::Headers::ORGANISATIONS_HEADER => "<P1><D422>"
+        Slimmer::Headers::ORGANISATIONS_HEADER => "<P1><D422>",
+        Slimmer::Headers::WORLD_LOCATIONS_HEADER => "<WL3>"
       }
 
       given_response 200, GENERIC_DOCUMENT, headers
@@ -99,6 +100,10 @@ module GoogleAnalyticsTest
 
     def test_should_pass_organisation_to_GA
       assert_custom_var 9, "Organisations", "<P1><D422>", PAGE_LEVEL_EVENT
+    end
+
+    def test_should_pass_world_location_to_GA
+      assert_custom_var 10, "WorldLocations", "<WL3>", PAGE_LEVEL_EVENT
     end
 
     def test_should_set_section_in_GOVUK_object
