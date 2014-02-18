@@ -1,3 +1,7 @@
+# 3.26.0
+
+* Added X-Slimmer-World-Location header, value of which will be passed onto Google Analytics.
+
 # 3.25.0
 
 * Pass on GOVUK-Request-Id HTTP header when fetching templates
