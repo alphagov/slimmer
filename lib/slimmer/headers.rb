@@ -12,7 +12,7 @@ module Slimmer
       page_owner:           "Page-Owner",
       proposition:          "Proposition",
       organisations:        "Organisations",
-      worldwide_locations:  "Worldwide-Locations",
+      world_locations:      "World-Locations",
       remove_meta_viewport: "Remove-Meta-Viewport",
       result_count:         "Result-Count",
       section:              "Section",
@@ -25,7 +25,7 @@ module Slimmer
     BETA_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta]}"
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
-    WORLDWIDE_LOCATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:worldwide_locations]}"
+    WORLD_LOCATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:world_locations]}"
     PAGE_OWNER_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:page_owner]}"
     REMOVE_META_VIEWPORT = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_meta_viewport]}"
     RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:result_count]}"

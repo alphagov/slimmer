@@ -17,7 +17,7 @@ module Slimmer::Processors
         custom_vars << set_custom_var_downcase(4, "Proposition", (@artefact.business_proposition ? 'business' : 'citizen')) unless @artefact.business_proposition.nil?
       end
       custom_vars << set_custom_var(9, "Organisations", @headers[Slimmer::Headers::ORGANISATIONS_HEADER])
-      custom_vars << set_custom_var(10, "WorldwideLocations", @headers[Slimmer::Headers::WORLDWIDE_LOCATIONS_HEADER])
+      custom_vars << set_custom_var(10, "WorldLocations", @headers[Slimmer::Headers::WORLD_LOCATIONS_HEADER])
       custom_vars << set_custom_var_downcase(2, "Format", @headers[Slimmer::Headers::FORMAT_HEADER])
       custom_vars << set_custom_var_downcase(5, "ResultCount", @headers[Slimmer::Headers::RESULT_COUNT_HEADER])
 
