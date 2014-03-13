@@ -271,6 +271,20 @@ module TypicalUsage
     end
   end
 
+  class BetaLabelInserterTest < SlimmerIntegrationTest
+    def test_should_add_beta_label
+      given_response 200, %{
+        <html>
+          <body class="wibble">
+            <div id="wrapper">The body of the page</div>
+          </body>
+        </html>
+      }, {Slimmer::Headers::BETA_LABEL => 'after:#wrapper'}
+
+      assert_rendered_in_template '.beta-label'
+    end
+  end
+
   class Error500ResponseTest < SlimmerIntegrationTest
     include Rack::Test::Methods
 

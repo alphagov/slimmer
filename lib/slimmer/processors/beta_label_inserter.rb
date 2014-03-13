@@ -5,7 +5,7 @@ module Slimmer::Processors
       @headers = headers
     end
 
-    def filter(page_template)
+    def filter(content_document, page_template)
       if should_add_beta_label?
         if position == 'before'
           page_template.at_css(selector).add_previous_sibling(beta_label_block)
@@ -13,7 +13,6 @@ module Slimmer::Processors
           page_template.at_css(selector).add_next_sibling(beta_label_block)
         end
       end
-
     end
 
     def should_add_beta_label?

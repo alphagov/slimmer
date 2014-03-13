@@ -17,7 +17,7 @@ class BetaLabelInserterTest < MiniTest::Unit::TestCase
       Slimmer::Headers::BETA_LABEL => "after:header#main"
     }
 
-    Slimmer::Processors::BetaLabelInserter.new(@skin, headers).filter(@template)
+    Slimmer::Processors::BetaLabelInserter.new(@skin, headers).filter(nil, @template)
 
     assert_in @template, '#main + .beta-label'
   end
@@ -27,7 +27,7 @@ class BetaLabelInserterTest < MiniTest::Unit::TestCase
       Slimmer::Headers::BETA_LABEL => "before:header#main"
     }
 
-    Slimmer::Processors::BetaLabelInserter.new(@skin, headers).filter(@template)
+    Slimmer::Processors::BetaLabelInserter.new(@skin, headers).filter(nil, @template)
 
     assert_in @template, '.beta-label + #main'
   end
@@ -35,7 +35,7 @@ class BetaLabelInserterTest < MiniTest::Unit::TestCase
   def test_should_not_add_beta_label
     headers = {}
 
-    Slimmer::Processors::BetaLabelInserter.new(@skin, headers).filter(@template)
+    Slimmer::Processors::BetaLabelInserter.new(@skin, headers).filter(nil, @template)
 
     assert_not_in @template, '.beta-label'
   end
