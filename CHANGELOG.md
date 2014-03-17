@@ -1,3 +1,7 @@
+# 3.27.0
+
+* Added BETA_LABEL header and deprecated BETA_NOTICE header.
+
 # 3.26.0
 
 * Added X-Slimmer-World-Location header, value of which will be passed onto Google Analytics.
