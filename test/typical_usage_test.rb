@@ -253,21 +253,17 @@ module TypicalUsage
     end
   end
 
-  class BetaNoticeInserterTest < SlimmerIntegrationTest
-    def test_should_add_beta_warnings
+  class BetaLabelInserterTest < SlimmerIntegrationTest
+    def test_should_add_beta_label
       given_response 200, %{
         <html>
           <body class="wibble">
             <div id="wrapper">The body of the page</div>
           </body>
         </html>
-      }, {Slimmer::Headers::BETA_HEADER => '1'}
+      }, {Slimmer::Headers::BETA_LABEL => 'after:#wrapper'}
 
-      # beta notice after cookie bar
-      assert_rendered_in_template "body.beta.wibble #global-header + div.beta-notice"
-
-      # beta notice before footer
-      assert_rendered_in_template "body.beta.wibble div.beta-notice.js-footer + #footer"
+      assert_rendered_in_template '.beta-label'
     end
   end
 

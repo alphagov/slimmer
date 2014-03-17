@@ -7,6 +7,7 @@ module Slimmer::Processors
 
     def filter(content_document, page_template)
       if should_add_beta_notice?
+        warn "[DEPRECATION WARNING] BETA_HEADER is deprecated. Use BETA_LABEL instead."
         page_template.css('body').add_class('beta')
         if header = page_template.at_css('#global-header')
           header.add_next_sibling(beta_notice_block)
@@ -32,4 +33,3 @@ module Slimmer::Processors
     end
   end
 end
-

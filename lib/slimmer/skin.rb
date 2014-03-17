@@ -129,6 +129,7 @@ module Slimmer
         Processors::SearchIndexSetter.new(response),
         Processors::MetaViewportRemover.new(response),
         Processors::BetaNoticeInserter.new(self, response.headers),
+        Processors::BetaLabelInserter.new(self, response.headers)
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'

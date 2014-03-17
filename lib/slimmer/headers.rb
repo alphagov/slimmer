@@ -7,6 +7,7 @@ module Slimmer
     SLIMMER_HEADER_MAPPING = {
       application_name:     "Application-Name",
       beta:                 "Beta",
+      beta_label:           "Beta-Label",
       format:               "Format",
       need_id:              "Need-ID",
       page_owner:           "Page-Owner",
@@ -23,6 +24,7 @@ module Slimmer
     APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
     BETA_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta]}"
+    BETA_LABEL = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta_label]}"
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
     WORLD_LOCATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:world_locations]}"
