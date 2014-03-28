@@ -82,7 +82,7 @@ module GoogleAnalyticsTest
       assert_custom_var 2, "Format", "custard", PAGE_LEVEL_EVENT
     end
 
-    def test_should_set_section_in_GOVUK_object
+    def test_should_set_internal_format_name_in_GOVUK_object
       assert_set_var "Format", "custard", govuk
     end
 
@@ -90,7 +90,7 @@ module GoogleAnalyticsTest
       assert_custom_var 3, "NeedID", "42", PAGE_LEVEL_EVENT
     end
 
-    def test_should_set_section_in_GOVUK_object
+    def test_should_set_need_id_in_GOVUK_object
       assert_set_var "NeedID", "42", govuk
     end
 
@@ -106,15 +106,15 @@ module GoogleAnalyticsTest
       assert_custom_var 10, "WorldLocations", "<WL3>", PAGE_LEVEL_EVENT
     end
 
-    def test_should_set_section_in_GOVUK_object
-      assert_set_var "Proposition", "trifle", govuk
+    def test_should_set_proposition_in_GOVUK_object
+      assert_set_var "Proposition", "business", govuk
     end
 
     def test_should_pass_result_count_to_GA
       assert_custom_var 5, "ResultCount", "3", PAGE_LEVEL_EVENT
     end
 
-    def test_should_set_section_in_GOVUK_object
+    def test_should_set_result_count_in_GOVUK_object
       assert_set_var "ResultCount", "3", govuk
     end
   end
