@@ -14,11 +14,6 @@ class HeadersTest < MiniTest::Unit::TestCase
     assert_equal "rhubarb", headers["X-Slimmer-Section"]
   end
 
-  def test_should_set_need_id_header
-    set_slimmer_headers need_id: "rhubarb"
-    assert_equal "rhubarb", headers["X-Slimmer-Need-ID"]
-  end
-
   def test_should_set_format_header
     set_slimmer_headers format: "rhubarb"
     assert_equal "rhubarb", headers["X-Slimmer-Format"]
