@@ -9,7 +9,6 @@ module Slimmer
       beta:                 "Beta",
       beta_label:           "Beta-Label",
       format:               "Format",
-      need_id:              "Need-ID",
       page_owner:           "Page-Owner",
       proposition:          "Proposition",
       organisations:        "Organisations",
