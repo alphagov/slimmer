@@ -13,7 +13,7 @@ module Slimmer::Processors
       custom_vars = []
       if @artefact
         custom_vars << set_custom_var_downcase(1, "Section", @artefact.primary_root_section["title"]) if @artefact.primary_root_section
-        custom_vars << set_custom_var_downcase(3, "NeedID", @artefact.need_id)
+        custom_vars << set_multivalue_custom_var(3, "NeedID", @artefact.need_ids)
         custom_vars << set_custom_var_downcase(4, "Proposition", (@artefact.business_proposition ? 'business' : 'citizen')) unless @artefact.business_proposition.nil?
       end
       custom_vars << set_custom_var(9, "Organisations", @headers[Slimmer::Headers::ORGANISATIONS_HEADER])
@@ -30,6 +30,11 @@ module Slimmer::Processors
     def set_custom_var_downcase(slot, name, value)
       return nil unless value
       set_custom_var(slot, name, value.downcase)
+    end
+
+    def set_multivalue_custom_var(slot, name, values)
+      return nil if values.empty?
+      set_custom_var(slot, name, values.join(',').downcase)
     end
 
     def set_custom_var(slot, name, value)
