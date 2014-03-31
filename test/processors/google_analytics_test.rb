@@ -56,7 +56,7 @@ module GoogleAnalyticsTest
 
       artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
       artefact["details"].merge!(
-        "need_id" => "42",
+        "need_ids" => [100001,100002],
         "business_proposition" => true,
       )
       headers = {
@@ -86,12 +86,12 @@ module GoogleAnalyticsTest
       assert_set_var "Format", "custard", govuk
     end
 
-    def test_should_pass_need_ID_to_GA
-      assert_custom_var 3, "NeedID", "42", PAGE_LEVEL_EVENT
+    def test_should_pass_need_ids_to_GA
+      assert_custom_var 3, "NeedID", "100001,100002", PAGE_LEVEL_EVENT
     end
 
-    def test_should_set_need_id_in_GOVUK_object
-      assert_set_var "NeedID", "42", govuk
+    def test_should_set_need_ids_in_GOVUK_object
+      assert_set_var "NeedID", "100001,100002", govuk
     end
 
     def test_should_pass_proposition_to_GA
@@ -157,7 +157,7 @@ module GoogleAnalyticsTest
 
       artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
       artefact["details"].merge!(
-        "need_id" => "42",
+        "need_ids" => [100001, 100002],
         "business_proposition" => true
       )
       headers = {
