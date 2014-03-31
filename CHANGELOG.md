@@ -1,3 +1,8 @@
+# 3.28.0
+
+* Report multiple need ids to Google analytics and Performance tracking
+* Removed unused need_id header
+
 # 3.27.0
 
 * Added BETA_LABEL header and deprecated BETA_NOTICE header.
