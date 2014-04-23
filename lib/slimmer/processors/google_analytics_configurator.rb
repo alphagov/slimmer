@@ -33,7 +33,7 @@ module Slimmer::Processors
     end
 
     def set_multivalue_custom_var(slot, name, values)
-      return nil if values.empty?
+      return nil if !values.is_a?(Array) || values.empty?
       set_custom_var(slot, name, values.join(',').downcase)
     end
 
