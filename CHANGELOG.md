@@ -1,3 +1,7 @@
+# 3.28.1
+
+* Added nil check for multivalue custom vars in google analytics configurator
+
 # 3.28.0
 
 * Report multiple need ids to Google analytics and Performance tracking
