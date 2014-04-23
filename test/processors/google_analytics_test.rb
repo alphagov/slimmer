@@ -119,6 +119,28 @@ module GoogleAnalyticsTest
     end
   end
 
+  class WithInvalidAttributes < SlimmerIntegrationTest
+    include JavaScriptAssertions
+
+    def setup
+      super
+    end
+
+    def test_should_skip_passing_need_ids_if_they_are_nil
+      artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
+      headers = {
+        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json,
+        Slimmer::Headers::FORMAT_HEADER => "custard"
+      }
+      given_response 200, GENERIC_DOCUMENT, headers
+
+      refute_custom_var "NeedID"
+      # the presence of these attributes tests that the nil check worked
+      assert_custom_var 1, "Section", "rhubarb", PAGE_LEVEL_EVENT
+      assert_custom_var 2, "Format", "custard", PAGE_LEVEL_EVENT
+    end
+  end
+
   class WithoutHeadersTest < SlimmerIntegrationTest
     include JavaScriptAssertions
 
