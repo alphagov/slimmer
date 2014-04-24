@@ -1,3 +1,7 @@
+# 3.29.0
+
+* Send processor exceptions to errbit via Airbrake gem if present
+
 # 3.28.1
 
 * Added nil check for multivalue custom vars in google analytics configurator
