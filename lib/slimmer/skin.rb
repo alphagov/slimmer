@@ -99,6 +99,9 @@ module Slimmer
           p.filter(src,dest)
         rescue => e
           logger.error "Slimmer: Failed while processing #{p}: #{[ e.message, e.backtrace ].flatten.join("\n")}"
+          if defined?(Airbrake)
+            Airbrake.notify_or_ignore(e)
+          end
         end
         processor_end_time = Time.now
         process_time = processor_end_time - processor_start_time
