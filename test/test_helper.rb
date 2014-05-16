@@ -8,8 +8,6 @@ require 'mocha'
 require 'timecop'
 require 'gds_api/test_helpers/content_api'
 
-ENV['FACTER_govuk_platform'] = 'test'
-
 class MiniTest::Unit::TestCase
   def as_nokogiri(html_string)
     Nokogiri::HTML.parse(html_string.strip)
