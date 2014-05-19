@@ -1,3 +1,7 @@
+# 3.30.0
+
+* Remove search-index header as there are no longer tabs on search
+
 # 3.29.0
 
 * Send processor exceptions to errbit via Airbrake gem if present
