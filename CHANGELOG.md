@@ -1,4 +1,4 @@
-# 3.30.0
+# 4.0.0
 
 * Remove search-index header as there are no longer tabs on search
 
