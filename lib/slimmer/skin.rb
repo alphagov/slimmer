@@ -85,7 +85,7 @@ module Slimmer
       ignorable_codes.include?(error.code) || error.message.match(/Element script embeds close tag/) || error.message.match(/Unexpected end tag : noscript/)
     end
 
-    def process(processors,body,template)
+    def process(processors,body,template, rack_env)
       logger.debug "Slimmer: starting skinning process"
       src = parse_html(body.to_s, "backend response")
       dest = parse_html(template, "template")
@@ -100,7 +100,7 @@ module Slimmer
         rescue => e
           logger.error "Slimmer: Failed while processing #{p}: #{[ e.message, e.backtrace ].flatten.join("\n")}"
           if defined?(Airbrake)
-            Airbrake.notify_or_ignore(e)
+            Airbrake.notify_or_ignore(e, rack_env: rack_env)
           end
         end
         processor_end_time = Time.now
@@ -135,14 +135,14 @@ module Slimmer
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
-      process(processors, body, template(template_name))
+      process(processors, body, template(template_name), source_request.env)
     end
 
-    def error(template_name, body)
+    def error(template_name, body, rack_env)
       processors = [
         Processors::TitleInserter.new()
       ]
-      process(processors, body, template(template_name))
+      process(processors, body, template(template_name), rack_env)
     end
 
     def artefact_from_header(response)

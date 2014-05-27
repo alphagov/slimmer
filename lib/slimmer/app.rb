@@ -90,9 +90,9 @@ module Slimmer
       when 200
         @skin.success request, response, s(response.body)
       when 404
-        @skin.error '404', s(response.body)
+        @skin.error '404', s(response.body), request.env
       else
-        @skin.error '500', s(response.body)
+        @skin.error '500', s(response.body), request.env
       end
 
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
