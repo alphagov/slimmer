@@ -1,3 +1,7 @@
+# 4.0.1
+
+* Improve exception reporting by including rack_env
+
 # 4.0.0
 
 * Remove search-index header as there are no longer tabs on search
