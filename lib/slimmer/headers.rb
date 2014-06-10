@@ -5,6 +5,7 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
+      alpha_label:          "Alpha-Label",
       application_name:     "Application-Name",
       beta:                 "Beta",
       beta_label:           "Beta-Label",
@@ -20,6 +21,7 @@ module Slimmer
       template:             "Template",
     }
 
+    ALPHA_LABEL = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:alpha_label]}"
     APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
     BETA_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta]}"

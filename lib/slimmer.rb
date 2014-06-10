@@ -23,6 +23,7 @@ module Slimmer
   autoload :Artefact, 'slimmer/artefact'
 
   module Processors
+    autoload :AlphaLabelInserter, 'slimmer/processors/alpha_label_inserter'
     autoload :BetaNoticeInserter, 'slimmer/processors/beta_notice_inserter'
     autoload :BetaLabelInserter, 'slimmer/processors/beta_label_inserter'
     autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
