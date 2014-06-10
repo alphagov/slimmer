@@ -261,9 +261,23 @@ module TypicalUsage
             <div id="wrapper">The body of the page</div>
           </body>
         </html>
-      }, {Slimmer::Headers::BETA_LABEL => 'after:#wrapper'}
+      }, { Slimmer::Headers::BETA_LABEL => 'after:#wrapper' }
 
       assert_rendered_in_template '.beta-label'
+    end
+  end
+
+  class AlphaLabelInserterTest < SlimmerIntegrationTest
+    def test_should_add_alpha_label
+      given_response 200, %{
+        <html>
+          <body class="wibble">
+            <div id="wrapper">The body of the page</div>
+          </body>
+        </html>
+      }, { Slimmer::Headers::ALPHA_LABEL => 'after:#wrapper' }
+
+      assert_rendered_in_template '.alpha-label'
     end
   end
 
