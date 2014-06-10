@@ -1,3 +1,7 @@
+# 4.1.0
+
+* Add ALPHA_LABEL functionality
+
 # 4.0.1
 
 * Improve exception reporting by including rack_env
