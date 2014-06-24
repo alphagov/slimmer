@@ -99,14 +99,17 @@ module TypicalUsage
         <link href="app.css" rel="stylesheet" type="text/css">
         </head>
         <body class="body_class">
-        <div id="wrapper">The body of the page</div>
+        <div id="wrapper">
+          The body of the page
+          <h1>A Heading</h1>
+        </div>
         </body>
         </html>
       }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
     end
 
     def test_should_replace_the_wrapper_using_the_app_response
-      assert_rendered_in_template "#wrapper", "The body of the page"
+      assert_rendered_in_template "#wrapper", /The body of the page/
     end
 
     def test_should_replace_the_title_using_the_app_response
@@ -140,6 +143,10 @@ module TypicalUsage
     def test_should_not_add_beta_notice_to_non_beta_pages
       assert_no_selector "body.beta"
       assert_no_selector ".beta-notice"
+    end
+
+    def test_should_generate_ids_for_headers
+      assert_rendered_in_template "body h1[id=heading_a_heading]"
     end
   end
 

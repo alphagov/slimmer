@@ -32,6 +32,7 @@ module Slimmer
     autoload :FooterRemover, 'slimmer/processors/footer_remover'
     autoload :GoogleAnalyticsConfigurator, 'slimmer/processors/google_analytics_configurator'
     autoload :HeaderContextInserter, 'slimmer/processors/header_context_inserter'
+    autoload :HeaderIdentifier, 'slimmer/processors/header_identifier'
     autoload :LogoClassInserter, 'slimmer/processors/logo_class_inserter'
     autoload :NavigationMover, 'slimmer/processors/navigation_mover'
     autoload :MetaViewportRemover, 'slimmer/processors/meta_viewport_remover'
