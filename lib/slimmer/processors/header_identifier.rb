@@ -8,13 +8,11 @@ module Slimmer::Processors
     end
 
     def filter(_source, dest)
-      headings = dest.css('h1, h2, h3, h4, h5, h6')
-
-      headings.each do |element|
+      dest.css('*[id]').each do |element|
         ids_in_use << element[:id] unless element[:id].nil?
       end
 
-      headings.each do |element|
+      dest.css('h1, h2, h3, h4, h5, h6').each do |element|
         element[:id] = deduplicated_id(id_from_text(element.inner_text)) if element[:id].nil?
       end
     end

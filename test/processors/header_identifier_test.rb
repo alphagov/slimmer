@@ -49,14 +49,12 @@ class HeaderIdentifierTest < MiniTest::Unit::TestCase
   def test_it_doesnt_reuse_ids_which_already_exist_in_the_document
     document = document_with_content %{
       <h1>Some heading</h1>
-      <h1 id="heading_some_heading">Some other heading</h1>
+      <span id="heading_some_heading">Some conflicting id</span>
     }
 
     Slimmer::Processors::HeaderIdentifier.new.filter(:irrelevant, document)
 
-    ids = document.css('h1').map {|elem| elem[:id]}
-    assert_equal 'heading_some_heading_2', ids[0]
-    assert_equal 'heading_some_heading', ids[1]
+    assert_equal 'heading_some_heading_2', document.at_css('h1')[:id]
   end
 
 private
