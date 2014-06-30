@@ -146,7 +146,7 @@ module TypicalUsage
     end
 
     def test_should_generate_ids_for_headers
-      assert_rendered_in_template "body h1[id=heading_a_heading]"
+      assert_rendered_in_template "body h1[id=heading-a-heading]"
     end
   end
 

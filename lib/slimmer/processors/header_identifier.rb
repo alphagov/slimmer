@@ -19,7 +19,7 @@ module Slimmer::Processors
 
   private
     def id_from_text(header_text)
-      "#{ID_PREFIX}_#{header_text.downcase.gsub(/\W+/, '_').gsub(/(^_*)|(_*$)/, '')}"
+      "#{ID_PREFIX}-#{header_text.downcase.gsub(/\W+/, '-').gsub(/(^-*)|(-*$)/, '')}"
     end
 
     def deduplicated_id(raw_id)
@@ -36,12 +36,12 @@ module Slimmer::Processors
     end
 
     def iterate_id(id)
-      if id =~ /.*_\d*$/
-        id.gsub(/(.*_)(\d*)$/) {|match|
+      if id =~ /.*-\d*$/
+        id.gsub(/(.*-)(\d*)$/) {|match|
           $1 + ($2.to_i + 1).to_s
         }
       else
-        id + "_2"
+        id + "-2"
       end
     end
   end

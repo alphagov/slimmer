@@ -13,12 +13,12 @@ class HeaderIdentifierTest < MiniTest::Unit::TestCase
 
     Slimmer::Processors::HeaderIdentifier.new.filter(:irrelevant, document)
 
-    assert_equal "heading_subject_1", document.at_css("h1")[:id]
-    assert_equal "heading_subject_2", document.at_css("h2")[:id]
-    assert_equal "heading_subject_3", document.at_css("h3")[:id]
-    assert_equal "heading_subject_4", document.at_css("h4")[:id]
-    assert_equal "heading_subject_5", document.at_css("h5")[:id]
-    assert_equal "heading_subject_6", document.at_css("h6")[:id]
+    assert_equal "heading-subject-1", document.at_css("h1")[:id]
+    assert_equal "heading-subject-2", document.at_css("h2")[:id]
+    assert_equal "heading-subject-3", document.at_css("h3")[:id]
+    assert_equal "heading-subject-4", document.at_css("h4")[:id]
+    assert_equal "heading-subject-5", document.at_css("h5")[:id]
+    assert_equal "heading-subject-6", document.at_css("h6")[:id]
   end
 
   def test_it_doesnt_modify_existing_header_ids
@@ -41,20 +41,20 @@ class HeaderIdentifierTest < MiniTest::Unit::TestCase
     Slimmer::Processors::HeaderIdentifier.new.filter(:irrelevant, document)
 
     ids = document.css('h1').map {|elem| elem[:id]}
-    assert_equal 'heading_repeated_heading', ids[0]
-    assert_equal 'heading_repeated_heading_2', ids[1]
-    assert_equal 'heading_repeated_heading_3', ids[2]
+    assert_equal 'heading-repeated-heading', ids[0]
+    assert_equal 'heading-repeated-heading-2', ids[1]
+    assert_equal 'heading-repeated-heading-3', ids[2]
   end
 
   def test_it_doesnt_reuse_ids_which_already_exist_in_the_document
     document = document_with_content %{
       <h1>Some heading</h1>
-      <span id="heading_some_heading">Some conflicting id</span>
+      <span id="heading-some-heading">Some conflicting id</span>
     }
 
     Slimmer::Processors::HeaderIdentifier.new.filter(:irrelevant, document)
 
-    assert_equal 'heading_some_heading_2', document.at_css('h1')[:id]
+    assert_equal 'heading-some-heading-2', document.at_css('h1')[:id]
   end
 
 private
