@@ -13,35 +13,52 @@ module Slimmer::Processors
       end
 
       dest.css('h1, h2, h3, h4, h5, h6').each do |element|
-        element[:id] = deduplicated_id(id_from_text(element.inner_text)) if element[:id].nil?
+        element[:id] = deduplicated_id(id_from_text(element.inner_text)).to_s if element[:id].nil?
       end
     end
 
   private
     def id_from_text(header_text)
-      "#{ID_PREFIX}-#{header_text.downcase.gsub(/\W+/, '-').gsub(/(^-*)|(-*$)/, '')}"
+      id_base = header_text.downcase.gsub(/\W+/, '-').gsub(/(^-*)|(-*$)/, '')
+      HeaderId.new(ID_PREFIX, id_base)
     end
 
-    def deduplicated_id(raw_id)
-      if id_in_use?(raw_id)
-        deduplicated_id(iterate_id(raw_id))
+    def deduplicated_id(header_id)
+      if id_in_use?(header_id)
+        header_id.iterate!
+        deduplicated_id(header_id)
       else
-        ids_in_use << raw_id
-        raw_id
+        ids_in_use << header_id.to_s
+        header_id
       end
     end
 
-    def id_in_use?(id)
-      ids_in_use.include?(id)
+    def id_in_use?(header_id)
+      ids_in_use.include?(header_id.to_s)
     end
 
-    def iterate_id(id)
-      if id =~ /.*-\d*$/
-        id.gsub(/(.*-)(\d*)$/) {|match|
-          $1 + ($2.to_i + 1).to_s
-        }
-      else
-        id + "-2"
+    class HeaderId
+      attr_reader :prefix, :base
+      attr_accessor :iteration
+
+      def initialize(prefix, base, iteration = 1)
+        @prefix = prefix
+        @base = base
+        @iteration = iteration
+      end
+
+      def to_s
+        if base.to_s == ''
+          "#{prefix}-#{iteration}"
+        elsif iteration > 1
+          "#{prefix}-#{base}-#{iteration}"
+        else
+          "#{prefix}-#{base}"
+        end
+      end
+
+      def iterate!
+        self.iteration += 1
       end
     end
   end
