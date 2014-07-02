@@ -99,14 +99,17 @@ module TypicalUsage
         <link href="app.css" rel="stylesheet" type="text/css">
         </head>
         <body class="body_class">
-        <div id="wrapper">The body of the page</div>
+        <div id="wrapper">
+          The body of the page
+          <h1>A Heading</h1>
+        </div>
         </body>
         </html>
       }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
     end
 
     def test_should_replace_the_wrapper_using_the_app_response
-      assert_rendered_in_template "#wrapper", "The body of the page"
+      assert_rendered_in_template "#wrapper", /The body of the page/
     end
 
     def test_should_replace_the_title_using_the_app_response
@@ -141,6 +144,10 @@ module TypicalUsage
       assert_no_selector "body.beta"
       assert_no_selector ".beta-notice"
     end
+
+    def test_should_generate_ids_for_headers
+      assert_rendered_in_template "body h1[id=heading-a-heading]"
+    end
   end
 
   class ConditionalCommentTest < SlimmerIntegrationTest
@@ -153,7 +160,7 @@ module TypicalUsage
     }
     def test_should_find_conditional_comments_copied_into_the_head
       element = Nokogiri::HTML.parse(last_response.body).at_xpath('//comment()')
-      assert_match element.to_s, /app-ie\.css/, 'Not found conditional comment in output'
+      assert_match /app-ie\.css/, element.to_s, 'Not found conditional comment in output'
     end
   end
 
@@ -168,7 +175,7 @@ module TypicalUsage
     def test_should_find_stylesheet_wrapped_with_conditional_comments
       assert_rendered_in_template "head link[href='app.css']"
       element = Nokogiri::HTML.parse(last_response.body).at_xpath('/html/head')
-      assert_match element.to_s, /<!--\[if gt IE 8\]><!-->.*app\.css.*<!--<!\[endif\]-->/m, 'Not found conditional comment in output'
+      assert_match /<!--\[if gt IE 8\]><!-->.*app\.css.*<!--<!\[endif\]-->/m, element.to_s, 'Not found conditional comment in output'
     end
   end
 

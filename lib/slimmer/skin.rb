@@ -133,6 +133,7 @@ module Slimmer
         Processors::BetaNoticeInserter.new(self, response.headers),
         Processors::BetaLabelInserter.new(self, response.headers),
         Processors::AlphaLabelInserter.new(self, response.headers),
+        Processors::HeaderIdentifier.new()
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
