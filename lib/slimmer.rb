@@ -22,6 +22,9 @@ module Slimmer
   autoload :Headers, 'slimmer/headers'
   autoload :Artefact, 'slimmer/artefact'
 
+  autoload :SharedTemplates, 'slimmer/shared_templates'
+  autoload :ComponentResolver, 'slimmer/component_resolver'
+
   module Processors
     autoload :AlphaLabelInserter, 'slimmer/processors/alpha_label_inserter'
     autoload :BetaNoticeInserter, 'slimmer/processors/beta_notice_inserter'

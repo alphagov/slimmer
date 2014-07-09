@@ -81,6 +81,20 @@ By default if you pass in a logger with its log level set to `debug`, slimmer wi
       config.slimmer.enable_debugging = true
     end
 
+## Shared components
+
+To use shared template components you need to include the shared template resolver
+
+    class ApplicationController < ActionController::Base
+      include Slimmer::SharedTemplates
+    end
+
+This will make calls out to static when you try and render a partial prefixed with `govuk-component`:
+
+    <%= render partial: 'govuk-component/example_component' %>
+
+You will need a copy of static running for the templates to be loaded from.
+
 ## The name
 
 Slimmer was extracted from a much larger project called 'skinner'. 'slimmer' referred to the size 
