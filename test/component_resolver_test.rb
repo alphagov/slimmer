@@ -18,5 +18,12 @@ describe Slimmer::ComponentResolver do
       assert_requested :get, expected_url
       assert_equal '<foo />', templates.first.args[0]
     end
+
+    it "should return a known template in test mode" do
+      @resolver.expects(:test?).returns(true)
+
+      templates = @resolver.find_templates('name', 'govuk_component', false, {})
+      assert_match /<div class="govuk_component-name">/, templates.first.args[0]
+    end
   end
 end

@@ -1,4 +1,5 @@
 require 'slimmer/govuk_request_id'
+require 'active_support/core_ext/string/inflections'
 
 module Slimmer
   class ComponentResolver < ::ActionView::Resolver
@@ -6,7 +7,11 @@ module Slimmer
       return [] unless prefix == 'govuk_component'
 
       template_path = [prefix, name].join('/')
-      template_body = fetch(template_url(template_path))
+      if test?
+        template_body = test_body(template_path)
+      else
+        template_body = fetch(template_url(template_path))
+      end
 
       details = {
         :format => 'text/html',
@@ -18,6 +23,10 @@ module Slimmer
     end
 
   private
+    def test?
+      defined?(Rails) && Rails.env.test?
+    end
+
     def erb_handler
       @erb_handler ||= ActionView::Template.registered_template_handler(:erb)
     end
@@ -41,6 +50,10 @@ module Slimmer
 
     def static_host
       @static_host ||= Plek.new.find('static')
+    end
+
+    def test_body(path)
+      %Q{<div class="#{path.parameterize}"><%= local_assigns.keys.join(' ') %></div>}
     end
   end
 end
