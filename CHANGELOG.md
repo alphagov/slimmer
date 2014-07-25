@@ -1,3 +1,7 @@
+# 4.1.1
+
+* Assets are loaded from production instead of preview environment in test mode
+
 # 4.1.0
 
 * Add ALPHA_LABEL functionality
