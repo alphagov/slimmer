@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'null_logger'
   s.add_dependency 'lrucache', '~> 0.1.3'
   s.add_dependency 'rest-client'
-  s.add_dependency 'activesupport'
 
   s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'rake', '~> 0.9.2.2'
@@ -34,6 +33,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'gem_publisher', '~> 1.1.1'
   s.add_development_dependency 'gds-api-adapters', '2.7.1'
   s.add_development_dependency 'timecop', '~> 0.5.1'
+  s.add_development_dependency 'activesupport', '3.2.13'
   s.files         = Dir[
     'README.md',
     'CHANGELOG.md',
