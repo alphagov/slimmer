@@ -26,10 +26,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport'
 
   s.test_files    = Dir['test/**/*']
+  s.add_development_dependency 'minitest', '~> 5.4'
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
-  s.add_development_dependency 'mocha', '~> 0.12.4'
-  s.add_development_dependency 'webmock', '1.11.0'
+  s.add_development_dependency 'mocha', '~> 1.1'
+  s.add_development_dependency 'webmock', '1.18.0'
   s.add_development_dependency 'therubyracer', '~> 0.10.2'
   s.add_development_dependency 'gem_publisher', '~> 1.1.1'
   s.add_development_dependency 'gds-api-adapters', '2.7.1'

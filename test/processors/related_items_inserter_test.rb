@@ -1,7 +1,7 @@
 require_relative '../test_helper'
 require 'gds_api/test_helpers/content_api'
 
-class RelatedItemsInserterTest < MiniTest::Unit::TestCase
+class RelatedItemsInserterTest < MiniTest::Test
   include GdsApi::TestHelpers::ContentApi
 
   def setup

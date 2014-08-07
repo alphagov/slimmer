@@ -1,7 +1,7 @@
 require_relative "../test_helper"
 require 'gds_api/test_helpers/content_api'
 
-class SectionInserterTest < MiniTest::Unit::TestCase
+class SectionInserterTest < MiniTest::Test
   include GdsApi::TestHelpers::ContentApi
 
   def create_artefact(slug, attributes = {})

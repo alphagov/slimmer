@@ -1,7 +1,7 @@
 require_relative "test_helper"
 require "slimmer/headers"
 
-class HeadersTest < MiniTest::Unit::TestCase
+class HeadersTest < MiniTest::Test
   include Slimmer::Headers
   attr_accessor :headers
 

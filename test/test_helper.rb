@@ -1,14 +1,13 @@
 require_relative '../lib/slimmer'
 require 'minitest/autorun'
-require 'minitest/unit'
 require 'rack/test'
 require 'json'
 require 'logger'
-require 'mocha'
+require 'mocha/setup'
 require 'timecop'
 require 'gds_api/test_helpers/content_api'
 
-class MiniTest::Unit::TestCase
+MiniTest::Test.class_eval do
   def as_nokogiri(html_string)
     Nokogiri::HTML.parse(html_string.strip)
   end
@@ -59,7 +58,7 @@ module ActionView
   end
 end
 
-class SlimmerIntegrationTest < MiniTest::Unit::TestCase
+class SlimmerIntegrationTest < MiniTest::Test
   include Rack::Test::Methods
   include GdsApi::TestHelpers::ContentApi
 
