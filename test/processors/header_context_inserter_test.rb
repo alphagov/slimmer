@@ -1,6 +1,6 @@
 require "test_helper"
 
-class HeaderContextInserterTest < MiniTest::Unit::TestCase
+class HeaderContextInserterTest < MiniTest::Test
   def test_should_replace_contents_of_header_context_in_template
     template = as_nokogiri %{
       <html><body><div><div class="header-context"></div></div></body></html>

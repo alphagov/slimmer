@@ -1,6 +1,6 @@
 require_relative '../test_helper'
 
-class ReportAProblemInserterTest < MiniTest::Unit::TestCase
+class ReportAProblemInserterTest < MiniTest::Test
 
   def setup
     super

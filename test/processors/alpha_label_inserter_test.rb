@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-class AlphaLabelInserterTest < MiniTest::Unit::TestCase
+class AlphaLabelInserterTest < MiniTest::Test
 
   def setup
     super

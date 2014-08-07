@@ -1,6 +1,6 @@
 require "test_helper"
 
-class BodyInserterTest < MiniTest::Unit::TestCase
+class BodyInserterTest < MiniTest::Test
   def test_should_replace_contents_of_wrapper_in_template
     template = as_nokogiri %{
       <html><body><div><div id="wrapper"></div></div></body></html>

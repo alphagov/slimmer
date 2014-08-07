@@ -1,6 +1,6 @@
 require_relative '../test_helper'
 
-class NavigationMoverTest < MiniTest::Unit::TestCase
+class NavigationMoverTest < MiniTest::Test
   def setup
     super
     @proposition_header_block = File.read( File.dirname(__FILE__) + "/../fixtures/proposition_menu.html.erb" )
