@@ -1,3 +1,7 @@
+# 4.2.0
+
+* Add ability to load shared erb templates over the network
+
 # 4.1.1
 
 * Assets are loaded from production instead of preview environment in test mode
