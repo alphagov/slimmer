@@ -3,14 +3,23 @@ require 'active_support/core_ext/string/inflections'
 
 module Slimmer
   class ComponentResolver < ::ActionView::Resolver
+    def self.caching
+      # this turns off the default ActionView::Resolver caching which caches
+      # all templates for the duration of the current process in production
+      false
+    end
+
     def find_templates(name, prefix, partial, details)
       return [] unless prefix == 'govuk_component'
+      cache = Cache.instance
 
       template_path = [prefix, name].join('/')
       if test?
         template_body = test_body(template_path)
       else
-        template_body = fetch(template_url(template_path))
+        template_body = cache.fetch(template_path) do
+          fetch(template_url(template_path))
+        end
       end
 
       details = {

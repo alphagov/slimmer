@@ -28,7 +28,10 @@ module Slimmer
         options[:asset_host] = Plek.current.find("static")
       end
 
-      @skin = Skin.new options.merge(logger: self.logger)
+      cache = Cache.instance
+      cache.use_cache = options[:use_cache] if options[:use_cache]
+
+      @skin = Skin.new options.merge(logger: self.logger, cache: cache)
     end
 
     def call(env)

@@ -3,28 +3,19 @@ require 'slimmer/govuk_request_id'
 
 module Slimmer
   class Skin
-    attr_accessor :use_cache, :template_cache, :asset_host, :logger, :strict, :options
+    attr_accessor :template_cache, :asset_host, :logger, :strict, :options
 
-    # TODO: Extract the cache to something we can pass in instead of using
-    # true/false and an in-memory cache.
     def initialize options = {}
       @options = options
       @asset_host = options[:asset_host]
-
-      @use_cache = options[:use_cache] || false
-      @cache_ttl = options[:cache_ttl] || (15 * 60) # 15 mins
-      @template_cache = LRUCache.new(:ttl => @cache_ttl) if @use_cache
+      @template_cache = options[:cache]
 
       @logger = options[:logger] || NullLogger.instance
       @strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
     end
 
     def template(template_name)
-      if use_cache
-        template_cache.fetch(template_name) do
-          load_template(template_name)
-        end
-      else
+      template_cache.fetch(template_name) do
         load_template(template_name)
       end
     end
