@@ -17,6 +17,8 @@ module Slimmer
   autoload :Railtie, 'slimmer/railtie'
   autoload :Skin, 'slimmer/skin'
 
+  autoload :Cache, 'slimmer/cache'
+
   autoload :Template, 'slimmer/template'
   autoload :App, 'slimmer/app'
   autoload :Headers, 'slimmer/headers'

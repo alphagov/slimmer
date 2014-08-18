@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'plek', '>= 0.1.8'
   s.add_dependency 'json'
   s.add_dependency 'null_logger'
-  s.add_dependency 'lrucache', '~> 0.1.3'
   s.add_dependency 'rest-client'
   s.add_dependency 'activesupport'
 
