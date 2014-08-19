@@ -52,6 +52,13 @@ class ReportAProblemInserterTest < MiniTest::Test
     assert_not_in template, "div.report-a-problem-container"
   end
 
+  def test_should_not_add_report_a_problem_form_if_app_opts_out_in_header
+    @skin.expects(:template).never
+    headers = { Slimmer::Headers::REPORT_A_PROBLEM_FORM => 'false' }
+    Slimmer::Processors::ReportAProblemInserter.new(@skin, "", headers, "wrapper").filter(:any_source, template)
+    assert_not_in template, "div.report-a-problem-container"
+  end
+
   private
 
   def template

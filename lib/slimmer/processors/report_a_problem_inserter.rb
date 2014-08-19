@@ -10,7 +10,7 @@ module Slimmer::Processors
     end
 
     def filter(content_document, page_template)
-      if container = page_template.at_css('#' + @wrapper_id)
+      if enabled? && container = page_template.at_css('#' + @wrapper_id)
         container.add_child(report_a_problem_block)
       end
     end
@@ -22,6 +22,11 @@ module Slimmer::Processors
       report_a_problem_template = @skin.template('report_a_problem.raw')
       html = ERB.new(report_a_problem_template).result(binding)
       Nokogiri::HTML.fragment(html)
+    end
+
+  private
+    def enabled?
+      @headers[Slimmer::Headers::REPORT_A_PROBLEM_FORM] != 'false'
     end
   end
 end
