@@ -2,15 +2,16 @@ module Slimmer::Processors
   class ReportAProblemInserter
     include ERB::Util
 
-    def initialize(skin, url, headers)
+    def initialize(skin, url, headers, wrapper_id)
       @skin = skin
       @request_url = url
       @headers = headers
+      @wrapper_id = wrapper_id
     end
 
     def filter(content_document, page_template)
-      if (placeholder = page_template.at_css('body #report-a-problem'))
-        placeholder.replace(report_a_problem_block)
+      if container = page_template.at_css('#' + @wrapper_id)
+        container.add_child(report_a_problem_block)
       end
     end
 
@@ -24,4 +25,3 @@ module Slimmer::Processors
     end
   end
 end
-
