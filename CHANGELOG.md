@@ -1,3 +1,8 @@
+# 4.2.1
+
+* Use a shared cache between shared templates and skin templates so that they
+  all update together
+
 # 4.2.0
 
 * Add ability to load shared erb templates over the network
