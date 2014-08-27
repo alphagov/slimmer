@@ -7,7 +7,6 @@ require 'nokogiri'
 require 'erb'
 require 'plek'
 require 'null_logger'
-require 'lrucache'
 
 require 'slimmer/version'
 require 'slimmer/railtie' if defined? Rails
