@@ -1,3 +1,7 @@
+# 4.2.2
+
+* Remove unused include
+
 # 4.2.1
 
 * Use a shared cache between shared templates and skin templates so that they
