@@ -1,3 +1,8 @@
+# 4.3.0
+
+* Add a Search-Parameters header, to allow apps to add extra parameters to
+  search requests made from the page.
+
 # 4.2.2
 
 * Remove unused include
