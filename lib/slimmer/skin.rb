@@ -107,12 +107,13 @@ module Slimmer
 
     def success(source_request, response, body)
       artefact = artefact_from_header(response)
+      wrapper_id = options[:wrapper_id] || 'wrapper'
       processors = [
         Processors::TitleInserter.new(),
         Processors::TagMover.new(),
         Processors::NavigationMover.new(self),
         Processors::ConditionalCommentMover.new(),
-        Processors::BodyInserter.new(options[:wrapper_id] || 'wrapper'),
+        Processors::BodyInserter.new(wrapper_id),
         Processors::BodyClassCopier.new,
         Processors::HeaderContextInserter.new(),
         Processors::SectionInserter.new(artefact),
@@ -124,7 +125,7 @@ module Slimmer
         Processors::ReportAProblemInserter.new(self,
                                                source_request.url,
                                                response.headers,
-                                               options[:wrapper_id] || 'wrapper'),
+                                               wrapper_id),
         Processors::MetaViewportRemover.new(response),
         Processors::BetaNoticeInserter.new(self, response.headers),
         Processors::BetaLabelInserter.new(self, response.headers),
