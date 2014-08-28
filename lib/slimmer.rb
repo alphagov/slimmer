@@ -43,6 +43,7 @@ module Slimmer
     autoload :ReportAProblemInserter, 'slimmer/processors/report_a_problem_inserter'
     autoload :SearchIndexSetter, 'slimmer/processors/search_index_setter'
     autoload :SearchPathSetter, 'slimmer/processors/search_path_setter'
+    autoload :SearchParameterInserter, 'slimmer/processors/search_parameter_inserter'
     autoload :SectionInserter, 'slimmer/processors/section_inserter'
     autoload :TagMover, 'slimmer/processors/tag_mover'
     autoload :TitleInserter, 'slimmer/processors/title_inserter'
