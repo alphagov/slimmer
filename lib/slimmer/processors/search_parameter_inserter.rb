@@ -36,7 +36,7 @@ module Slimmer::Processors
     end
 
     def parse_search_parameters
-      header_value = @response.headers.fetch(Slimmer::Headers::SEARCH_PARAMETERS_HEADER)
+      header_value = @response.headers.fetch(Slimmer::Headers::SEARCH_PARAMETERS_HEADER, nil)
       if header_value.nil?
         []
       else
