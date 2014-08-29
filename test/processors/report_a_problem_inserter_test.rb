@@ -12,7 +12,12 @@ class ReportAProblemInserterTest < MiniTest::Test
     @skin.expects(:template).with('report_a_problem.raw').returns(@report_a_problem_template)
 
     headers = { Slimmer::Headers::APPLICATION_NAME_HEADER => 'government' }
-    Slimmer::Processors::ReportAProblemInserter.new(@skin, "http://www.example.com/somewhere?foo=bar", headers).filter(:any_source, template)
+    Slimmer::Processors::ReportAProblemInserter.new(
+      @skin,
+      "http://www.example.com/somewhere?foo=bar",
+      headers,
+      "wrapper"
+    ).filter(:any_source, template)
 
     assert_in template, "#wrapper div.report-a-problem-container"
     assert_in template, "div.report-a-problem-container form input[name=url][value='http://www.example.com/somewhere?foo=bar']"
@@ -22,7 +27,12 @@ class ReportAProblemInserterTest < MiniTest::Test
   def test_should_add_page_owner_if_provided_in_headers
     @skin.expects(:template).with('report_a_problem.raw').returns(@report_a_problem_template)
     headers = { Slimmer::Headers::PAGE_OWNER_HEADER => 'hmrc' }
-    Slimmer::Processors::ReportAProblemInserter.new(@skin, "http://www.example.com/somewhere", headers).filter(:any_source, template)
+    Slimmer::Processors::ReportAProblemInserter.new(
+      @skin,
+      "http://www.example.com/somewhere",
+      headers,
+      "wrapper"
+    ).filter(:any_source, template)
 
     assert_in template, "#wrapper div.report-a-problem-container"
     assert_in template, "div.report-a-problem-container form input[name=page_owner][value='hmrc']"
@@ -32,15 +42,20 @@ class ReportAProblemInserterTest < MiniTest::Test
     template = as_nokogiri %{
       <html>
         <body class="mainstream">
-          <div id="wrapper">
-          </div>
         </body>
       </html>
     }
 
     @skin.expects(:template).never # Shouldn't fetch template when not inserting block
 
-    Slimmer::Processors::ReportAProblemInserter.new(@skin, "", {}).filter(:any_source, template)
+    Slimmer::Processors::ReportAProblemInserter.new(@skin, "", {}, "wrapper").filter(:any_source, template)
+    assert_not_in template, "div.report-a-problem-container"
+  end
+
+  def test_should_not_add_report_a_problem_form_if_app_opts_out_in_header
+    @skin.expects(:template).never
+    headers = { Slimmer::Headers::REPORT_A_PROBLEM_FORM => 'false' }
+    Slimmer::Processors::ReportAProblemInserter.new(@skin, "", headers, "wrapper").filter(:any_source, template)
     assert_not_in template, "div.report-a-problem-container"
   end
 
@@ -51,7 +66,7 @@ class ReportAProblemInserterTest < MiniTest::Test
       <html>
         <body">
           <div id="wrapper">
-            <div id="report-a-problem"></div>
+            <div id="content"></div>
           </div>
         </body>
       </html>

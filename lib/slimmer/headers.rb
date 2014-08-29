@@ -13,6 +13,7 @@ module Slimmer
       page_owner:           "Page-Owner",
       proposition:          "Proposition",
       organisations:        "Organisations",
+      report_a_problem:     "Report-a-Problem",
       world_locations:      "World-Locations",
       remove_meta_viewport: "Remove-Meta-Viewport",
       result_count:         "Result-Count",
@@ -29,6 +30,7 @@ module Slimmer
     BETA_LABEL = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta_label]}"
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
+    REPORT_A_PROBLEM_FORM = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:report_a_problem]}"
     WORLD_LOCATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:world_locations]}"
     PAGE_OWNER_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:page_owner]}"
     REMOVE_META_VIEWPORT = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_meta_viewport]}"

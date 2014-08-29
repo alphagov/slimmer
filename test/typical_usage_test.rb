@@ -35,7 +35,7 @@ module TypicalUsage
       with_rails_env('test') do
         get "/some-slug?skip_slimmer=1"
       end
-      assert_rendered_in_template '#wrapper', "Don't template me"
+      assert_rendered_in_template '#wrapper', /^Don't template me/
     end
   end
 
@@ -106,7 +106,7 @@ module TypicalUsage
     end
 
     def test_should_replace_the_wrapper_using_the_app_response
-      assert_rendered_in_template "#wrapper", "The body of the page"
+      assert_rendered_in_template "#wrapper", /^The body of the page/
     end
 
     def test_should_replace_the_title_using_the_app_response
@@ -241,7 +241,7 @@ module TypicalUsage
     given_response 200, %{
       <html>
       <body>
-      <div id="wrapper">The body of the page<div id="report-a-problem"></div></div>
+      <div id="wrapper">The body of the page</div>
       </body>
       </html>
     }
@@ -381,7 +381,7 @@ module TypicalUsage
     }, {}, {wrapper_id: "custom_wrapper"}
 
     def test_should_replace_wrapper_with_custom_wrapper
-      assert_rendered_in_template "body #custom_wrapper", "The body of the page"
+      assert_rendered_in_template "body #custom_wrapper", /^The body of the page/
       assert_no_selector "#wrapper"
     end
   end
