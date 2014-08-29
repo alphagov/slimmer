@@ -1,3 +1,8 @@
+# 4.3.1
+
+* When running tests, don't hide exceptions in the processors. Fix a bug in the
+  Search-Parameters processor's handling of missing headers revealed by this.
+
 # 4.3.0
 
 * Add a Search-Parameters header, to allow apps to add extra parameters to
