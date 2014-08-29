@@ -28,19 +28,6 @@ module SearchParameterInserterTest
     end
   end
 
-  class WithInvalidHeaderTest < SlimmerIntegrationTest
-    headers = {
-      "X-Slimmer-Search-Parameters" => '[not-valid-json',
-    }
-
-    given_response 200, DOCUMENT_WITH_SEARCH, headers
-
-    def test_should_not_add_hidden_input
-      hidden_inputs = Nokogiri::HTML.parse(last_response.body).at_css('#search input[type=hidden]')
-      assert_equal nil, hidden_inputs
-    end
-  end
-
   class WithoutHeaderTest < SlimmerIntegrationTest
     given_response 200, DOCUMENT_WITH_SEARCH, {}
 
