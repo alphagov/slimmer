@@ -149,6 +149,7 @@ module TypicalUsage
       <head><title>The title of the page</title>
       <!--[if lt IE 9]><link href="app-ie.css" rel="stylesheet" type="text/css"><![endif]-->
       </head>
+      <body class="body_class"><div id="wrapper"></div></body>
       </html>
     }
     def test_should_find_conditional_comments_copied_into_the_head
@@ -163,6 +164,7 @@ module TypicalUsage
       <head>
       <!--[if gt IE 8]><!--><link href="app.css" rel="stylesheet" type="text/css"><!--<![endif]-->
       </head>
+      <body class="body_class"><div id="wrapper"></div></body>
       </html>
     }
     def test_should_find_stylesheet_wrapped_with_conditional_comments
