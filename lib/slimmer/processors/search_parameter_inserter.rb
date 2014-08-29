@@ -36,12 +36,8 @@ module Slimmer::Processors
     end
 
     def parse_search_parameters
-      header_value = @response.headers.fetch(Slimmer::Headers::SEARCH_PARAMETERS_HEADER)
-      if header_value.nil?
-        []
-      else
-        JSON.parse(header_value)
-      end
+      header_value = @response.headers.fetch(Slimmer::Headers::SEARCH_PARAMETERS_HEADER, "{}")
+      JSON.parse(header_value)
     rescue JSON::ParserError => e
       logger.error "Slimmer: Failed while parsing search parameters header: #{[ e.message, e.backtrace ].flatten.join("\n")}"
       []
