@@ -284,8 +284,6 @@ module TypicalUsage
   end
 
   class Error500ResponseTest < SlimmerIntegrationTest
-    include Rack::Test::Methods
-
     given_response 500, %{
       <html>
       <head><title>500 Error</title>
@@ -313,8 +311,6 @@ module TypicalUsage
   end
 
   class Error404ResponseTest < SlimmerIntegrationTest
-    include Rack::Test::Methods
-
     given_response 404, %{
       <html>
       <head><title>404 Missing</title>
@@ -342,8 +338,6 @@ module TypicalUsage
   end
 
   class Error406ResponseTest < SlimmerIntegrationTest
-    include Rack::Test::Methods
-
     given_response 406, %{
       <html>
       <head><title>406 Not Acceptable</title>
