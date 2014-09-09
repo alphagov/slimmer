@@ -128,9 +128,9 @@ class SlimmerIntegrationTest < MiniTest::Test
 
     if content
       if content.is_a?(Regexp)
-        found_match = matched_elements.inject(false) { |had_match, element| had_match || element.inner_html.match(content) }
+        found_match = matched_elements.any? { |element| element.inner_html.match(content) }
       else
-        found_match = matched_elements.inject(false) { |had_match, element| had_match || element.inner_html == content }
+        found_match = matched_elements.any? { |element| element.inner_html == content }
       end
       assert found_match, message + ". The selector was found but not with \"#{content}\"."
     end
