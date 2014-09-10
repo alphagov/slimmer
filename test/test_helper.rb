@@ -114,6 +114,7 @@ class SlimmerIntegrationTest < MiniTest::Test
     refute_match /#{Regexp.escape(content)}/, last_response.body
   end
 
+  # content can be a string or a Regexp
   def assert_rendered_in_template(selector, content=nil, message=nil)
     unless message
       if content
@@ -127,12 +128,9 @@ class SlimmerIntegrationTest < MiniTest::Test
     assert matched_elements.length > 0, message + ", but selector not found."
 
     if content
-      if content.is_a?(Regexp)
-        found_match = matched_elements.inject(false) { |had_match, element| had_match || element.inner_html.match(content) }
-      else
-        found_match = matched_elements.inject(false) { |had_match, element| had_match || element.inner_html == content }
-      end
-      assert found_match, message + ". The selector was found but not with \"#{content}\"."
+      inner_htmls = matched_elements.map(&:inner_html)
+      found_match = inner_htmls.grep(content).any? # grep matches strings or Regexps
+      assert found_match, message + ". The selector was found but with different content: \"#{inner_htmls.join('", ')}\""
     end
   end
 
