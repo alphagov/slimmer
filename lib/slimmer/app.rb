@@ -94,6 +94,8 @@ module Slimmer
         @skin.success request, response, s(response.body)
       when 404
         @skin.error '404', s(response.body), request.env
+      when 410
+        @skin.error '410', s(response.body), request.env
       else
         @skin.error '500', s(response.body), request.env
       end

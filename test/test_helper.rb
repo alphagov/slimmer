@@ -85,6 +85,7 @@ class SlimmerIntegrationTest < MiniTest::Test
     template_name = case code
     when 200 then 'wrapper'
     when 404 then '404'
+    when 410 then '410'
     else          '500'
     end
 
