@@ -126,7 +126,7 @@ module Slimmer
                                                source_request.url,
                                                response.headers,
                                                wrapper_id),
-        Processors::MetaViewportRemover.new(response),
+        Processors::MetaViewportRemover.new(self, response.headers),
         Processors::BetaNoticeInserter.new(self, response.headers),
         Processors::BetaLabelInserter.new(self, response.headers),
         Processors::AlphaLabelInserter.new(self, response.headers),
