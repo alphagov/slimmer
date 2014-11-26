@@ -1,3 +1,8 @@
+# 5.0.1
+
+* Fix MetaViewportRemover to not raise an exception if there is no meta
+  viewport tag. Issue became apparent in 4.3.1. 
+
 # 5.0.0
 
 This release contains breaking changes.
