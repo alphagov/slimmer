@@ -1,41 +1,35 @@
 require 'json'
 
 module Slimmer
-  class ComponentI18nBackend < I18n::Backend::KeyValue
-
-    def initialize
-    end
+  class ComponentI18nBackend
+    include I18n::Backend::Base, I18n::Backend::Flatten
 
     def available_locales
-      cache = Cache.instance
-
-      cache.fetch(available_translation_file) do
-        locale_json = fetch(translation_url(available_translation_file))
+      cache.fetch("available_locales") do
+        locale_json = fetch(static_component_url("translations"))
         locales = JSON.parse(locale_json).map(&:to_sym)
       end
     end
 
-    def translate(locale, key, options={})
-      cache = Cache.instance
-
-      translations = cache.fetch(translation_file(locale)) do
-        generate_translations(locale, translation_file(locale))
-      end
-
+    def lookup(locale, key, scope = [], options = {})
+      key = normalize_flat_keys(locale, key, scope, options[:separator])
+      translations = translations(locale)
       translations["#{locale}.#{key}".to_sym]
     end
 
   private
 
-    def available_translation_file
-      "translations"
+    def cache
+      Cache.instance
     end
 
-    def translation_file(locale)
-      "translations/#{locale}"
+    def translations(locale)
+      cache.fetch("translations/#{locale}") do
+        fetch_translations(locale)
+      end
     end
 
-    def translation_url(file)
+    def static_component_url(file)
       [static_host, "templates", "govuk_component", file].compact.join('/')
     end
 
@@ -43,8 +37,10 @@ module Slimmer
       @static_host ||= Plek.new.find('static')
     end
 
-    def generate_translations(locale, locale_file)
-      translations = JSON.parse(fetch(translation_url(locale_file)))
+    def fetch_translations(locale)
+      url = static_component_url("translations/#{locale}")
+      json_data = fetch(url)
+      translations = JSON.parse(json_data)
       flatten_translations(locale, translations, false, false)
     end
 
