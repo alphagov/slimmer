@@ -62,7 +62,7 @@ module Slimmer
     end
 
     def test_body(path)
-      %Q{<div class="#{path.parameterize}"><%= local_assigns.keys.join(' ') %></div>}
+      %Q{<script type="text/component-source" class="#{path.parameterize}"><%= JSON.dump(local_assigns) %></script>}
     end
   end
 end
