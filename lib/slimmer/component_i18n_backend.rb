@@ -1,12 +1,12 @@
 require 'json'
 
 module Slimmer
-  class ComponentI18nBackend
+  class I18nBackend
     include I18n::Backend::Base, I18n::Backend::Flatten
 
     def available_locales
       cache.fetch("available_locales") do
-        locale_json = fetch(static_component_url("translations"))
+        locale_json = fetch(static_locales_url)
         locales = JSON.parse(locale_json).map(&:to_sym)
       end
     end
@@ -29,8 +29,8 @@ module Slimmer
       end
     end
 
-    def static_component_url(file)
-      [static_host, "templates", "govuk_component", file].compact.join('/')
+    def static_locales_url(locale=nil)
+      [static_host, "templates", "locales", locale].compact.join('/')
     end
 
     def static_host
@@ -38,7 +38,7 @@ module Slimmer
     end
 
     def fetch_translations(locale)
-      url = static_component_url("translations/#{locale}")
+      url = static_locales_url(locale)
       json_data = fetch(url)
       translations = JSON.parse(json_data)
       flatten_translations(locale, translations, false, false)
