@@ -1,3 +1,9 @@
+# 5.1.0
+
+* `ComponentResolver#test_body` returns a JSON blob of the components keys and values instead of just the values.
+
+* Add an I18n backend to load translations over the network from static
+
 # 5.0.1
 
 * Fix MetaViewportRemover to not raise an exception if there is no meta
