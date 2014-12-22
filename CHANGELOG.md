@@ -1,3 +1,11 @@
+# 6.0.0
+
+* Change ComponentResolver to use a bespoke tag - `test-govuk-component` - when
+  running in a test, rather than `script`. Use `data-template` rather than
+  `class` to identify which template was used.
+* Fix bug where Slimmer::TestHelpers::SharedTemplates#shared_component_selector
+  returned the wrong selector.
+
 # 5.1.0
 
 * `ComponentResolver#test_body` returns a JSON blob of the components keys and values instead of just the values.
