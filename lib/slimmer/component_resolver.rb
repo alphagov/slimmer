@@ -3,6 +3,8 @@ require 'active_support/core_ext/string/inflections'
 
 module Slimmer
   class ComponentResolver < ::ActionView::Resolver
+    TEST_TAG_NAME = 'test-govuk-component'
+
     def self.caching
       # this turns off the default ActionView::Resolver caching which caches
       # all templates for the duration of the current process in production
@@ -62,7 +64,7 @@ module Slimmer
     end
 
     def test_body(path)
-      %Q{<test-govuk-component data-template="#{path.parameterize}"><%= JSON.dump(local_assigns) %></test-govuk-component>}
+      %Q{<#{TEST_TAG_NAME} data-template="#{path.parameterize}"><%= JSON.dump(local_assigns) %></#{TEST_TAG_NAME}>}
     end
   end
 end
