@@ -62,7 +62,7 @@ module Slimmer
     end
 
     def test_body(path)
-      %Q{<script type="text/component-source" class="#{path.parameterize}"><%= JSON.dump(local_assigns) %></script>}
+      %Q{<test-govuk-component data-template="#{path.parameterize}"><%= JSON.dump(local_assigns) %></test-govuk-component>}
     end
   end
 end

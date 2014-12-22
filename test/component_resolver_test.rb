@@ -23,7 +23,7 @@ describe Slimmer::ComponentResolver do
       @resolver.expects(:test?).returns(true)
 
       templates = @resolver.find_templates('name', 'govuk_component', false, {})
-      assert_match /<script type="text\/component-source" class="govuk_component-name">/, templates.first.args[0]
+      assert_match /<test-govuk-component data-template="govuk_component-name">/, templates.first.args[0]
     end
   end
 end
