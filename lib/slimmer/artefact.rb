@@ -26,12 +26,6 @@ class Slimmer::Artefact
     section
   end
 
-  def legacy_sources
-    tags_of_type('legacy_source').map do |t|
-      id_to_slug(t["id"])
-    end
-  end
-
   def related_artefacts
     return [] unless self.related
     self.related.map do |r|

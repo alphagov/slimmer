@@ -90,7 +90,6 @@ module TypicalUsage
     def setup
       super
       @artefact = artefact_for_slug_in_a_section("some-article", 'this-section')
-      @artefact["tags"] << tag_for_slug("directgov", "legacy_source")
       given_response 200, %{
         <html>
         <head><title>The title of the page</title>
@@ -131,10 +130,6 @@ module TypicalUsage
 
     def test_should_insert_section_links_into_the_navigation
       assert_rendered_in_template "#global-breadcrumb ol li a[href='https://www.test.gov.uk/browse/this-section']", "This section"
-    end
-
-    def test_should_add_logo_classes_to_wrapper
-      assert_rendered_in_template "#wrapper.directgov"
     end
 
     def test_should_not_add_beta_notice_to_non_beta_pages
