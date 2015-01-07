@@ -1,3 +1,8 @@
+# 6.0.1
+
+* Remove LogoClassInserter
+* Remove BusinessLink and Directgov branding
+
 # 6.0.0
 
 * Change ComponentResolver to use a bespoke tag - `test-govuk-component` - when
