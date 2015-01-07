@@ -22,12 +22,12 @@ describe Slimmer::Artefact do
     end
 
     it "should ignore other tag types" do
-      @data["tags"].unshift(tag_for_slug("businesslink", "legacy_source"))
+      @data["tags"].unshift(tag_for_slug("other_tag", "another_tag"))
       assert_equal @tag1, Slimmer::Artefact.new(@data).primary_section
     end
 
     it "should return nil if there are no sections" do
-      @data["tags"] = [tag_for_slug("businesslink", "legacy_source")]
+      @data["tags"] = [tag_for_slug("other_tag", "another_tag")]
       assert_equal nil, Slimmer::Artefact.new(@data).primary_section
     end
 
@@ -86,30 +86,6 @@ describe Slimmer::Artefact do
     it "should return empty array if there is no 'related' element" do
       @data.delete("related")
       assert_equal [], Slimmer::Artefact.new(@data).related_artefacts
-    end
-  end
-
-  describe "Legacy sources" do
-    before do
-      @data = artefact_for_slug('something')
-    end
-
-    it "should return the slugs of all legacy_source tags" do
-      @data["tags"] << tag_for_slug('businesslink', 'legacy_source')
-      @data["tags"] << tag_for_slug('directgov', 'legacy_source')
-      assert_equal ['businesslink', 'directgov'], Slimmer::Artefact.new(@data).legacy_sources.sort
-    end
-
-    it "should not include other tags" do
-      @data["tags"] << tag_for_slug('businesslink', 'legacy_source')
-      @data["tags"] << tag_for_slug('business', 'proposition')
-      @data["tags"] << tag_for_slug('directgov', 'legacy_source')
-      assert_equal ['businesslink', 'directgov'], Slimmer::Artefact.new(@data).legacy_sources.sort
-    end
-
-    it "should return empty array if the data hs no tags element" do
-      @data.delete("tags")
-      assert_equal [], Slimmer::Artefact.new(@data).legacy_sources
     end
   end
 
