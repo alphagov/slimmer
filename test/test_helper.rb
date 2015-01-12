@@ -92,9 +92,6 @@ class SlimmerIntegrationTest < MiniTest::Test
     use_template(template_name)
     use_template('related.raw')
     use_template('report_a_problem.raw')
-    use_template('alpha_label')
-    use_template('beta_notice')
-    use_template('beta_label')
 
     fetch_page
   end
