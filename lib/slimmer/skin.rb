@@ -126,9 +126,6 @@ module Slimmer
                                                response.headers,
                                                wrapper_id),
         Processors::MetaViewportRemover.new(self, response.headers),
-        Processors::BetaNoticeInserter.new(self, response.headers),
-        Processors::BetaLabelInserter.new(self, response.headers),
-        Processors::AlphaLabelInserter.new(self, response.headers),
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'

@@ -5,10 +5,7 @@ module Slimmer
     HEADER_PREFIX = "X-Slimmer"
 
     SLIMMER_HEADER_MAPPING = {
-      alpha_label:          "Alpha-Label",
       application_name:     "Application-Name",
-      beta:                 "Beta",
-      beta_label:           "Beta-Label",
       format:               "Format",
       page_owner:           "Page-Owner",
       proposition:          "Proposition",
@@ -23,11 +20,8 @@ module Slimmer
       template:             "Template",
     }
 
-    ALPHA_LABEL = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:alpha_label]}"
     APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
     ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
-    BETA_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta]}"
-    BETA_LABEL = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:beta_label]}"
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
     REPORT_A_PROBLEM_FORM = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:report_a_problem]}"

@@ -131,11 +131,6 @@ module TypicalUsage
     def test_should_insert_section_links_into_the_navigation
       assert_rendered_in_template "#global-breadcrumb ol li a[href='https://www.test.gov.uk/browse/this-section']", "This section"
     end
-
-    def test_should_not_add_beta_notice_to_non_beta_pages
-      assert_no_selector "body.beta"
-      assert_no_selector ".beta-notice"
-    end
   end
 
   class ConditionalCommentTest < SlimmerIntegrationTest
@@ -247,34 +242,6 @@ module TypicalUsage
 
     def test_should_add_the_current_url_to_the_form
       assert_rendered_in_template ".report-a-problem-container input[name=url][value='http://example.org/']"
-    end
-  end
-
-  class BetaLabelInserterTest < SlimmerIntegrationTest
-    def test_should_add_beta_label
-      given_response 200, %{
-        <html>
-          <body class="wibble">
-            <div id="wrapper">The body of the page</div>
-          </body>
-        </html>
-      }, { Slimmer::Headers::BETA_LABEL => 'after:#wrapper' }
-
-      assert_rendered_in_template '.beta-label'
-    end
-  end
-
-  class AlphaLabelInserterTest < SlimmerIntegrationTest
-    def test_should_add_alpha_label
-      given_response 200, %{
-        <html>
-          <body class="wibble">
-            <div id="wrapper">The body of the page</div>
-          </body>
-        </html>
-      }, { Slimmer::Headers::ALPHA_LABEL => 'after:#wrapper' }
-
-      assert_rendered_in_template '.alpha-label'
     end
   end
 

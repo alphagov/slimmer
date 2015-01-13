@@ -22,9 +22,6 @@ module Slimmer
   autoload :ComponentResolver, 'slimmer/component_resolver'
 
   module Processors
-    autoload :AlphaLabelInserter, 'slimmer/processors/alpha_label_inserter'
-    autoload :BetaNoticeInserter, 'slimmer/processors/beta_notice_inserter'
-    autoload :BetaLabelInserter, 'slimmer/processors/beta_label_inserter'
     autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
     autoload :BodyInserter, 'slimmer/processors/body_inserter'
     autoload :ConditionalCommentMover, 'slimmer/processors/conditional_comment_mover'
