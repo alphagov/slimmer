@@ -1,3 +1,11 @@
+# 7.0.0
+
+* Remove AlphaLabelInserter, BetaNoticeInserter, BetaLabelInserter. These are
+  now better handled by govuk_components
+* Remove LogoClassInserter. BusinessLink and DirectGov branding is being
+  removed so we don't need to insert their logos
+* Loosen Nokogiri dependency. Rails 4.2 needs Nokogiri 1.6.0 and above.
+
 # 6.0.0
 
 * Change ComponentResolver to use a bespoke tag - `test-govuk-component` - when
@@ -15,7 +23,7 @@
 # 5.0.1
 
 * Fix MetaViewportRemover to not raise an exception if there is no meta
-  viewport tag. Issue became apparent in 4.3.1. 
+  viewport tag. Issue became apparent in 4.3.1.
 
 # 5.0.0
 
