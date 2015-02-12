@@ -8,8 +8,14 @@ git clean -fdx
 # is master.
 git merge --no-commit origin/master || git merge --abort
 
-bundle install --path "${HOME}/bundles/${JOB_NAME}"
-bundle exec rake test --trace
+for version in 2.2 2.1 1.9.3; do
+  export RBENV_VERSION=$version
+  echo "Running tests under ruby $version"
+  bundle install --path "${HOME}/bundles/${JOB_NAME}"
+  bundle exec rake test --trace
+done
+
+unset RBENV_VERSION
 
 if [[ -n "$PUBLISH_GEM" ]]; then
   bundle exec rake publish_gem --trace
