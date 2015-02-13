@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha', '~> 1.1'
   s.add_development_dependency 'webmock', '1.18.0'
   s.add_development_dependency 'therubyracer', '~> 0.10.2'
-  s.add_development_dependency 'gem_publisher', '~> 1.1.1'
+  s.add_development_dependency 'gem_publisher', '~> 1.5.0'
   s.add_development_dependency 'gds-api-adapters', '2.7.1'
   s.add_development_dependency 'timecop', '~> 0.5.1'
   s.files         = Dir[
