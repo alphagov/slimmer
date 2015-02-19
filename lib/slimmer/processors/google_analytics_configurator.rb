@@ -14,7 +14,6 @@ module Slimmer::Processors
       if @artefact
         custom_vars << set_custom_var_downcase(1, "Section", @artefact.primary_root_section["title"]) if @artefact.primary_root_section
         custom_vars << set_multivalue_custom_var(3, "NeedID", @artefact.need_ids)
-        custom_vars << set_custom_var_downcase(4, "Proposition", (@artefact.business_proposition ? 'business' : 'citizen')) unless @artefact.business_proposition.nil?
       end
       custom_vars << set_custom_var(9, "Organisations", @headers[Slimmer::Headers::ORGANISATIONS_HEADER])
       custom_vars << set_custom_var(10, "WorldLocations", @headers[Slimmer::Headers::WORLD_LOCATIONS_HEADER])
@@ -44,4 +43,3 @@ module Slimmer::Processors
     end
   end
 end
-
