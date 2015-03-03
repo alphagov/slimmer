@@ -38,8 +38,7 @@ module Slimmer::Processors
 
     def set_custom_var(slot, name, value)
       return nil unless value
-      response = "_gaq.push(#{JSON.dump([ "_setCustomVar", slot, name, value, PAGE_LEVEL_EVENT])});\n"
-      response + "GOVUK.Analytics.#{name} = \"#{value}\";"
+      "_gaq.push(#{JSON.dump([ "_setCustomVar", slot, name, value, PAGE_LEVEL_EVENT])});\n"
     end
   end
 end
