@@ -27,6 +27,7 @@ module Slimmer
     autoload :ConditionalCommentMover, 'slimmer/processors/conditional_comment_mover'
     autoload :FooterRemover, 'slimmer/processors/footer_remover'
     autoload :GoogleAnalyticsConfigurator, 'slimmer/processors/google_analytics_configurator'
+    autoload :MetadataInserter, 'slimmer/processors/metadata_inserter'
     autoload :HeaderContextInserter, 'slimmer/processors/header_context_inserter'
     autoload :NavigationMover, 'slimmer/processors/navigation_mover'
     autoload :MetaViewportRemover, 'slimmer/processors/meta_viewport_remover'
