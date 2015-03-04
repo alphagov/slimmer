@@ -117,7 +117,6 @@ module Slimmer
         Processors::BodyClassCopier.new,
         Processors::HeaderContextInserter.new(),
         Processors::SectionInserter.new(artefact),
-        Processors::GoogleAnalyticsConfigurator.new(response, artefact),
         Processors::MetadataInserter.new(response, artefact),
         Processors::SearchParameterInserter.new(response),
         Processors::SearchPathSetter.new(response),
