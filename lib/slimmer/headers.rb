@@ -8,7 +8,6 @@ module Slimmer
       application_name:     "Application-Name",
       format:               "Format",
       page_owner:           "Page-Owner",
-      proposition:          "Proposition",
       organisations:        "Organisations",
       report_a_problem:     "Report-a-Problem",
       world_locations:      "World-Locations",
