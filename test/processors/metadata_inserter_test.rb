@@ -16,12 +16,12 @@ module MetadataInserterTest
   module MetaTagAssertions
     def assert_meta_tag(name, content)
       template = Nokogiri::HTML(last_response.body)
-      assert_in template, "head meta[name='#{name}'][content='#{content}']"
+      assert_in template, "head meta[name='govuk-#{name}'][content='#{content}']"
     end
 
     def refute_meta_tag(name)
       template = Nokogiri::HTML(last_response.body)
-      assert_not_in template, "head meta[name='#{name}']"
+      assert_not_in template, "head meta[name='govuk-#{name}']"
     end
   end
 

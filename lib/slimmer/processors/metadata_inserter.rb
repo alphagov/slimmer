@@ -24,7 +24,7 @@ module Slimmer::Processors
     def add_meta_tag(name, content, head)
       if content
         meta_node = Nokogiri::XML::Node.new('meta', head)
-        meta_node['name'] = name
+        meta_node['name'] = "govuk-#{name}"
         meta_node['content'] = content
 
         head.add_child(meta_node)
