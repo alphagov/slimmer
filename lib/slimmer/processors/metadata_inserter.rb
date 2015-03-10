@@ -13,8 +13,8 @@ module Slimmer::Processors
         add_meta_tag('need-ids', @artefact.need_ids.join(',').downcase, head) if @artefact.need_ids
       end
 
-      add_meta_tag('organisations', @headers[Slimmer::Headers::ORGANISATIONS_HEADER], head)
-      add_meta_tag('world-locations', @headers[Slimmer::Headers::WORLD_LOCATIONS_HEADER], head)
+      add_meta_tag('analytics-organisations', @headers[Slimmer::Headers::ORGANISATIONS_HEADER], head)
+      add_meta_tag('analytics-world-locations', @headers[Slimmer::Headers::WORLD_LOCATIONS_HEADER], head)
       add_meta_tag('format', @headers[Slimmer::Headers::FORMAT_HEADER], head)
       add_meta_tag('search-result-count', @headers[Slimmer::Headers::RESULT_COUNT_HEADER], head)
     end
