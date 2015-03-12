@@ -1,8 +1,6 @@
 require_relative "../test_helper"
-require "v8"
 
-module GoogleAnalyticsTest
-  PAGE_LEVEL_EVENT = 3
+module MetadataInserterTest
 
   GENERIC_DOCUMENT = <<-END
     <html>
@@ -15,30 +13,20 @@ module GoogleAnalyticsTest
     </html>
   END
 
-  module JavaScriptAssertions
-    def gaq
-      js = Nokogiri::HTML(last_response.body).at_css("#ga-params").text
-      context = V8::Context.new
-      context.eval(js)
-      context.eval("_gaq");
+  module MetaTagAssertions
+    def assert_meta_tag(name, content)
+      template = Nokogiri::HTML(last_response.body)
+      assert_in template, "head meta[name='govuk:#{name}'][content='#{content}']"
     end
 
-    def assert_custom_var(slot, name, value, page_level)
-      # Ruby Racer JS arrays don't accept range indexing, so we must
-      # use a slightly longer workaround
-      vars = gaq.select { |a| a[0] == "_setCustomVar" }.
-                 map { |a| (1..4).map { |i| a[i] } }
-      assert_includes vars, [slot, name, value, page_level]
-    end
-
-    def refute_custom_var(name)
-      vars = gaq.select { |a| a[0] == "_setCustomVar" }.map { |a| a[2] }
-      refute_includes vars, name
+    def refute_meta_tag(name)
+      template = Nokogiri::HTML(last_response.body)
+      assert_not_in template, "head meta[name='govuk:#{name}']"
     end
   end
 
   class WithHeadersTest < SlimmerIntegrationTest
-    include JavaScriptAssertions
+    include MetaTagAssertions
 
     def setup
       super
@@ -58,33 +46,33 @@ module GoogleAnalyticsTest
       given_response 200, GENERIC_DOCUMENT, headers
     end
 
-    def test_should_pass_section_to_GA
-      assert_custom_var 1, "Section", "rhubarb", PAGE_LEVEL_EVENT
+    def test_should_include_section_meta_tag
+      assert_meta_tag "section", "rhubarb"
     end
 
-    def test_should_pass_internal_format_name_to_GA
-      assert_custom_var 2, "Format", "custard", PAGE_LEVEL_EVENT
+    def test_should_include_format_meta_tag
+      assert_meta_tag "format", "custard"
     end
 
-    def test_should_pass_need_ids_to_GA
-      assert_custom_var 3, "NeedID", "100001,100002", PAGE_LEVEL_EVENT
+    def test_should_include_need_ids_meta_tag
+      assert_meta_tag "need-ids", "100001,100002"
     end
 
-    def test_should_pass_organisation_to_GA
-      assert_custom_var 9, "Organisations", "<P1><D422>", PAGE_LEVEL_EVENT
+    def test_should_include_organisations_meta_tag
+      assert_meta_tag "analytics:organisations", "<P1><D422>"
     end
 
-    def test_should_pass_world_location_to_GA
-      assert_custom_var 10, "WorldLocations", "<WL3>", PAGE_LEVEL_EVENT
+    def test_should_include_world_locations_meta_tag
+      assert_meta_tag "analytics:world-locations", "<WL3>"
     end
 
-    def test_should_pass_result_count_to_GA
-      assert_custom_var 5, "ResultCount", "3", PAGE_LEVEL_EVENT
+    def test_should_include_search_result_count_meta_tag
+      assert_meta_tag "search-result-count", "3"
     end
   end
 
   class WithInvalidAttributes < SlimmerIntegrationTest
-    include JavaScriptAssertions
+    include MetaTagAssertions
 
     def setup
       super
@@ -98,41 +86,45 @@ module GoogleAnalyticsTest
       }
       given_response 200, GENERIC_DOCUMENT, headers
 
-      refute_custom_var "NeedID"
+      refute_meta_tag "need-ids"
       # the presence of these attributes tests that the nil check worked
-      assert_custom_var 1, "Section", "rhubarb", PAGE_LEVEL_EVENT
-      assert_custom_var 2, "Format", "custard", PAGE_LEVEL_EVENT
+      assert_meta_tag "section", "rhubarb"
+      assert_meta_tag "format", "custard"
     end
   end
 
   class WithoutHeadersTest < SlimmerIntegrationTest
-    include JavaScriptAssertions
+    include MetaTagAssertions
 
     given_response 200, GENERIC_DOCUMENT, {}
 
     def test_should_omit_section
-      refute_custom_var "Section"
+      refute_meta_tag "section"
     end
 
     def test_should_omit_internal_format_name
-      refute_custom_var "Format"
+      refute_meta_tag "format"
     end
 
     def test_should_omit_need_ID
-      refute_custom_var "NeedID"
+      refute_meta_tag "need-ids"
     end
 
     def test_should_omit_organisations
-      refute_custom_var "Organisations"
+      refute_meta_tag "analytics:organisations"
+    end
+
+    def test_should_omit_world_locations
+      refute_meta_tag "analytics:world-locations"
     end
 
     def test_should_omit_result_count
-      refute_custom_var "ResultCount"
+      refute_meta_tag "search-result-count"
     end
   end
 
   class WithNilHeaderTest < SlimmerIntegrationTest
-    include JavaScriptAssertions
+    include MetaTagAssertions
 
     def setup
       super
@@ -150,8 +142,8 @@ module GoogleAnalyticsTest
       given_response 200, GENERIC_DOCUMENT, headers
     end
 
-    def test_should_pass_organisation_to_GA_without_crashing
-      assert_custom_var 9, "Organisations", "<P1><D422>", PAGE_LEVEL_EVENT
+    def test_should_include_organisation_meta_tag_without_crashing
+      assert_meta_tag "analytics:organisations", "<P1><D422>"
     end
   end
 end
