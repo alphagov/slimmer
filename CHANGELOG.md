@@ -1,3 +1,19 @@
+# 8.0.0
+
+* Switch from JS custom variables to HTML meta tags
+
+  Slimmer now appends page metadata as meta tags instead of setting Google
+  custom variables within a script tag. The Google-specific implementation
+  details have been removed.
+
+  Any apps that need to report analytics events will require additional
+  Javascript that reads the meta tags and sends the relevant data to the
+  analytics platform. The current best practice for doing this is using
+  the GOV.UK Analytics API - you can find the [code, examples and documentation
+  in `govuk_frontend_toolkit`](https://github.com/alphagov/govuk_frontend_toolkit/blob/master/docs/analytics.md).
+
+* Remove Proposition header, since this information wasn't being used
+
 # 7.0.0
 
 * Remove AlphaLabelInserter, BetaNoticeInserter, BetaLabelInserter. These are
