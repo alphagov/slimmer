@@ -17,6 +17,7 @@ module Slimmer
       section:              "Section",
       skip:                 "Skip",
       template:             "Template",
+      remove_search:        "Remove-Search",
     }
 
     APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
@@ -32,6 +33,7 @@ module Slimmer
     SEARCH_PARAMETERS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:search_parameters]}"
     SKIP_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:skip]}"
     TEMPLATE_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:template]}"
+    REMOVE_SEARCH_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_search]}"
 
     def set_slimmer_headers(hash)
       raise InvalidHeader if (hash.keys - SLIMMER_HEADER_MAPPING.keys).any?

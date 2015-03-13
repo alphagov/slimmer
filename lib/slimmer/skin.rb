@@ -126,6 +126,7 @@ module Slimmer
                                                response.headers,
                                                wrapper_id),
         Processors::MetaViewportRemover.new(self, response.headers),
+        Processors::SearchRemover.new(response.headers),
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
