@@ -1,3 +1,7 @@
+# 8.1.0
+
+* Add remove_search header which strips out the search box in the header.
+
 # 8.0.0
 
 * Switch from JS custom variables to HTML meta tags
