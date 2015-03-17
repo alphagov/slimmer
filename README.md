@@ -97,11 +97,27 @@ You will need a copy of static running for the templates to be loaded from.
 
 ### Testing shared components
 
-There is a test helper which can produce a CSS selector for a given component.
-This can then be incorporated into your test framework of choice to assert that
-the component is called. For example:
+In test mode (when `Rails.env.test?` returns `true`), shared components are not
+fetched from Static. Instead they are rendered as a dummy tag which contains a
+JSON dump of the `locals` - the arguments passed to the component.
+
+A test helper is included which returns a CSS selector for finding a given
+component to assert that it was used. You can make it available in your tests
+with:
+
+    require 'slimmer/test_helpers/shared_templates'
+    include Slimmer::TestHelpers::SharedTemplates
+
+And then assert that the component has been used:
 
     page.should have_css(shared_component_selector('metadata'))
+
+Or look for one of the arguments to the component which will have been
+`JSON.dump`ed inside the tag:
+
+    within(shared_component_selector('title')) do
+      expect(page).to have_content(expected_title_text)
+    end
 
 ## The name
 
