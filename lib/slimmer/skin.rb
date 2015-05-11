@@ -3,6 +3,8 @@ require 'slimmer/govuk_request_id'
 
 module Slimmer
   class Skin
+    TemplateParseError = Class.new(RuntimeError)
+
     attr_accessor :template_cache, :asset_host, :logger, :strict, :options
 
     def initialize options = {}
@@ -11,7 +13,7 @@ module Slimmer
       @template_cache = options[:cache]
 
       @logger = options[:logger] || NullLogger.instance
-      @strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
+      @strict = options[:strict].nil? ? (%w{development test}.include?(ENV['RACK_ENV'])) : options[:strict]
     end
 
     def template(template_name)
@@ -53,7 +55,7 @@ module Slimmer
           message = "In #{description_for_error_message}: '#{error.message}' at line #{error.line} col #{error.column} (code #{error.code}).\n"
           message << "Add ?skip_slimmer=1 to the url to show the raw backend request.\n\n"
           message << context(html, error)
-          raise message
+          raise TemplateParseError.new(message)
         end
       end
 
