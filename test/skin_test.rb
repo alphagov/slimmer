@@ -84,6 +84,76 @@ describe Slimmer::Skin do
         skin.template 'example'
       end
     end
+
+    describe "strict mode" do
+      let(:invalid_html) { '<html><div id="foo"></div><div id="foo"></div></html>' }
+      let(:rack_env) { 'production' }
+
+      before do
+        ENV["RACK_ENV"] = rack_env
+      end
+
+      after do
+        ENV["RACK_ENV"] = "test"
+      end
+
+      subject do
+        skin = Slimmer::Skin.new strict: strict_mode
+
+        skin.parse_html invalid_html, "Example HTML"
+      end
+
+      describe "when true" do
+        let(:strict_mode) { true }
+
+        it "raises a validation error" do
+          assert_raises(Slimmer::Skin::TemplateParseError) { subject }
+        end
+      end
+
+      describe "when nil in development" do
+        let(:strict_mode) { nil }
+        let(:rack_env) { "development" }
+
+        it "raises a validation error" do
+          assert_raises(Slimmer::Skin::TemplateParseError) { subject }
+        end
+      end
+
+      describe "when nil in test" do
+        let(:strict_mode) { nil }
+        let(:rack_env) { "test" }
+
+        it "raises a validation error" do
+          assert_raises(Slimmer::Skin::TemplateParseError) { subject }
+        end
+      end
+
+      describe "when nil in production" do
+        let(:strict_mode) { nil }
+
+        it "parses correctly" do
+          assert_kind_of Nokogiri::HTML::Document, subject
+        end
+      end
+
+      describe "when false in development" do
+        let(:strict_mode) { false }
+        let(:rack_env) { "development" }
+
+        it "parses correctly" do
+          assert_kind_of Nokogiri::HTML::Document, subject
+        end
+      end
+
+      describe "when false in production" do
+        let(:strict_mode) { false }
+
+        it "parses correctly" do
+          assert_kind_of Nokogiri::HTML::Document, subject
+        end
+      end
+    end
   end
 
   describe "parsing artefact from header" do
