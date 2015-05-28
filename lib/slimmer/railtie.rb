@@ -3,7 +3,12 @@ module Slimmer
     config.slimmer = ActiveSupport::OrderedOptions.new
 
     initializer "slimmer.configure" do |app|
-      app.middleware.use Slimmer::App, app.config.slimmer.to_hash
+      slimmer_config = app.config.slimmer.to_hash
+
+      app_name = app.class.parent_name
+      slimmer_config = slimmer_config.reverse_merge(app_name: app_name)
+
+      app.middleware.use Slimmer::App, slimmer_config
     end
   end
 end
