@@ -31,7 +31,7 @@ module Slimmer
       cache = Cache.instance
       cache.use_cache = options[:use_cache] if options[:use_cache]
 
-      @skin = Skin.new options.merge(logger: self.logger, cache: cache)
+      @skin = Skin.new options.merge(logger: self.logger, cache: cache, app_name: application_class_name)
     end
 
     def call(env)
@@ -109,6 +109,10 @@ module Slimmer
 
     def strip_slimmer_headers(headers)
       headers.reject {|k, v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
+    end
+
+    def application_class_name
+      @app.class.parent_name if @app.class.respond_to?(:parent_name)
     end
   end
 end
