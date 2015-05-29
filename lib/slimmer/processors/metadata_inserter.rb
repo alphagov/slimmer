@@ -1,8 +1,9 @@
 module Slimmer::Processors
   class MetadataInserter
-    def initialize(response, artefact)
+    def initialize(response, artefact, app_name)
       @headers = response.headers
       @artefact = artefact
+      @app_name = app_name
     end
 
     def filter(src, dest)
@@ -17,6 +18,7 @@ module Slimmer::Processors
       add_meta_tag('analytics:world-locations', @headers[Slimmer::Headers::WORLD_LOCATIONS_HEADER], head)
       add_meta_tag('format', @headers[Slimmer::Headers::FORMAT_HEADER], head)
       add_meta_tag('search-result-count', @headers[Slimmer::Headers::RESULT_COUNT_HEADER], head)
+      add_meta_tag('rendering-application', @app_name, head)
     end
 
   private
