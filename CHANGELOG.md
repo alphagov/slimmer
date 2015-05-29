@@ -1,3 +1,7 @@
+# 8.2.0
+
+* Add meta tag for currently running application
+
 # 8.1.0
 
 * Add remove_search header which strips out the search box in the header.
