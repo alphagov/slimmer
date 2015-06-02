@@ -5,7 +5,7 @@ module Slimmer
     initializer "slimmer.configure" do |app|
       slimmer_config = app.config.slimmer.to_hash
 
-      app_name = app.class.parent_name
+      app_name = ENV['GOVUK_APP_NAME'] || app.class.parent_name
       slimmer_config = slimmer_config.reverse_merge(app_name: app_name)
 
       app.middleware.use Slimmer::App, slimmer_config
