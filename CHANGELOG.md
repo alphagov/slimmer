@@ -1,3 +1,7 @@
+# 8.2.1
+
+* Update rendering app meta tag to use GOVUK_APP_NAME env variable if available
+
 # 8.2.0
 
 * Add meta tag for currently running application
