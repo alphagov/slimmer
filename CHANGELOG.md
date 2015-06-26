@@ -1,3 +1,7 @@
+# 8.3.0
+
+* Add support for 403 error page.
+
 # 8.2.1
 
 * Update rendering app meta tag to use GOVUK_APP_NAME env variable if available
