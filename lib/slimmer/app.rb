@@ -92,6 +92,8 @@ module Slimmer
       rewritten_body = case response.status
       when 200
         @skin.success request, response, s(response.body)
+      when 403
+        @skin.error '403', s(response.body), request.env
       when 404
         @skin.error '404', s(response.body), request.env
       when 410
