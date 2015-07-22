@@ -13,6 +13,9 @@ class TagMoverTest < MiniTest::Test
           <meta name="no_content" />
           <meta content="no_name" />
           <meta name="duplicate" content="name and content" />
+          <meta property="p:baz" content="bat" />
+          <meta property="p:empty" />
+          <meta property="p:duplicate" content="name and content" />
         </head>
         <body class="mainstream">
           <div id="wrapper"></div>
@@ -26,6 +29,7 @@ class TagMoverTest < MiniTest::Test
         <head>
           <link rel="stylesheet" href="http://www.example.com/duplicate.css" />
           <meta name="duplicate" content="name and content" />
+          <meta property="p:duplicate" content="name and content" />
         </head>
         <body class="mainstream">
           <div id="wrapper"></div>
@@ -73,7 +77,19 @@ class TagMoverTest < MiniTest::Test
     assert_not_in @template, "meta[content='no_name']"
   end
 
+  def test_should_move_meta_tags_with_property_into_the_head
+    assert_in @template, "meta[property='p:baz'][content='bat']", nil, "Should have moved the a:baz=bat meta (property) tag"
+  end
+
+  def test_should_ignore_meta_tags_with_property_but_no_content
+    assert_not_in @template, "meta[property='p:empty']"
+  end
+
   def test_should_ignore_meta_tags_already_in_the_destination_with_the_same_name_and_content
     assert @template.css("meta[name='duplicate'][content='name and content']").length == 1, "Expected there to only be one duplicate=name and content meta tag."
+  end
+
+  def test_should_ignore_meta_tags_with_property_already_in_the_destination_with_the_same_name_and_content
+    assert @template.css("meta[property='p:duplicate'][content='name and content']").length == 1, "Expected there to only be one duplicate=name and content meta (property) tag."
   end
 end
