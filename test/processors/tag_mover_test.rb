@@ -13,6 +13,8 @@ class TagMoverTest < MiniTest::Test
           <meta name="no_content" />
           <meta content="no_name" />
           <meta name="duplicate" content="name and content" />
+          <meta property="p:baz" content="bat" />
+          <meta property="p:empty" />
         </head>
         <body class="mainstream">
           <div id="wrapper"></div>
@@ -71,6 +73,14 @@ class TagMoverTest < MiniTest::Test
   def test_should_ignore_meta_tags_with_no_name_or_content
     assert_not_in @template, "meta[name='no_content']"
     assert_not_in @template, "meta[content='no_name']"
+  end
+
+  def test_should_move_meta_tags_with_property_into_the_head
+    assert_in @template, "meta[property='p:baz'][content='bat']", nil, "Should have moved the a:baz=bat meta (property) tag"
+  end
+
+  def test_should_ignore_meta_tags_with_property_but_no_content
+    assert_not_in @template, "meta[property='p:empty']"
   end
 
   def test_should_ignore_meta_tags_already_in_the_destination_with_the_same_name_and_content
