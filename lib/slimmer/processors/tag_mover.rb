@@ -4,6 +4,7 @@ module Slimmer::Processors
       move_tags(src, dest, 'script', :dest_node => 'body', :keys => ['src', 'inner_html'])
       move_tags(src, dest, 'link',   :must_have => ['href'])
       move_tags(src, dest, 'meta',   :must_have => ['name', 'content'], :keys => ['name', 'content', 'http-equiv'])
+      move_tags(src, dest, 'meta',   :must_have => ['property', 'content'], :keys => ['property', 'content'])
     end
 
     def include_tag?(node, min_attrs)
