@@ -17,6 +17,8 @@ done
 
 unset RBENV_VERSION
 
+bundle exec govuk-lint-ruby --diff --cached --format clang bin lib test
+
 if [[ -n "$PUBLISH_GEM" ]]; then
   bundle exec rake publish_gem --trace
 fi
