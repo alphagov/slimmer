@@ -1,3 +1,11 @@
+# 8.4.0
+
+* Add support for moving `meta` tags that use `property` attribute
+
+  Previously only meta tags using the `name` attribute were moved into the
+  `head` of the page. This allows OpenGraph-style meta tags to be included
+  by an application using Slimmer.
+
 # 8.3.0
 
 * Add support for 403 error page.
