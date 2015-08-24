@@ -129,7 +129,7 @@ module Slimmer
         Processors::SearchRemover.new(response.headers),
       ]
 
-      template_name = response.headers[Headers::TEMPLATE_HEADER] || 'wrapper'
+      template_name = response.headers[Headers::TEMPLATE_HEADER] || 'core_layout'
       process(processors, body, template(template_name), source_request.env)
     end
 
