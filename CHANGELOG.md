@@ -1,3 +1,10 @@
+# 9.0.0
+
+* Change default template to `core_layout` from `wrapper`.
+  Any application that doesn't define a custom template should have
+  `slimmer_template 'wrapper'` added to its `application_controller` to
+  maintain the old functionality
+
 # 8.4.0
 
 * Add support for moving `meta` tags that use `property` attribute
