@@ -83,11 +83,11 @@ class SlimmerIntegrationTest < MiniTest::Test
     end
 
     template_name = case code
-    when 200 then 'wrapper'
-    when 404 then '404'
-    when 410 then '410'
-    else          '500'
-    end
+                    when 200 then 'core_layout'
+                    when 404 then '404'
+                    when 410 then '410'
+                    else          '500'
+                    end
 
     use_template(template_name)
     use_template('related.raw')
