@@ -7,14 +7,14 @@ describe Slimmer::ComponentResolver do
     end
 
     it "should return nothing if the prefix doesn't match 'govuk_component'" do
-      assert_equal [], @resolver.find_templates('name', 'prefix', false, {})
+      assert_equal [], @resolver.find_templates('name', 'prefix', false, {}, false)
     end
 
     it "should request a valid template from the server" do
       expected_url = "http://static.dev.gov.uk/templates/govuk_component/name.raw.html.erb"
       stub_request(:get, expected_url).to_return :body => "<foo />"
 
-      templates = @resolver.find_templates('name', 'govuk_component', false, {})
+      templates = @resolver.find_templates('name', 'govuk_component', false, {}, false)
       assert_requested :get, expected_url
       assert_equal '<foo />', templates.first.args[0]
     end
@@ -22,7 +22,7 @@ describe Slimmer::ComponentResolver do
     it "should return a known template in test mode" do
       @resolver.expects(:test?).returns(true)
 
-      templates = @resolver.find_templates('name', 'govuk_component', false, {})
+      templates = @resolver.find_templates('name', 'govuk_component', false, {}, false)
       assert_match /<test-govuk-component data-template="govuk_component-name">/, templates.first.args[0]
     end
   end
