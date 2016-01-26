@@ -11,7 +11,7 @@ module Slimmer
       false
     end
 
-    def find_templates(name, prefix, partial, details)
+    def find_templates(name, prefix, partial, details, outside_app_allowed = false)
       return [] unless prefix == 'govuk_component'
       cache = Cache.instance
 
