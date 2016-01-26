@@ -1,3 +1,8 @@
+# 9.0.1
+
+* Change the find_templates method signature to add an optional arg that
+  Rails now calls after CVE-2016-0752. No functionality changes.
+
 # 9.0.0
 
 * Change default template to `core_layout` from `wrapper`.
