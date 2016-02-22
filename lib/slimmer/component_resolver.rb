@@ -56,7 +56,8 @@ module Slimmer
     end
 
     def template_url(template_path)
-      [static_host, "templates", "#{template_path}.raw.html.erb"].join('/')
+      path = template_path.sub(/\.raw(\.html\.erb)?$/, '')
+      [static_host, "templates", "#{path}.raw.html.erb"].join('/')
     end
 
     def static_host
