@@ -1,3 +1,9 @@
+# 9.1.0
+
+* Allow applications to request components using full or partial component
+  paths, eg "name", "name.raw" and "name.raw.html.erb". This allows
+  components to be nested within other components.
+
 # 9.0.1
 
 * Change the find_templates method signature to add an optional arg that
