@@ -84,6 +84,17 @@ describe Slimmer::Skin do
         skin.template 'example'
       end
     end
+
+    it "should raise appropriate exception when encountering an SSL error" do
+      skin = Slimmer::Skin.new asset_host: "https://bad-ssl.domain/", cache: Slimmer::Cache.instance
+
+      expected_url = "https://bad-ssl.domain/templates/example.html.erb"
+      stub_request(:get, expected_url).to_raise(OpenSSL::SSL::SSLError)
+
+      assert_raises(Slimmer::CouldNotRetrieveTemplate) do
+        skin.template 'example'
+      end
+    end
   end
 
   describe "parsing artefact from header" do
