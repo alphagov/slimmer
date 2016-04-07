@@ -32,6 +32,8 @@ module Slimmer
       raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     rescue SocketError => e
       raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
+    rescue OpenSSL::SSL::SSLError => e
+      raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     end
 
     def template_url(template_name)
