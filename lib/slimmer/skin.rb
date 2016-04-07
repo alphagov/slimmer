@@ -28,11 +28,7 @@ module Slimmer
       response.body
     rescue RestClient::Exception => e
       raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
-    rescue Errno::ECONNREFUSED => e
-      raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
-    rescue SocketError => e
-      raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
-    rescue OpenSSL::SSL::SSLError => e
+    rescue Errno::ECONNREFUSED, SocketError, OpenSSL::SSL::SSLError => e
       raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     end
 
