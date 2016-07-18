@@ -1,7 +1,7 @@
 module Slimmer
   module SharedTemplates
     def self.included into
-      into.before_filter :add_shared_templates
+      into.before_action :add_shared_templates
     end
 
     def add_shared_templates
