@@ -1,3 +1,5 @@
+# Slimmer
+
 Slimmer provides Rack middleware for applying a standard header and footer around pages
 returned by a Ruby (Rack) application.
 
