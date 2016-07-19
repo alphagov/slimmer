@@ -1,3 +1,5 @@
+# Slimmer
+
 Slimmer provides Rack middleware for applying a standard header and footer around pages
 returned by a Ruby (Rack) application.
 
@@ -13,9 +15,11 @@ Plek gem to look for the 'static' (previously 'assets') host for the current env
 If you want to use your own set of templates you will need to specify the appropriate host
 eg.
 
-    YourApp::Application.configure do
-      config.slimmer.asset_host = 'http://your.server.somewhere'
-    end
+```rb
+YourApp::Application.configure do
+  config.slimmer.asset_host = 'http://your.server.somewhere'
+end
+```
 
 it expects to find templates in a folder called 'templates' on that host.
 
@@ -23,17 +27,23 @@ it expects to find templates in a folder called 'templates' on that host.
 
 Slimmer will work as standard rack middleware:
 
-    use Slimmer::App
+```rb
+use Slimmer::App
+```
 
 or
 
-    use Slimmer::App, :asset_host => "http://my.alternative.host"
+```rb
+use Slimmer::App, :asset_host => "http://my.alternative.host"
+```
 
 ## Asset tag helpers
 
 To get asset tag helpers to point to your external asset server, add
 
-    config.action_controller.asset_host = "http://my.alternative.host"
+```rb
+config.action_controller.asset_host = "http://my.alternative.host"
+```
     
 to `application.rb`.
 
@@ -43,23 +53,29 @@ A specific template can be requested by giving its name in the `X-Slimmer-Templa
 
 In a controller action, you can do this by calling `slimmer_template`.
 
-    class MyController < ApplicationController
-      def index
-        slimmer_template 'homepage'
-      end
-    end
+```rb
+class MyController < ApplicationController
+  def index
+    slimmer_template 'homepage'
+  end
+end
+```
 
 There's also a macro style method which will affect all actions:
 
-    class YourController < ApplicationController
-      slimmer_template :admin
-    end
+```rb
+class YourController < ApplicationController
+  slimmer_template :admin
+end
+```
 
 To get this, include Slimmer::Template in your ApplicationController:
 
-    class ApplicationController < ActionController::Base
-      include Slimmer::Template
-    end
+```rb
+class ApplicationController < ActionController::Base
+  include Slimmer::Template
+end
+```
 
 ## Logging
 
@@ -67,9 +83,11 @@ Slimmer can be configured with a logger by passing in a logger instance
 (anything that quacks like an instance of `Logger`). For example, to log
 to the Rails log, put the following in an initializer:
 
-    YourApp::Application.configure do
-      config.slimmer.logger = Rails.logger
-    end
+```rb
+YourApp::Application.configure do
+  config.slimmer.logger = Rails.logger
+end
+```
 
 **Note:** This can't be in `application.rb` because the Rails logger hasn't been initialized by then.
 
@@ -77,21 +95,27 @@ to the Rails log, put the following in an initializer:
 
 By default if you pass in a logger with its log level set to `debug`, slimmer will dup this logger and reduce the level to `info`. (Slimmer's debug logging is very noisy).  To prevent this, set the `enable_debugging` option to true.  e.g. for Rails:
 
-    YourApp::Application.configure do
-      config.slimmer.enable_debugging = true
-    end
+```rb
+YourApp::Application.configure do
+  config.slimmer.enable_debugging = true
+end
+```
 
 ## Shared components
 
 To use shared template components you need to include the shared template resolver
 
-    class ApplicationController < ActionController::Base
-      include Slimmer::SharedTemplates
-    end
+```rb
+class ApplicationController < ActionController::Base
+  include Slimmer::SharedTemplates
+end
+```
 
 This will make calls out to static when you try and render a partial prefixed with `govuk-component`:
 
-    <%= render partial: 'govuk-component/example_component' %>
+```erb
+<%= render partial: 'govuk-component/example_component' %>
+```
 
 You will need a copy of static running for the templates to be loaded from.
 
@@ -105,19 +129,25 @@ A test helper is included which returns a CSS selector for finding a given
 component to assert that it was used. You can make it available in your tests
 with:
 
-    require 'slimmer/test_helpers/shared_templates'
-    include Slimmer::TestHelpers::SharedTemplates
+```rb
+require 'slimmer/test_helpers/shared_templates'
+include Slimmer::TestHelpers::SharedTemplates
+```
 
 And then assert that the component has been used:
 
-    page.should have_css(shared_component_selector('metadata'))
+```rb
+page.should have_css(shared_component_selector('metadata'))
+```
 
 Or look for one of the arguments to the component which will have been
 `JSON.dump`ed inside the tag:
 
-    within(shared_component_selector('title')) do
-      expect(page).to have_content(expected_title_text)
-    end
+```rb
+within(shared_component_selector('title')) do
+  expect(page).to have_content(expected_title_text)
+end
+```
 
 ## The name
 
