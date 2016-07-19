@@ -1,3 +1,7 @@
+# 9.2.0
+
+* Raise a custom `CouldNotRetrieveTemplate` exception when a connection to the assets server can't be made because of an SSL problem (PR #143).
+
 # 9.1.0
 
 * Allow applications to request components using full or partial component
