@@ -1,2 +1,3 @@
 slimmer-*.gem
 Gemfile.lock
+gemfiles/*.lock
