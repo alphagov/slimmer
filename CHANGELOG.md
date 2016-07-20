@@ -1,3 +1,7 @@
+# 9.2.1
+
+* Replaces deprecated `before_filter` calls in shared templates.
+
 # 9.2.0
 
 * Raise a custom `CouldNotRetrieveTemplate` exception when a connection to the assets server can't be made because of an SSL problem (PR #143).
