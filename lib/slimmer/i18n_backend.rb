@@ -42,6 +42,8 @@ module Slimmer
       json_data = fetch(url)
       translations = JSON.parse(json_data)
       flatten_translations(locale, translations, false, false)
+    rescue TemplateNotFoundException
+      {}
     end
 
     def fetch(url)
