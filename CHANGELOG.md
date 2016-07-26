@@ -1,3 +1,11 @@
+# 9.3.0
+
+* Integrates translations from GOVUK Components to be used in applications
+
+  When including `Slimmer::SharedComponents`, the I18nBackend will be chained to `Slimmer::I18nBackend` allowing translations in `static` to work in the frontend applications
+
+  (PR #152 https://github.com/alphagov/slimmer/pull/152)
+
 # 9.2.1
 
 * Replaces deprecated `before_filter` calls in shared templates.
