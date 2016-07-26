@@ -20,6 +20,7 @@ module Slimmer
 
   autoload :SharedTemplates, 'slimmer/shared_templates'
   autoload :ComponentResolver, 'slimmer/component_resolver'
+  autoload :I18nBackend, 'slimmer/i18n_backend'
 
   module Processors
     autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
