@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/alphagov/slimmer"
   s.summary     = %q{Thinner than the skinner}
   s.description = %q{Rack middleware for skinning pages using a specific template}
+  s.license = 'MIT'
 
   s.rubyforge_project = "slimmer"
 
