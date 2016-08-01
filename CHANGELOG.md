@@ -1,3 +1,19 @@
+# 9.3.1
+
+* Allows frontend apps to stub component locales for example
+
+  ```ruby
+  class ActiveSupport::TestCase
+    include Slimmer::TestHelpers::SharedTemplates
+
+    def setup
+      stub_shared_component_locales
+    end
+  end
+  ```
+
+  (PR #155 https://github.com/alphagov/slimmer/pull/155)
+
 # 9.3.0
 
 * Integrates translations from GOVUK Components to be used in applications
