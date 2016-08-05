@@ -1,3 +1,10 @@
+# 9.3.2
+
+* Bugfix: Over time, the I18n backend would be chained in each request,
+  causing the stack to grow too large and use too much memory
+
+  (PR #157 https://github.com/alphagov/slimmer/pull/157)
+
 # 9.3.1
 
 * Allows frontend apps to stub component locales for example
