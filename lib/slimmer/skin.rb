@@ -118,6 +118,7 @@ module Slimmer
         Processors::MetadataInserter.new(response, artefact, options[:app_name]),
         Processors::SearchParameterInserter.new(response),
         Processors::SearchPathSetter.new(response),
+        Processors::SearchPlaceholderSetter.new(response.headers),
         Processors::RelatedItemsInserter.new(self, artefact),
         Processors::ReportAProblemInserter.new(self,
                                                source_request.url,

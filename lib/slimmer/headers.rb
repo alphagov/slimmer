@@ -14,6 +14,7 @@ module Slimmer
       remove_meta_viewport: "Remove-Meta-Viewport",
       result_count:         "Result-Count",
       search_parameters:    "Search-Parameters",
+      search_placeholder:   "Search-Placeholder",
       section:              "Section",
       skip:                 "Skip",
       template:             "Template",
@@ -31,6 +32,7 @@ module Slimmer
     RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:result_count]}"
     SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
     SEARCH_PARAMETERS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:search_parameters]}"
+    SEARCH_PLACEHOLDER_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:search_placeholder]}"
     SKIP_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:skip]}"
     TEMPLATE_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:template]}"
     REMOVE_SEARCH_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_search]}"
