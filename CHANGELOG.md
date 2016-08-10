@@ -1,3 +1,10 @@
+# 9.5.0
+
+* Adds a Cucumber helper that makes it easy for host applications to
+  configure Slimmer correctly under test.
+
+  (PR #162 https://github.com/alphagov/slimmer/pull/162)
+
 # 9.4.0
 
 * Adds an RSpec helper that makes it easy for host applications to
