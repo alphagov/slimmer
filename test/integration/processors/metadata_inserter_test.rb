@@ -1,7 +1,6 @@
-require_relative "../test_helper"
+require "test_helper"
 
 module MetadataInserterTest
-
   GENERIC_DOCUMENT = <<-END
     <html>
       <head>
@@ -33,7 +32,7 @@ module MetadataInserterTest
 
       artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
       artefact["details"].merge!(
-        "need_ids" => [100001,100002],
+        "need_ids" => [100001, 100002],
       )
       headers = {
         Slimmer::Headers::FORMAT_HEADER => "custard",
@@ -106,7 +105,7 @@ module MetadataInserterTest
       refute_meta_tag "format"
     end
 
-    def test_should_omit_need_ID
+    def test_should_omit_need_id
       refute_meta_tag "need-ids"
     end
 

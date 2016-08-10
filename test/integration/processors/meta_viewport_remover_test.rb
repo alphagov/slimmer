@@ -1,4 +1,4 @@
-require_relative "../test_helper"
+require "test_helper"
 
 class MetaViewportRemover < SlimmerIntegrationTest
   TEMPLATE = <<-END
@@ -29,11 +29,11 @@ class MetaViewportRemover < SlimmerIntegrationTest
   end
 
   def test_should_not_fail_if_there_is_no_viewport_meta
-    given_response 200, NO_VIEWPORT_TEMPLATE, {Slimmer::Headers::REMOVE_META_VIEWPORT => "true"}
+    given_response 200, NO_VIEWPORT_TEMPLATE, Slimmer::Headers::REMOVE_META_VIEWPORT => "true"
   end
 
   def test_should_remove_the_meta_viewport_if_the_relevant_header_is_set
-    given_response 200, TEMPLATE, {Slimmer::Headers::REMOVE_META_VIEWPORT => "true"}
+    given_response 200, TEMPLATE, Slimmer::Headers::REMOVE_META_VIEWPORT => "true"
     assert_nil Nokogiri::HTML.parse(last_response.body).at_xpath('//head//meta[@name="viewport"]')
   end
 end
