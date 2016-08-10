@@ -1,3 +1,13 @@
+# 9.4.0
+
+* Adds an RSpec helper that makes it easy for host applications to
+  configure Slimmer correctly under test.
+  
+  Fixes `stub_shared_component_locales` helper to correctly stub HTTP
+  requests to fetch locale information when rendering its templates.
+
+  (PR #159 https://github.com/alphagov/slimmer/pull/159)
+
 # 9.3.2
 
 * Bugfix: Over time, the I18n backend would be chained in each request,
