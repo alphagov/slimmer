@@ -149,6 +149,14 @@ within(shared_component_selector('title')) do
 end
 ```
 
+### RSpec
+
+Add the following code to spec/spec_helper:
+
+```rb
+require 'slimmer/rspec'
+```
+
 ## The name
 
 Slimmer was extracted from a much larger project called 'skinner'. 'slimmer' referred to the size

@@ -1,3 +1,5 @@
+require 'webmock'
+
 module Slimmer
   module TestHelpers
     module SharedTemplates
