@@ -1,12 +1,12 @@
+require 'webmock'
+
 module Slimmer
   module TestHelpers
     module SharedTemplates
       def stub_shared_component_locales
-        stub_request(:get, /https:\/\/\S+.gov.uk\/templates\/locales\/.+/).
-          with(headers: { 'Accept' => '*/*; q=0.5, application/xml', 'Accept-Encoding' => 'gzip, deflate', 'User-Agent' => 'Ruby' }).
+        stub_request(:get, /https?:\/\/\S+.gov.uk\/templates\/locales\/.+/).
           to_return(status: 400, headers: {})
-        stub_request(:get, /https:\/\/\S+.gov.uk\/templates\/locales\/en/).
-          with(headers: { 'Accept' => '*/*; q=0.5, application/xml', 'Accept-Encoding' => ' gzip, deflate', 'User-Agent' => 'Ruby' }).
+        stub_request(:get, /https?:\/\/\S+.gov.uk\/templates\/locales/).
           to_return(status: 200, body: '{}', headers: {})
       end
 
