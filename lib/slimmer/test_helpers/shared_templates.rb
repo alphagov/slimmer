@@ -4,7 +4,7 @@ module Slimmer
       def stub_shared_component_locales
         stub_request(:get, /https?:\/\/\S+.gov.uk\/templates\/locales\/.+/).
           to_return(status: 400, headers: {})
-        stub_request(:get, /https?:\/\/\S+.gov.uk\/templates\/locales\/en/).
+        stub_request(:get, /https?:\/\/\S+.gov.uk\/templates\/locales/).
           to_return(status: 200, body: '{}', headers: {})
       end
 
