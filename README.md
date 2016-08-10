@@ -149,6 +149,14 @@ within(shared_component_selector('title')) do
 end
 ```
 
+### Cucumber
+
+Add the following code to features/support:
+
+```rb
+require 'slimmer/cucumber'
+```
+
 ### RSpec
 
 Add the following code to spec/spec_helper:
