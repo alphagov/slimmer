@@ -40,7 +40,7 @@ test 3.2.x 2.1
 test 3.2.x 1.9.3
 
 bundle install --path "${HOME}/bundles/${JOB_NAME}"
-bundle exec govuk-lint-ruby --diff --cached --format clang bin lib test
+bundle exec rake lint
 
 if [[ -n "$PUBLISH_GEM" ]]; then
   bundle exec rake publish_gem --trace
