@@ -36,6 +36,7 @@ module Slimmer
     autoload :SearchIndexSetter, 'slimmer/processors/search_index_setter'
     autoload :SearchPathSetter, 'slimmer/processors/search_path_setter'
     autoload :SearchParameterInserter, 'slimmer/processors/search_parameter_inserter'
+    autoload :SearchPlaceholderSetter, 'slimmer/processors/search_placeholder_setter'
     autoload :SearchRemover, 'slimmer/processors/search_remover'
     autoload :SectionInserter, 'slimmer/processors/section_inserter'
     autoload :TagMover, 'slimmer/processors/tag_mover'

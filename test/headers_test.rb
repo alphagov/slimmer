@@ -54,6 +54,11 @@ class HeadersTest < MiniTest::Test
     refute_includes headers.keys, "X-Slimmer-Need-ID"
   end
 
+  def test_should_set_search_placeholder_header
+    set_slimmer_headers search_placeholder: "Search and Destroy"
+    assert_equal "Search and Destroy", headers["X-Slimmer-Search-Placeholder"]
+  end
+
   def test_should_raise_an_exception_if_a_header_has_a_typo
     assert_raises Slimmer::Headers::InvalidHeader do
       set_slimmer_headers seccion: "wrong"
