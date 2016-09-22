@@ -26,6 +26,24 @@ class Slimmer::Artefact
     section
   end
 
+  def section
+    title = primary_root_section['title'] || ''
+    if title.empty?
+      '(not set)'
+    else
+      title.tr(' ', '-').downcase
+    end
+  end
+
+  def breadcrumb
+    title = primary_section['title'] || ''
+    if title.empty?
+      '(not set)'
+    else
+      "#{section}>#{title.tr(' ', '-')}".downcase
+    end
+  end
+
   def related_artefacts
     return [] unless self.related
     self.related.map do |r|

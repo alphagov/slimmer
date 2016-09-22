@@ -10,8 +10,9 @@ module Slimmer::Processors
       head = dest.at_css('head')
 
       if @artefact
-        add_meta_tag('section', @artefact.primary_root_section["title"].downcase, head) if @artefact.primary_root_section
+        add_meta_tag('section', @artefact.section, head) if @artefact.primary_root_section
         add_meta_tag('need-ids', @artefact.need_ids.join(',').downcase, head) if @artefact.need_ids
+        add_meta_tag('breadcrumb', @artefact.breadcrumb, head) if @artefact.primary_root_section && @artefact.primary_section
       end
 
       add_meta_tag('analytics:organisations', @headers[Slimmer::Headers::ORGANISATIONS_HEADER], head)

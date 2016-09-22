@@ -37,6 +37,51 @@ describe Slimmer::Artefact do
     end
   end
 
+  describe "Section and Breadcrumb" do
+    before do
+      @artefact = Slimmer::Artefact.new(artefact_for_slug('business-example'))
+      @section_data = {
+        "id" =>
+          "http://test.gov.uk/tags/section/business%2Fbusiness-tax.json",
+          "content_id" => "b7d6588c-a056-47fc-9528-0b9ff42c3866",
+          "slug" => "business/business-tax",
+          "title" => "Business tax",
+          "details" =>  { "type" => "section" },
+          "state" => "live",
+          "parent" =>  {
+            "id" => "http://test.gov.uk/tags/section/business.json",
+            "slug" => "business",
+            "web_url" => "/browse/business",
+            "title" => "Business and self-employed"
+           }
+         }
+    end
+
+    describe "#section" do
+      it "should return artefact's section" do
+        @artefact.stubs(:primary_section).returns(@section_data)
+        assert_equal "business-and-self-employed", @artefact.section
+      end
+
+      it "should return (not set) as artefact's section if parent section title isn't defined" do
+        @artefact.stubs(:primary_section).returns({})
+        assert_equal "(not set)", @artefact.section
+      end
+    end
+
+    describe "#breadcrumb" do
+      it "should return artefact's breadcrumb" do
+        @artefact.stubs(:primary_section).returns(@section_data)
+        assert_equal "business-and-self-employed>business-tax", @artefact.breadcrumb
+      end
+
+      it "should return (not set) as artefact's breadcrumb if child section title isn't defined" do
+        @artefact.stubs(:primary_section).returns({})
+        assert_equal "(not set)", @artefact.breadcrumb
+      end
+    end
+  end
+
   describe "Primary root section" do
     before do
       @artefact = Slimmer::Artefact.new(artefact_for_slug('something'))
@@ -73,7 +118,7 @@ describe Slimmer::Artefact do
     before do
       @data = artefact_for_slug('something')
     end
-    
+
     it "should return an array of corresponding artefact instances" do
       @data["related"] << artefact_for_slug('vat')
       @data["related"] << artefact_for_slug('something-else')
