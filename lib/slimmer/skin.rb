@@ -123,7 +123,6 @@ module Slimmer
                                                source_request.url,
                                                response.headers,
                                                wrapper_id),
-        Processors::MetaViewportRemover.new(self, response.headers),
         Processors::SearchRemover.new(response.headers),
       ]
 
