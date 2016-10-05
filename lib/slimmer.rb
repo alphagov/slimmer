@@ -29,6 +29,7 @@ module Slimmer
     autoload :FooterRemover, 'slimmer/processors/footer_remover'
     autoload :MetadataInserter, 'slimmer/processors/metadata_inserter'
     autoload :HeaderContextInserter, 'slimmer/processors/header_context_inserter'
+    autoload :InsideHeaderInserter, 'slimmer/processors/inside_header_inserter'
     autoload :NavigationMover, 'slimmer/processors/navigation_mover'
     autoload :RelatedItemsInserter, 'slimmer/processors/related_items_inserter'
     autoload :ReportAProblemInserter, 'slimmer/processors/report_a_problem_inserter'
