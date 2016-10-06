@@ -1,3 +1,13 @@
+# 9.6.0
+
+* Adds an 'inside header inserter' processor which allows an application to
+  inject a block of HTML after the logo by including a .inside-header element
+  in their application’s output.
+  (PR #167 https://github.com/alphagov/slimmer/pull/167)
+
+* Remove `MetaViewportRemover` processor as it is no longer used.
+  (PR #166 https://github.com/alphagov/slimmer/pull/166)
+
 # 9.5.0
 
 * Adds a Cucumber helper that makes it easy for host applications to
