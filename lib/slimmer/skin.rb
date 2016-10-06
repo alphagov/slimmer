@@ -113,6 +113,7 @@ module Slimmer
         Processors::ConditionalCommentMover.new(),
         Processors::BodyInserter.new(wrapper_id),
         Processors::BodyClassCopier.new,
+        Processors::InsideHeaderInserter.new,
         Processors::HeaderContextInserter.new(),
         Processors::SectionInserter.new(artefact),
         Processors::MetadataInserter.new(response, artefact, options[:app_name]),
