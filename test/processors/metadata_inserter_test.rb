@@ -50,6 +50,10 @@ module MetadataInserterTest
       assert_meta_tag "section", "rhubarb"
     end
 
+    def test_should_include_breadcrumb_meta_tag
+      assert_meta_tag "breadcrumb", "rhubarb>in-puddings"
+    end
+
     def test_should_include_format_meta_tag
       assert_meta_tag "format", "custard"
     end
@@ -89,6 +93,7 @@ module MetadataInserterTest
       refute_meta_tag "need-ids"
       # the presence of these attributes tests that the nil check worked
       assert_meta_tag "section", "rhubarb"
+      assert_meta_tag "breadcrumb", "rhubarb>in-puddings"
       assert_meta_tag "format", "custard"
     end
   end
@@ -100,6 +105,10 @@ module MetadataInserterTest
 
     def test_should_omit_section
       refute_meta_tag "section"
+    end
+
+    def test_should_omit_breadcrumb
+      refute_meta_tag "breadcrumb"
     end
 
     def test_should_omit_internal_format_name
