@@ -1,3 +1,7 @@
+# Unreleased
+
+* Removes the need_id meta tag, which is no longer used.
+
 # 9.6.0
 
 * Adds an 'inside header inserter' processor which allows an application to
@@ -19,7 +23,7 @@
 
 * Adds an RSpec helper that makes it easy for host applications to
   configure Slimmer correctly under test.
-  
+
   Fixes `stub_shared_component_locales` helper to correctly stub HTTP
   requests to fetch locale information when rendering its templates.
 

@@ -32,9 +32,6 @@ module MetadataInserterTest
       super
 
       artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
-      artefact["details"].merge!(
-        "need_ids" => [100001,100002],
-      )
       headers = {
         Slimmer::Headers::FORMAT_HEADER => "custard",
         Slimmer::Headers::RESULT_COUNT_HEADER => "3",
@@ -54,10 +51,6 @@ module MetadataInserterTest
       assert_meta_tag "format", "custard"
     end
 
-    def test_should_include_need_ids_meta_tag
-      assert_meta_tag "need-ids", "100001,100002"
-    end
-
     def test_should_include_organisations_meta_tag
       assert_meta_tag "analytics:organisations", "<P1><D422>"
     end
@@ -68,28 +61,6 @@ module MetadataInserterTest
 
     def test_should_include_search_result_count_meta_tag
       assert_meta_tag "search-result-count", "3"
-    end
-  end
-
-  class WithInvalidAttributes < SlimmerIntegrationTest
-    include MetaTagAssertions
-
-    def setup
-      super
-    end
-
-    def test_should_skip_passing_need_ids_if_they_are_nil
-      artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
-      headers = {
-        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json,
-        Slimmer::Headers::FORMAT_HEADER => "custard"
-      }
-      given_response 200, GENERIC_DOCUMENT, headers
-
-      refute_meta_tag "need-ids"
-      # the presence of these attributes tests that the nil check worked
-      assert_meta_tag "section", "rhubarb"
-      assert_meta_tag "format", "custard"
     end
   end
 
@@ -104,10 +75,6 @@ module MetadataInserterTest
 
     def test_should_omit_internal_format_name
       refute_meta_tag "format"
-    end
-
-    def test_should_omit_need_ID
-      refute_meta_tag "need-ids"
     end
 
     def test_should_omit_organisations
@@ -130,9 +97,6 @@ module MetadataInserterTest
       super
 
       artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
-      artefact["details"].merge!(
-        "need_ids" => [100001, 100002],
-      )
       headers = {
         Slimmer::Headers::RESULT_COUNT_HEADER => "3",
         Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json,
