@@ -11,7 +11,6 @@ module Slimmer::Processors
 
       if @artefact
         add_meta_tag('section', @artefact.primary_root_section["title"].downcase, head) if @artefact.primary_root_section
-        add_meta_tag('need-ids', @artefact.need_ids.join(',').downcase, head) if @artefact.need_ids
       end
 
       add_meta_tag('analytics:organisations', @headers[Slimmer::Headers::ORGANISATIONS_HEADER], head)

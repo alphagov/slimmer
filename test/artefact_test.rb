@@ -73,7 +73,7 @@ describe Slimmer::Artefact do
     before do
       @data = artefact_for_slug('something')
     end
-    
+
     it "should return an array of corresponding artefact instances" do
       @data["related"] << artefact_for_slug('vat')
       @data["related"] << artefact_for_slug('something-else')
@@ -103,7 +103,6 @@ describe Slimmer::Artefact do
 
     it "should return the corresponding field from details if it doesn't exist at the top level" do
       @data["details"]["foo"] = "baz"
-      assert_equal @data["details"]["need_id"], @a.need_id
       assert_equal "bar", @a.foo
     end
 
