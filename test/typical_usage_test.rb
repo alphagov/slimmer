@@ -89,7 +89,6 @@ module TypicalUsage
   class NormalResponseTest < SlimmerIntegrationTest
     def setup
       super
-      @artefact = artefact_for_slug_in_a_section("some-article", 'this-section')
       given_response 200, %{
         <html>
         <head><title>The title of the page</title>
@@ -101,7 +100,7 @@ module TypicalUsage
         <div id="wrapper">The body of the page</div>
         </body>
         </html>
-      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
+      }, {}
     end
 
     def test_should_replace_the_wrapper_using_the_app_response
@@ -126,10 +125,6 @@ module TypicalUsage
 
     def test_should_copy_the_class_of_the_body_element
       assert_rendered_in_template "body.body_class"
-    end
-
-    def test_should_insert_section_links_into_the_navigation
-      assert_rendered_in_template "#global-breadcrumb ol li a[href='https://www.test.gov.uk/browse/this-section']", "This section"
     end
   end
 
