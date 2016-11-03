@@ -16,7 +16,6 @@ module Slimmer
   autoload :Template, 'slimmer/template'
   autoload :App, 'slimmer/app'
   autoload :Headers, 'slimmer/headers'
-  autoload :Artefact, 'slimmer/artefact'
 
   autoload :SharedTemplates, 'slimmer/shared_templates'
   autoload :ComponentResolver, 'slimmer/component_resolver'

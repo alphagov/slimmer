@@ -159,31 +159,6 @@ module TypicalUsage
     end
   end
 
-  class ResponseWithRelatedItemsTest < SlimmerIntegrationTest
-
-    def setup
-      super
-      @artefact = artefact_for_slug_with_related_artefacts("some-slug", ["how-to-test-computer-software-automatically"])
-    end
-  end
-
-  class NonMainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
-    def setup
-      super
-      given_response 200, %{
-        <html>
-        <body class="nonmainstream">
-        <div id="wrapper">The body of the page<div id="related-items"></div></div>
-        </body>
-        </html>
-      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
-    end
-
-    def test_should_not_insert_related_items_block
-      assert_rendered_in_template "div#related-items", ""
-    end
-  end
-
   class HeaderContextResponseTest < SlimmerIntegrationTest
     given_response 200, %{
       <html>
@@ -356,11 +331,9 @@ module TypicalUsage
         </html>
       }, {
         "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
-        Slimmer::Headers::ARTEFACT_HEADER => "{}",
         "X-Custom-Header" => "Something else"
       }
 
-      refute last_response.headers.has_key?(Slimmer::Headers::ARTEFACT_HEADER)
       refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end
@@ -374,12 +347,10 @@ module TypicalUsage
         </html>
       }, {
         "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
-        Slimmer::Headers::ARTEFACT_HEADER => "{}",
         "X-Custom-Header" => "Something else",
         Slimmer::Headers::SKIP_HEADER => "1"
       }
 
-      refute last_response.headers.has_key?(Slimmer::Headers::ARTEFACT_HEADER)
       refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end

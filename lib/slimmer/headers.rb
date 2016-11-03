@@ -20,7 +20,6 @@ module Slimmer
     }
 
     APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
-    ARTEFACT_HEADER = "#{HEADER_PREFIX}-Artefact"
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
     REPORT_A_PROBLEM_FORM = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:report_a_problem]}"
@@ -38,47 +37,6 @@ module Slimmer
       SLIMMER_HEADER_MAPPING.each do |hash_key, header_suffix|
         value = hash[hash_key]
         headers["#{HEADER_PREFIX}-#{header_suffix}"] = value.to_s if value
-      end
-    end
-
-    def set_slimmer_artefact(artefact_input)
-      if artefact_input.is_a?(Hash) or artefact_input.is_a?(OpenStruct)
-        artefact = artefact_input.dup
-      elsif artefact_input.respond_to?(:to_hash)
-        artefact = artefact_input.to_hash
-      end
-      yield artefact if block_given?
-      headers[ARTEFACT_HEADER] = artefact.to_json
-    end
-
-    def set_slimmer_artefact_overriding_section(artefact_input, details = {})
-      set_slimmer_artefact(artefact_input) do |artefact|
-        if tag = slimmer_section_tag_for_details(details)
-          artefact["tags"] = [tag] + (artefact["tags"] || [])
-        end
-      end
-    end
-
-    def set_slimmer_dummy_artefact(details = {})
-      set_slimmer_artefact({}) do |artefact|
-        artefact["title"] = details[:title] if details[:title]
-        if tag = slimmer_section_tag_for_details(details)
-          artefact["tags"] = [tag]
-        end
-      end
-    end
-
-    def slimmer_section_tag_for_details(details)
-      if details[:section_name] and details[:section_link]
-        tag = {
-          "title" => details[:section_name],
-          "details" => {"type" => "section"},
-          "content_with_tag" => {"web_url" => details[:section_link]},
-        }
-        if details[:parent]
-          tag["parent"] = slimmer_section_tag_for_details(details[:parent])
-        end
-        tag
       end
     end
   end

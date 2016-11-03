@@ -96,28 +96,4 @@ describe Slimmer::Skin do
       end
     end
   end
-
-  describe "parsing artefact from header" do
-    before do
-      @skin = Slimmer::Skin.new cache: Slimmer::Cache.instance
-      @headers = {}
-      @response = stub("Response", :headers => @headers)
-    end
-
-    it "should construct and return an artefact with the parsed json" do
-      data = {"foo" => "bar", "baz" => 1}
-      @headers[Slimmer::Headers::ARTEFACT_HEADER] = data.to_json
-      Slimmer::Artefact.expects(:new).with(data).returns(:an_artefact)
-      assert_equal :an_artefact, @skin.artefact_from_header(@response)
-    end
-
-    it "should return nil if there is no artefact header" do
-      assert_equal nil, @skin.artefact_from_header(@response)
-    end
-
-    it "should return nil if there is invalid JSON in the artefact header" do
-      @headers[Slimmer::Headers::ARTEFACT_HEADER] = "fooey"
-      assert_equal nil, @skin.artefact_from_header(@response)
-    end
-  end
 end
