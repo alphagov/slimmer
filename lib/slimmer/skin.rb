@@ -115,7 +115,7 @@ module Slimmer
         Processors::BodyClassCopier.new,
         Processors::InsideHeaderInserter.new,
         Processors::HeaderContextInserter.new(),
-        Processors::MetadataInserter.new(response, artefact, options[:app_name]),
+        Processors::MetadataInserter.new(response, options[:app_name]),
         Processors::SearchParameterInserter.new(response),
         Processors::SearchPathSetter.new(response),
         Processors::RelatedItemsInserter.new(self, artefact),
