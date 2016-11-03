@@ -167,24 +167,6 @@ module TypicalUsage
     end
   end
 
-  class MainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
-    def setup
-      super
-      given_response 200, %{
-        <html>
-        <body class="mainstream">
-        <div id="wrapper">The body of the page<div id="related-items"></div></div>
-        </body>
-        </html>
-      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
-    end
-
-    def test_should_insert_related_items_block
-      assert_rendered_in_template "div.related nav li a[href='https://www.test.gov.uk/how-to-test-computer-software-automatically']",
-        "How to test computer software automatically"
-    end
-  end
-
   class NonMainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
     def setup
       super
