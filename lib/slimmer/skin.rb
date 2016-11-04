@@ -104,7 +104,6 @@ module Slimmer
     end
 
     def success(source_request, response, body)
-      artefact = artefact_from_header(response)
       wrapper_id = options[:wrapper_id] || 'wrapper'
       processors = [
         Processors::TitleInserter.new(),
@@ -115,11 +114,9 @@ module Slimmer
         Processors::BodyClassCopier.new,
         Processors::InsideHeaderInserter.new,
         Processors::HeaderContextInserter.new(),
-        Processors::SectionInserter.new(artefact),
-        Processors::MetadataInserter.new(response, artefact, options[:app_name]),
+        Processors::MetadataInserter.new(response, options[:app_name]),
         Processors::SearchParameterInserter.new(response),
         Processors::SearchPathSetter.new(response),
-        Processors::RelatedItemsInserter.new(self, artefact),
         Processors::ReportAProblemInserter.new(self,
                                                source_request.url,
                                                response.headers,
@@ -136,17 +133,6 @@ module Slimmer
         Processors::TitleInserter.new()
       ]
       process(processors, body, template(template_name), rack_env)
-    end
-
-    def artefact_from_header(response)
-      if response.headers.include?(Headers::ARTEFACT_HEADER)
-        Artefact.new JSON.parse(response.headers[Headers::ARTEFACT_HEADER])
-      else
-        nil
-      end
-    rescue JSON::ParserError => e
-      logger.error "Slimmer: Failed while parsing artefact header: #{[ e.message, e.backtrace ].flatten.join("\n")}"
-      nil
     end
   end
 end

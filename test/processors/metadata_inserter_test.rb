@@ -31,20 +31,14 @@ module MetadataInserterTest
     def setup
       super
 
-      artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
       headers = {
         Slimmer::Headers::FORMAT_HEADER => "custard",
         Slimmer::Headers::RESULT_COUNT_HEADER => "3",
-        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json,
         Slimmer::Headers::ORGANISATIONS_HEADER => "<P1><D422>",
         Slimmer::Headers::WORLD_LOCATIONS_HEADER => "<WL3>"
       }
 
       given_response 200, GENERIC_DOCUMENT, headers
-    end
-
-    def test_should_include_section_meta_tag
-      assert_meta_tag "section", "rhubarb"
     end
 
     def test_should_include_format_meta_tag
@@ -87,27 +81,6 @@ module MetadataInserterTest
 
     def test_should_omit_result_count
       refute_meta_tag "search-result-count"
-    end
-  end
-
-  class WithNilHeaderTest < SlimmerIntegrationTest
-    include MetaTagAssertions
-
-    def setup
-      super
-
-      artefact = artefact_for_slug_in_a_subsection("something", "rhubarb/in-puddings")
-      headers = {
-        Slimmer::Headers::RESULT_COUNT_HEADER => "3",
-        Slimmer::Headers::ARTEFACT_HEADER => artefact.to_json,
-        Slimmer::Headers::ORGANISATIONS_HEADER => "<P1><D422>"
-      }
-
-      given_response 200, GENERIC_DOCUMENT, headers
-    end
-
-    def test_should_include_organisation_meta_tag_without_crashing
-      assert_meta_tag "analytics:organisations", "<P1><D422>"
     end
   end
 end

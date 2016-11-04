@@ -89,7 +89,6 @@ module TypicalUsage
   class NormalResponseTest < SlimmerIntegrationTest
     def setup
       super
-      @artefact = artefact_for_slug_in_a_section("some-article", 'this-section')
       given_response 200, %{
         <html>
         <head><title>The title of the page</title>
@@ -101,7 +100,7 @@ module TypicalUsage
         <div id="wrapper">The body of the page</div>
         </body>
         </html>
-      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
+      }, {}
     end
 
     def test_should_replace_the_wrapper_using_the_app_response
@@ -126,10 +125,6 @@ module TypicalUsage
 
     def test_should_copy_the_class_of_the_body_element
       assert_rendered_in_template "body.body_class"
-    end
-
-    def test_should_insert_section_links_into_the_navigation
-      assert_rendered_in_template "#global-breadcrumb ol li a[href='https://www.test.gov.uk/browse/this-section']", "This section"
     end
   end
 
@@ -161,49 +156,6 @@ module TypicalUsage
       assert_rendered_in_template "head link[href='app.css']"
       element = Nokogiri::HTML.parse(last_response.body).at_xpath('/html/head')
       assert_match /<!--\[if gt IE 8\]><!-->.*app\.css.*<!--<!\[endif\]-->/m, element.to_s, 'Not found conditional comment in output'
-    end
-  end
-
-  class ResponseWithRelatedItemsTest < SlimmerIntegrationTest
-
-    def setup
-      super
-      @artefact = artefact_for_slug_with_related_artefacts("some-slug", ["how-to-test-computer-software-automatically"])
-    end
-  end
-
-  class MainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
-    def setup
-      super
-      given_response 200, %{
-        <html>
-        <body class="mainstream">
-        <div id="wrapper">The body of the page<div id="related-items"></div></div>
-        </body>
-        </html>
-      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
-    end
-
-    def test_should_insert_related_items_block
-      assert_rendered_in_template "div.related nav li a[href='https://www.test.gov.uk/how-to-test-computer-software-automatically']",
-        "How to test computer software automatically"
-    end
-  end
-
-  class NonMainstreamRelatedItemsTest < ResponseWithRelatedItemsTest
-    def setup
-      super
-      given_response 200, %{
-        <html>
-        <body class="nonmainstream">
-        <div id="wrapper">The body of the page<div id="related-items"></div></div>
-        </body>
-        </html>
-      }, {Slimmer::Headers::ARTEFACT_HEADER => @artefact.to_json}
-    end
-
-    def test_should_not_insert_related_items_block
-      assert_rendered_in_template "div#related-items", ""
     end
   end
 
@@ -379,11 +331,9 @@ module TypicalUsage
         </html>
       }, {
         "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
-        Slimmer::Headers::ARTEFACT_HEADER => "{}",
         "X-Custom-Header" => "Something else"
       }
 
-      refute last_response.headers.has_key?(Slimmer::Headers::ARTEFACT_HEADER)
       refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end
@@ -397,12 +347,10 @@ module TypicalUsage
         </html>
       }, {
         "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
-        Slimmer::Headers::ARTEFACT_HEADER => "{}",
         "X-Custom-Header" => "Something else",
         Slimmer::Headers::SKIP_HEADER => "1"
       }
 
-      refute last_response.headers.has_key?(Slimmer::Headers::ARTEFACT_HEADER)
       refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end

@@ -1,6 +1,8 @@
 # Unreleased
 
 * Removes the need_id meta tag, which is no longer used.
+* Removes the functionality for breadcrumbs, related links and artefact-powered
+  metatags.
 
 # 9.6.0
 

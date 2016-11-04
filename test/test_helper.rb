@@ -5,7 +5,6 @@ require 'json'
 require 'logger'
 require 'mocha/setup'
 require 'timecop'
-require 'gds_api/test_helpers/content_api'
 
 MiniTest::Test.class_eval do
   def as_nokogiri(html_string)
@@ -60,7 +59,6 @@ end
 
 class SlimmerIntegrationTest < MiniTest::Test
   include Rack::Test::Methods
-  include GdsApi::TestHelpers::ContentApi
 
   # given_response can either be called from a setup method, or in the class scope.
   # The setup method variant is necessary if you want to pass variables into the call that
@@ -90,7 +88,6 @@ class SlimmerIntegrationTest < MiniTest::Test
                     end
 
     use_template(template_name)
-    use_template('related.raw')
     use_template('report_a_problem.raw')
 
     fetch_page

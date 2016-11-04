@@ -1,17 +1,12 @@
 module Slimmer::Processors
   class MetadataInserter
-    def initialize(response, artefact, app_name)
+    def initialize(response, app_name)
       @headers = response.headers
-      @artefact = artefact
       @app_name = app_name
     end
 
     def filter(src, dest)
       head = dest.at_css('head')
-
-      if @artefact
-        add_meta_tag('section', @artefact.primary_root_section["title"].downcase, head) if @artefact.primary_root_section
-      end
 
       add_meta_tag('analytics:organisations', @headers[Slimmer::Headers::ORGANISATIONS_HEADER], head)
       add_meta_tag('analytics:world-locations', @headers[Slimmer::Headers::WORLD_LOCATIONS_HEADER], head)
