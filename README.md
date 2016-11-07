@@ -44,7 +44,7 @@ To get asset tag helpers to point to your external asset server, add
 ```rb
 config.action_controller.asset_host = "http://my.alternative.host"
 ```
-    
+
 to `application.rb`.
 
 ## Specifying a template
@@ -101,25 +101,25 @@ YourApp::Application.configure do
 end
 ```
 
-## Shared components
+## GOV.UK Components
 
-To use shared template components you need to include the shared template resolver
+To use [shared template components](https://govuk-component-guide.herokuapp.com/) you need to include the GOV.UK component module:
 
 ```rb
 class ApplicationController < ActionController::Base
-  include Slimmer::SharedTemplates
+  include Slimmer::GovukComponents
 end
 ```
 
-This will make calls out to static when you try and render a partial prefixed with `govuk-component`:
+This will make calls out to static when you try and render a partial prefixed with `govuk_component`:
 
 ```erb
-<%= render partial: 'govuk-component/example_component' %>
+<%= render partial: 'govuk_component/example_component' %>
 ```
 
 You will need a copy of static running for the templates to be loaded from.
 
-### Testing shared components
+### Testing components
 
 In test mode (when `Rails.env.test?` returns `true`), shared components are not
 fetched from Static. Instead they are rendered as a dummy tag which contains a
@@ -130,8 +130,8 @@ component to assert that it was used. You can make it available in your tests
 with:
 
 ```rb
-require 'slimmer/test_helpers/shared_templates'
-include Slimmer::TestHelpers::SharedTemplates
+require 'slimmer/test_helpers/govuk_components'
+include Slimmer::TestHelpers::GovukComponents
 ```
 
 And then assert that the component has been used:

@@ -5,6 +5,7 @@
   metatags.
 * Drop support for old Rails & Ruby versions. This gem now supports Rails 4.2 and 5.X
   on Ruby 2.1 and 2.2.
+* Renames `Slimmer::SharedTemplates` to `Slimmer::GovukComponents`
 
 # 9.6.0
 
