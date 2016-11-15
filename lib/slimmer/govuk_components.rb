@@ -1,10 +1,10 @@
 module Slimmer
-  module SharedTemplates
+  module GovukComponents
     def self.included into
-      into.before_action :add_shared_templates
+      into.before_action :add_govuk_components
     end
 
-    def add_shared_templates
+    def add_govuk_components
       append_view_path Slimmer::ComponentResolver.new
 
       return if slimmer_backend_included?

@@ -2,7 +2,7 @@ require 'webmock'
 
 module Slimmer
   module TestHelpers
-    module SharedTemplates
+    module GovukComponents
       def stub_shared_component_locales
         stub_request(:get, /https?:\/\/\S+.gov.uk\/templates\/locales\/.+/).
           to_return(status: 400, headers: {})

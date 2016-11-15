@@ -17,7 +17,7 @@ module Slimmer
   autoload :App, 'slimmer/app'
   autoload :Headers, 'slimmer/headers'
 
-  autoload :SharedTemplates, 'slimmer/shared_templates'
+  autoload :GovukComponents, 'slimmer/govuk_components'
   autoload :ComponentResolver, 'slimmer/component_resolver'
   autoload :I18nBackend, 'slimmer/i18n_backend'
 
