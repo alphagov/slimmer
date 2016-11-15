@@ -1,4 +1,4 @@
-# Unreleased
+# 10.0.0
 
 * Removes the need_id meta tag, which is no longer used.
 * Removes the functionality for breadcrumbs, related links and artefact-powered
