@@ -11,20 +11,6 @@ templates. It also transfers various other details, such as `meta`, `script`, an
 
 Slimmer provides a Railtie so no configuration is necessary.
 
-## Use elsewhere
-
-Slimmer will work as standard rack middleware:
-
-```rb
-use Slimmer::App
-```
-
-or
-
-```rb
-use Slimmer::App, :asset_host => "http://my.alternative.host"
-```
-
 ## Asset tag helpers
 
 To get asset tag helpers to point to your external asset server, add
