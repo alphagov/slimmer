@@ -1,9 +1,21 @@
 module Slimmer
+  # @api public
+  #
+  # Include this module to add the GOV.UK Components to your app.
+  # @example
+  #   class ApplicationController < ActionController::Base
+  #     include Slimmer::GovukComponents
+  #   end
+  #
+  #   # In your views:
+  #
+  #   <%= render partial: 'govuk_component/example_component' %>
   module GovukComponents
     def self.included into
       into.before_action :add_govuk_components
     end
 
+    # @private
     def add_govuk_components
       append_view_path Slimmer::ComponentResolver.new
 
