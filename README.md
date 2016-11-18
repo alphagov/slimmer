@@ -9,19 +9,7 @@ templates. It also transfers various other details, such as `meta`, `script`, an
 
 ## Use in a Rails app
 
-Slimmer provides a Railtie so no configuration is necessary. By default it will use the
-Plek gem to look for the 'static' (previously 'assets') host for the current environment.
-
-If you want to use your own set of templates you will need to specify the appropriate host
-eg.
-
-```rb
-YourApp::Application.configure do
-  config.slimmer.asset_host = 'http://your.server.somewhere'
-end
-```
-
-it expects to find templates in a folder called 'templates' on that host.
+Slimmer provides a Railtie so no configuration is necessary.
 
 ## Use elsewhere
 
