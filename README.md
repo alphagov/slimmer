@@ -7,6 +7,8 @@ It does this by taking the page rendered by the application, extracting the cont
 a `div` with id 'wrapper' and inserting that into a `div` with the same id in one of its
 templates. It also transfers various other details, such as `meta`, `script`, and `style` tags.
 
+[View documentation](http://www.rubydoc.info/gems/slimmer)
+
 ## Use in a Rails app
 
 Slimmer provides a Railtie so no configuration is necessary.
