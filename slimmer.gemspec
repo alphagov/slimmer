@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = "slimmer"
   s.version     = Slimmer::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Ben Griffiths", "James Stewart"]
-  s.email       = ["bengriffiths@gmail.com", "james.stewart@digital.cabinet-office.gov.uk"]
+  s.authors     = ["GOV.UK Dev"]
+  s.email       = ["govuk-dev@digital.cabinet-office.gov.uk"]
   s.homepage    = "http://github.com/alphagov/slimmer"
   s.summary     = %q{Thinner than the skinner}
   s.description = %q{Rack middleware for skinning pages using a specific template}
