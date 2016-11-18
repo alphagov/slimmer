@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport'
 
   s.test_files    = Dir['test/**/*']
+  s.add_development_dependency 'yard', '0.8.7.6'
   s.add_development_dependency 'minitest', '~> 5.4'
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
