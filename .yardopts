@@ -1,0 +1,6 @@
+--no-private
+--markup markdown
+--output-dir docs
+--embed-mixins
+--no-stats
+--api public

@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = "slimmer"
   s.version     = Slimmer::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Ben Griffiths", "James Stewart"]
-  s.email       = ["bengriffiths@gmail.com", "james.stewart@digital.cabinet-office.gov.uk"]
+  s.authors     = ["GOV.UK Dev"]
+  s.email       = ["govuk-dev@digital.cabinet-office.gov.uk"]
   s.homepage    = "http://github.com/alphagov/slimmer"
   s.summary     = %q{Thinner than the skinner}
   s.description = %q{Rack middleware for skinning pages using a specific template}
@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport'
 
   s.test_files    = Dir['test/**/*']
+  s.add_development_dependency 'yard', '0.8.7.6'
   s.add_development_dependency 'minitest', '~> 5.4'
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
