@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'rest-client'
   s.add_dependency 'activesupport'
 
-  s.test_files    = Dir['test/**/*']
   s.add_development_dependency 'yard', '0.8.7.6'
   s.add_development_dependency 'minitest', '~> 5.4'
   s.add_development_dependency 'rake', '~> 0.9.2.2'
@@ -35,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'gem_publisher', '~> 1.5.0'
   s.add_development_dependency 'timecop', '~> 0.5.1'
   s.add_development_dependency 'govuk-lint', '~> 0.5.1'
-  s.files         = Dir[
+  s.files = Dir[
     'README.md',
     'CHANGELOG.md',
     'lib/**/*',
