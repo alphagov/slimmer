@@ -33,7 +33,7 @@ module SearchParameterInserterTest
 
     def test_should_leave_original_search_action
       hidden_inputs = Nokogiri::HTML.parse(last_response.body).at_css('#search input[type=hidden]')
-      assert_equal nil, hidden_inputs
+      assert_nil hidden_inputs
     end
   end
 end
