@@ -3,19 +3,18 @@ require 'slimmer/govuk_request_id'
 
 module Slimmer
   class Skin
-    attr_accessor :template_cache, :asset_host, :logger, :strict, :options
+    attr_accessor :asset_host, :logger, :strict, :options
 
     def initialize options = {}
       @options = options
       @asset_host = options[:asset_host]
-      @template_cache = options[:cache]
 
       @logger = options[:logger] || NullLogger.instance
       @strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
     end
 
     def template(template_name)
-      template_cache.fetch(template_name) do
+      Slimmer.cache.fetch(template_name, expires_in: Slimmer::CACHE_TTL) do
         load_template(template_name)
       end
     end

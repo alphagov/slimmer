@@ -5,7 +5,7 @@ module Slimmer
     include I18n::Backend::Base, I18n::Backend::Flatten
 
     def available_locales
-      cache.fetch("available_locales") do
+      Slimmer.cache.fetch(template_path, expires_in: Slimmer::CACHE_TTL) do
         locale_json = fetch(static_locales_url)
         locales = JSON.parse(locale_json).map(&:to_sym)
       end
@@ -19,12 +19,8 @@ module Slimmer
 
   private
 
-    def cache
-      Cache.instance
-    end
-
     def translations(locale)
-      cache.fetch("translations/#{locale}") do
+      Slimmer.cache.fetch("translations/#{locale}", expires_in: Slimmer::CACHE_TTL) do
         fetch_translations(locale)
       end
     end

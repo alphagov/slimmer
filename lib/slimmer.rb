@@ -7,11 +7,20 @@ require 'slimmer/version'
 require 'slimmer/railtie' if defined? Rails
 
 module Slimmer
+  CACHE_TTL = 900
+
+  def self.cache
+    @cache ||= defined?(Rails) ? Rails.cache : NoCache.new
+  end
+
+  class NoCache
+    def fetch(*)
+      yield
+    end
+  end
 
   autoload :Railtie, 'slimmer/railtie'
   autoload :Skin, 'slimmer/skin'
-
-  autoload :Cache, 'slimmer/cache'
 
   autoload :Template, 'slimmer/template'
   autoload :App, 'slimmer/app'

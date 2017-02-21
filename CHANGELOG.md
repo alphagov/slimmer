@@ -1,3 +1,5 @@
+* Use `Rails.cache` as the cache for templates, locales and components
+
 # 10.0.0
 
 * Removes the need_id meta tag, which is no longer used.
