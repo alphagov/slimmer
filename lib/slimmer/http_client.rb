@@ -1,8 +1,10 @@
 module Slimmer
   class HTTPClient
     def self.get(url)
-      headers = {}
-      headers[:govuk_request_id] = GovukRequestId.value if GovukRequestId.set?
+      headers = {
+        govuk_request_id: GovukRequestId.value,
+      }
+
       response = RestClient.get(url, headers)
       response.body
     end
