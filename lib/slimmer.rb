@@ -25,6 +25,7 @@ module Slimmer
   autoload :Template, 'slimmer/template'
   autoload :App, 'slimmer/app'
   autoload :Headers, 'slimmer/headers'
+  autoload :HTTPClient, 'slimmer/http_client'
 
   autoload :GovukComponents, 'slimmer/govuk_components'
   autoload :ComponentResolver, 'slimmer/component_resolver'

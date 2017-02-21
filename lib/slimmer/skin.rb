@@ -21,10 +21,7 @@ module Slimmer
 
     def load_template(template_name)
       url = template_url(template_name)
-      headers = {}
-      headers[:govuk_request_id] = GovukRequestId.value if GovukRequestId.set?
-      response = RestClient.get(url, headers)
-      response.body
+      HTTPClient.get(url)
     rescue RestClient::Exception => e
       raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     rescue Errno::ECONNREFUSED, SocketError, OpenSSL::SSL::SSLError => e

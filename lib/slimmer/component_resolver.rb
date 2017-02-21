@@ -42,10 +42,7 @@ module Slimmer
     end
 
     def fetch(template_url)
-      headers = {}
-      headers[:govuk_request_id] = GovukRequestId.value if GovukRequestId.set?
-      response = RestClient.get(template_url, headers)
-      response.body
+      HTTPClient.get(template_url)
     rescue RestClient::Exception => e
       raise TemplateNotFoundException, "Unable to fetch: '#{template_url}' because #{e}", caller
     rescue Errno::ECONNREFUSED => e
