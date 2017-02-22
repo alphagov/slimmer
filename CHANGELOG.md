@@ -1,4 +1,8 @@
-* Use `Rails.cache` as the cache for templates, locales and components
+# 10.1.0
+
+* Use `Rails.cache` as the cache for templates, locales and components. You can
+  remove `config.slimmer.use_cache` for your application, as you can no longer
+  opt-out of caching.
 * Add a `User-Agent` header to all outgoing API requests
 
 # 10.0.0
