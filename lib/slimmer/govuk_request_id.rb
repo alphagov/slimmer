@@ -1,10 +1,6 @@
 module Slimmer
   class GovukRequestId
     class << self
-      def set?
-        !(value.nil? || value.empty?)
-      end
-
       def value
         Thread.current[:slimmer_govuk_request_id]
       end
@@ -15,4 +11,3 @@ module Slimmer
     end
   end
 end
-
