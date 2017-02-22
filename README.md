@@ -13,6 +13,11 @@ templates. It also transfers various other details, such as `meta`, `script`, an
 
 Slimmer provides a Railtie so no configuration is necessary.
 
+## Caching
+
+Slimmer makes HTTP requests to `static` for templates, components and locales. These
+are cached for 15 minutes. Slimmer uses `Rails.cache` for this.
+
 ## Asset tag helpers
 
 To get asset tag helpers to point to your external asset server, add

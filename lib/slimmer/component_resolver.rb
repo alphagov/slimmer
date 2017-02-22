@@ -13,13 +13,12 @@ module Slimmer
 
     def find_templates(name, prefix, partial, details, outside_app_allowed = false)
       return [] unless prefix == 'govuk_component'
-      cache = Cache.instance
 
       template_path = [prefix, name].join('/')
       if test?
         template_body = test_body(template_path)
       else
-        template_body = cache.fetch(template_path) do
+        template_body = Slimmer.cache.fetch(template_path, expires_in: Slimmer::CACHE_TTL) do
           fetch(template_url(template_path))
         end
       end

@@ -4,7 +4,7 @@ describe Slimmer::Skin do
 
   describe "loading templates" do
     it "should be able to load the template" do
-      skin = Slimmer::Skin.new asset_host: "http://example.local/", cache: Slimmer::Cache.instance
+      skin = Slimmer::Skin.new asset_host: "http://example.local/"
 
       expected_url = "http://example.local/templates/example.html.erb"
       stub_request(:get, expected_url).to_return :body => "<foo />"
@@ -17,7 +17,7 @@ describe Slimmer::Skin do
 
     describe "should pass the GOVUK-Request-Id header when requesting the template" do
       before do
-        @skin = Slimmer::Skin.new asset_host: "http://example.local/", cache: Slimmer::Cache.instance
+        @skin = Slimmer::Skin.new asset_host: "http://example.local/"
 
         @expected_url = "http://example.local/templates/example.html.erb"
         stub_request(:get, @expected_url).to_return :body => "<foo />"
@@ -44,16 +44,8 @@ describe Slimmer::Skin do
       end
     end
 
-    it "should try and load templates from the cache" do
-      skin = Slimmer::Skin.new asset_host: "http://example.local/", cache: Slimmer::Cache.instance
-
-      Slimmer::Cache.instance.expects(:fetch).with('example-template').returns('cache data')
-      template = skin.template 'example-template'
-      assert_equal 'cache data', template
-    end
-
     it "should raise appropriate exception when template not found" do
-      skin = Slimmer::Skin.new asset_host: "http://example.local/", cache: Slimmer::Cache.instance
+      skin = Slimmer::Skin.new asset_host: "http://example.local/"
 
       expected_url = "http://example.local/templates/example.html.erb"
       stub_request(:get, expected_url).to_return(:status => '404')
@@ -64,7 +56,7 @@ describe Slimmer::Skin do
     end
 
     it "should raise appropriate exception when cant reach template host" do
-      skin = Slimmer::Skin.new asset_host: "http://example.local/", cache: Slimmer::Cache.instance
+      skin = Slimmer::Skin.new asset_host: "http://example.local/"
 
       expected_url = "http://example.local/templates/example.html.erb"
       stub_request(:get, expected_url).to_raise(Errno::ECONNREFUSED)
@@ -75,7 +67,7 @@ describe Slimmer::Skin do
     end
 
     it "should raise appropriate exception when hostname cannot be resolved" do
-      skin = Slimmer::Skin.new asset_host: "http://non-existent.domain/", cache: Slimmer::Cache.instance
+      skin = Slimmer::Skin.new asset_host: "http://non-existent.domain/"
 
       expected_url = "http://non-existent.domain/templates/example.html.erb"
       stub_request(:get, expected_url).to_raise(SocketError)
@@ -86,7 +78,7 @@ describe Slimmer::Skin do
     end
 
     it "should raise appropriate exception when encountering an SSL error" do
-      skin = Slimmer::Skin.new asset_host: "https://bad-ssl.domain/", cache: Slimmer::Cache.instance
+      skin = Slimmer::Skin.new asset_host: "https://bad-ssl.domain/"
 
       expected_url = "https://bad-ssl.domain/templates/example.html.erb"
       stub_request(:get, expected_url).to_raise(OpenSSL::SSL::SSLError)
