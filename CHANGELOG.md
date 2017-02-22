@@ -1,3 +1,7 @@
+# 10.1.1
+
+* Bugfix for caching behaviour
+
 # 10.1.0
 
 * Use `Rails.cache` as the cache for templates, locales and components. You can
