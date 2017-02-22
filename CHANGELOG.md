@@ -1,3 +1,5 @@
+# 10.1.0
+
 * Use `Rails.cache` as the cache for templates, locales and components
 * Add a `User-Agent` header to all outgoing API requests
 
