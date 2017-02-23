@@ -5,12 +5,6 @@ module Slimmer
   class ComponentResolver < ::ActionView::Resolver
     TEST_TAG_NAME = 'test-govuk-component'
 
-    def self.caching
-      # this turns off the default ActionView::Resolver caching which caches
-      # all templates for the duration of the current process in production
-      false
-    end
-
     def find_templates(name, prefix, partial, details, outside_app_allowed = false)
       return [] unless prefix == 'govuk_component'
 
