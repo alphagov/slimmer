@@ -13,12 +13,11 @@ module Slimmer
   module GovukComponents
     def self.included into
       into.before_action :add_govuk_components
+      into.append_view_path Slimmer::ComponentResolver.new
     end
 
     # @private
     def add_govuk_components
-      append_view_path Slimmer::ComponentResolver.new
-
       return if slimmer_backend_included?
       I18n.backend = I18n::Backend::Chain.new(I18n.backend, Slimmer::I18nBackend.new)
     end
