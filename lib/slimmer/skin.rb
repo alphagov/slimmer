@@ -101,6 +101,12 @@ module Slimmer
 
     def success(source_request, response, body)
       wrapper_id = options[:wrapper_id] || 'wrapper'
+
+      # The variables set in the source request might not be encoded as UTF-8,
+      # Unicorn, for instance, will set them to be ASCII. This shouldn't matter
+      # normally because URI's should have UTF-8 characters percent encoded,
+      # but not all agents follow this.
+      request_url = source_request.url.force_encoding(Encoding::UTF_8)
       processors = [
         Processors::TitleInserter.new(),
         Processors::TagMover.new(),
@@ -114,7 +120,7 @@ module Slimmer
         Processors::SearchParameterInserter.new(response),
         Processors::SearchPathSetter.new(response),
         Processors::ReportAProblemInserter.new(self,
-                                               source_request.url,
+                                               request_url,
                                                response.headers,
                                                wrapper_id),
         Processors::SearchRemover.new(response.headers),
