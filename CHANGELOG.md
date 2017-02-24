@@ -1,3 +1,7 @@
+# 10.1.2
+
+* Bugfix for request URI's encoded as ASCII
+
 # 10.1.1
 
 * Bugfix for caching behaviour
