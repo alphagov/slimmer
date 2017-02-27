@@ -84,9 +84,7 @@ module Slimmer
           p.filter(src,dest)
         rescue => e
           logger.error "Slimmer: Failed while processing #{p}: #{[ e.message, e.backtrace ].flatten.join("\n")}"
-          if defined?(Airbrake)
-            Airbrake.notify_or_ignore(e, rack_env: rack_env)
-          end
+          notify_airbrake(e, rack_env: rack_env)
           raise if strict
         end
         processor_end_time = Time.now
@@ -135,6 +133,20 @@ module Slimmer
         Processors::TitleInserter.new()
       ]
       process(processors, body, template(template_name), rack_env)
+    end
+
+  private
+
+    def notify_airbrake(*args)
+      return unless defined?(Airbrake)
+
+      if Airbrake.respond_to?(:notify_or_ignore)
+        # Airbrake < 5 uses a method called "notify_or_ignore"
+        Airbrake.notify_or_ignore(*args)
+      elsif Airbrake.respond_to?(:notify)
+        # Airbrake >= 5 deprecates "notify_or_ignore", so use "notify" instead
+        Airbrake.notify(*args)
+      end
     end
   end
 end
