@@ -1,3 +1,5 @@
+* Fix memory leak in components
+
 # 10.1.2
 
 * Bugfix for request URI's encoded as ASCII
