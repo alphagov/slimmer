@@ -1,3 +1,5 @@
+# 10.1.3
+
 * Fix memory leak in components
 
 # 10.1.2
