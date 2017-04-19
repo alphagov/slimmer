@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'null_logger'
   s.add_dependency 'rest-client'
   s.add_dependency 'activesupport'
+  s.add_dependency 'colorize'
 
   s.add_development_dependency 'yard', '0.8.7.6'
   s.add_development_dependency 'minitest', '~> 5.4'
