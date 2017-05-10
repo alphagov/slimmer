@@ -85,7 +85,7 @@ module Slimmer
         rescue => e
           logger.error "Slimmer: Failed while processing #{p}: #{[ e.message, e.backtrace ].flatten.join("\n")}"
           if defined?(Airbrake)
-            Airbrake.notify_sync(e, rack_env: rack_env)
+            Airbrake.notify(e, rack_env: rack_env)
           end
           raise if strict
         end
