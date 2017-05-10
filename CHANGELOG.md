@@ -1,3 +1,7 @@
+# 10.1.4
+
+* Adjust airbrake to work on airbrake v4 or v5
+
 # 10.1.3
 
 * Fix memory leak in components
