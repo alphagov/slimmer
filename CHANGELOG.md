@@ -1,3 +1,7 @@
+# 11.0.0
+
+* Drops support for nokogiri versions < 1.7.0
+
 # 10.1.5
 
 * bugfix on airbrake to work on airbrake v4 or v5
