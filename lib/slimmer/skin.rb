@@ -1,5 +1,6 @@
 require 'rest_client'
 require 'slimmer/govuk_request_id'
+require 'colorize'
 
 module Slimmer
   class Skin
@@ -10,7 +11,18 @@ module Slimmer
       @asset_host = options[:asset_host]
 
       @logger = options[:logger] || NullLogger.instance
-      @strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
+
+      @strict = options[:strict]
+      if %w{development test}.include?(ENV['RACK_ENV'])
+        # A Null instance logger passed in a lot,
+        # not too sure of the implications of unwinding
+        # this all as it depends on all apps that use slimmer.
+        # This will make sure everything is logged correctly
+        # and put slimer renderings more in line with rendering
+        # normal templates
+        @logger = Rails.logger || @logger
+        @strict = true
+      end
     end
 
     def template(template_name)
@@ -47,7 +59,8 @@ module Slimmer
           message = "In #{description_for_error_message}: '#{error.message}' at line #{error.line} col #{error.column} (code #{error.code}).\n"
           message << "Add ?skip_slimmer=1 to the url to show the raw backend request.\n\n"
           message << context(html, error)
-          raise message
+          logger.error "\a" # Make bell sound
+          logger.error message.colorize(:red)
         end
       end
 
@@ -79,7 +92,6 @@ module Slimmer
       logger.debug "Slimmer: Start time = #{start_time}"
       processors.each do |p|
         processor_start_time = Time.now
-        logger.debug "Slimmer: Processor #{p} started at #{processor_start_time}"
         begin
           p.filter(src,dest)
         rescue => e
@@ -91,10 +103,10 @@ module Slimmer
         end
         processor_end_time = Time.now
         process_time = processor_end_time - processor_start_time
-        logger.debug "Slimmer: Processor #{p} ended at #{processor_end_time} (#{process_time}s)"
+        logger.debug "Slimmer: #{p.class.name.demodulize} took #{process_time}s"
       end
       end_time = Time.now
-      logger.debug "Slimmer: Skinning process completed at #{end_time} (#{end_time - start_time}s)"
+      logger.debug "Slimmer: Skinning process completed (#{end_time - start_time}s)"
 
       dest.to_html
     end
