@@ -10,7 +10,11 @@ module Slimmer
   CACHE_TTL = 900
 
   def self.cache
-    @cache ||= defined?(Rails) ? Rails.cache : NoCache.new
+    @cache ||= should_cache? ? Rails.cache : NoCache.new
+  end
+
+  def self.should_cache?
+    defined?(Rails) && ENV['RACK_ENV'] != 'development'
   end
 
   class NoCache
