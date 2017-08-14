@@ -87,7 +87,7 @@ module Slimmer
           if defined?(Airbrake)
             Airbrake.notify(e, rack_env: rack_env)
           end
-          raise if strict
+          raise
         end
         processor_end_time = Time.now
         process_time = processor_end_time - processor_start_time
