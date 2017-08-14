@@ -80,15 +80,7 @@ module Slimmer
       processors.each do |p|
         processor_start_time = Time.now
         logger.debug "Slimmer: Processor #{p} started at #{processor_start_time}"
-        begin
-          p.filter(src,dest)
-        rescue => e
-          logger.error "Slimmer: Failed while processing #{p}: #{[ e.message, e.backtrace ].flatten.join("\n")}"
-          if defined?(Airbrake)
-            Airbrake.notify(e, rack_env: rack_env)
-          end
-          raise if strict
-        end
+        p.filter(src, dest)
         processor_end_time = Time.now
         process_time = processor_end_time - processor_start_time
         logger.debug "Slimmer: Processor #{p} ended at #{processor_end_time} (#{process_time}s)"
