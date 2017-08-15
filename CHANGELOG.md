@@ -1,3 +1,8 @@
+# 11.0.1
+
+* Stop catching errors from Slimmer processors (#203)
+* Removes all references to Airbrake
+
 # 11.0.0
 
 * Drops support for nokogiri versions < 1.7.0
