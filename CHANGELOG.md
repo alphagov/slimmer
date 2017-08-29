@@ -1,3 +1,7 @@
+# 11.0.2
+
+* Add missing class tags to test templates for including Slimmer in tests
+
 # 11.0.1
 
 * Stop catching errors from Slimmer processors (#203)
