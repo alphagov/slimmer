@@ -4,7 +4,8 @@ module Slimmer::Processors
       insertion = src.at_css('.slimmer-inside-header')
 
       if insertion
-        dest.at_css('.header-logo').add_next_sibling(insertion.inner_html)
+        logo = dest.at_css('.header-logo')
+        logo.add_next_sibling(insertion.inner_html) unless logo.nil?
       end
     end
   end

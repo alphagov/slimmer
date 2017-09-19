@@ -32,4 +32,24 @@ class InsideHeaderInserterTest < MiniTest::Test
       "Inserted Page Title",
       'Expecting the H2 to be inserted after .header-logo'
   end
+
+  def test_should_fail_gracefully_if_logo_not_present
+    source = as_nokogiri %{
+      <html>
+        <body>
+          <div class="slimmer-inside-header">
+            <h2>Inserted Page Title</h2>
+          </div>
+        </body>
+      </html>
+    }
+    template = as_nokogiri %{
+      <html>
+        <body></body>
+      </html>
+    }
+
+    # No exception should be thrown
+    Slimmer::Processors::InsideHeaderInserter.new.filter(source, template)
+  end
 end
