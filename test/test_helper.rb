@@ -40,7 +40,7 @@ end
 require 'webmock/minitest'
 WebMock.disable_net_connect!
 
-# Including action_view is dificualt because it depends on rails and internal
+# Including action_view is difficult because it depends on rails and internal
 # ~*magic*~. To avoid depending on the whole of rails mock out the method we
 # need so we can tests the internal implementations which don't depend on rails
 module ActionView
