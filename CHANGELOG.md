@@ -1,3 +1,8 @@
+# 11.1.0
+
+* Allow components in static to be loaded locally rather than over the network (#208)
+* Replace deprecated `after_filter` in slimmer_template (#209)
+
 # 11.0.2
 
 * Add missing class tags to test templates for including Slimmer in tests
