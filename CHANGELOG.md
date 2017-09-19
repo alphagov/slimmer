@@ -1,3 +1,8 @@
+# 11.1.1
+
+* Make the 'Inside Header Inserter' more resillient so that it doesn't throw
+ exceptions in a test context (#212)
+
 # 11.1.0
 
 * Allow components in static to be loaded locally rather than over the network (#208)
