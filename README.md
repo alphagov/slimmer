@@ -84,7 +84,7 @@ end
 
 ## GOV.UK Components
 
-To use [shared template components](https://govuk-component-guide.herokuapp.com/) you need to include the GOV.UK component module:
+To use [shared template components](https://govuk-static.herokuapp.com/component-guide) you need to include the GOV.UK component module:
 
 ```rb
 class ApplicationController < ActionController::Base
