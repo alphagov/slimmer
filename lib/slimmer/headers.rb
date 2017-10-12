@@ -78,7 +78,12 @@ module Slimmer
       raise InvalidHeader if (hash.keys - SLIMMER_HEADER_MAPPING.keys).any?
       SLIMMER_HEADER_MAPPING.each do |hash_key, header_suffix|
         value = hash[hash_key]
-        headers["#{HEADER_PREFIX}-#{header_suffix}"] = value.to_s if value
+        if value
+          header = "#{HEADER_PREFIX}-#{header_suffix}"
+          # set_header is not available in rails 4.
+          # This conditional can be removed once all app are running >= rails 5.
+          respond_to?(:set_header) ? set_header(header, value.to_s) : (headers[header] = value.to_s)
+        end
       end
     end
   end
