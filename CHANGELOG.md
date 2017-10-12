@@ -1,3 +1,7 @@
+# 12.0.0
+
+* Change `set_slimmer_headers` to be Rails 4 and 5 compatible.
+
 # 11.1.1
 
 * Make the 'Inside Header Inserter' more resillient so that it doesn't throw
