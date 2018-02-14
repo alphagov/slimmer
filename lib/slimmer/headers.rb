@@ -13,7 +13,6 @@ module Slimmer
       format:               "Format",
       page_owner:           "Page-Owner",
       organisations:        "Organisations",
-      report_a_problem:     "Report-a-Problem",
       world_locations:      "World-Locations",
       result_count:         "Result-Count",
       search_parameters:    "Search-Parameters",
@@ -31,9 +30,6 @@ module Slimmer
 
     # @private
     ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
-
-    # @private
-    REPORT_A_PROBLEM_FORM = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:report_a_problem]}"
 
     # @private
     WORLD_LOCATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:world_locations]}"
@@ -67,7 +63,6 @@ module Slimmer
     # @option hash [String] organisations
     # @option hash [String] page_owner
     # @option hash [String] remove_search
-    # @option hash [String] report_a_problem
     # @option hash [String] result_count
     # @option hash [String] search_parameters
     # @option hash [String] section

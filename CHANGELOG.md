@@ -1,3 +1,8 @@
+# Unreleased
+
+* Remove the "report a problem" feature. This is now being covered by the
+  feedback component (#213)
+
 # 11.1.1
 
 * Make the 'Inside Header Inserter' more resillient so that it doesn't throw
