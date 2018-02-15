@@ -1,4 +1,4 @@
-# Unreleased
+# 12.0.0
 
 * Remove the "report a problem" feature. This is now being covered by the
   feedback component (#213)
