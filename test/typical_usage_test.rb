@@ -179,24 +179,6 @@ module TypicalUsage
     end
   end
 
-  class ReportAProblemTest < SlimmerIntegrationTest
-    given_response 200, %{
-      <html>
-      <body>
-      <div id="wrapper">The body of the page</div>
-      </body>
-      </html>
-    }
-
-    def test_should_insert_the_report_a_problem_form
-      assert_rendered_in_template "#wrapper .report-a-problem-container"
-    end
-
-    def test_should_add_the_current_url_to_the_form
-      assert_rendered_in_template ".report-a-problem-container input[name=url][value='http://example.org/']"
-    end
-  end
-
   class Error500ResponseTest < SlimmerIntegrationTest
     given_response 500, %{
       <html>
