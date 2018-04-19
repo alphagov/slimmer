@@ -16,6 +16,7 @@ class TagMoverTest < MiniTest::Test
           <meta property="p:baz" content="bat" />
           <meta property="p:empty" />
           <meta property="p:duplicate" content="name and content" />
+          <meta property="og:image" content="custom-og-image" />
         </head>
         <body class="mainstream">
           <div id="wrapper"></div>
@@ -30,6 +31,7 @@ class TagMoverTest < MiniTest::Test
           <link rel="stylesheet" href="http://www.example.com/duplicate.css" />
           <meta name="duplicate" content="name and content" />
           <meta property="p:duplicate" content="name and content" />
+          <meta property="og:image" content="default-og-image" />
         </head>
         <body class="mainstream">
           <div id="wrapper"></div>
@@ -70,6 +72,10 @@ class TagMoverTest < MiniTest::Test
 
   def test_should_move_meta_tags_into_the_head
     assert_in @template, "meta[name='foo'][content='bar']", nil, "Should have moved the foo=bar meta tag"
+  end
+
+  def test_should_place_metatags_on_top
+    assert @template.to_s.index("custom-og-image") < @template.to_s.index("default-og-image"), "Expected meta tags to be inserted to the top of the header"
   end
 
   def test_should_ignore_meta_tags_with_no_name_or_content
