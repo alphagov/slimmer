@@ -1,3 +1,7 @@
+* Make sure that the metatags defined in the application are inserted at the
+  top of the page. This means that third parties will see the custom metatags
+  like `og:image` first, and template tags like the default sharing image second (#218) 
+
 # 12.0.0
 
 * Remove the "report a problem" feature. This is now being covered by the

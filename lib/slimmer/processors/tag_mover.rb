@@ -1,10 +1,10 @@
 module Slimmer::Processors
   class TagMover
-    def filter(src,dest)
-      move_tags(src, dest, 'script', :dest_node => 'body', :keys => ['src', 'inner_html'])
-      move_tags(src, dest, 'link',   :must_have => ['href'])
-      move_tags(src, dest, 'meta',   :must_have => ['name', 'content'], :keys => ['name', 'content', 'http-equiv'])
-      move_tags(src, dest, 'meta',   :must_have => ['property', 'content'], :keys => ['property', 'content'])
+    def filter(src, dest)
+      move_tags(src, dest, 'script', dest_node: 'body', keys: %w(src inner_html))
+      move_tags(src, dest, 'link',   must_have: ['href'])
+      move_tags(src, dest, 'meta',   must_have: %w(name content), keys: ['name', 'content', 'http-equiv'], insertion_location: :top)
+      move_tags(src, dest, 'meta',   must_have: %w(property content), keys: %w(property content), insertion_location: :top)
     end
 
     def include_tag?(node, min_attrs)
@@ -22,7 +22,7 @@ module Slimmer::Processors
     end
 
     def wrap_node(src, node)
-      if node.previous_sibling.to_s =~ /<!--\[if[^\]]+\]><!-->/ and node.next_sibling.to_s == '<!--<![endif]-->'
+      if node.previous_sibling.to_s =~ /<!--\[if[^\]]+\]><!-->/ && node.next_sibling.to_s == '<!--<![endif]-->'
         node = Nokogiri::XML::NodeSet.new(src, [node.previous_sibling, node, node.next_sibling])
       end
       node
@@ -40,7 +40,12 @@ module Slimmer::Processors
         if include_tag?(node, min_attrs) && !already_there.include?(tag_fingerprint(node, comparison_attrs))
           node = wrap_node(src, node)
           node.remove
-          dest.at_xpath("/html/#{dest_node}") << node
+
+          if opts[:insertion_location] == :top
+            dest.at_xpath("/html/#{dest_node}").prepend_child(node)
+          else
+            dest.at_xpath("/html/#{dest_node}") << node
+          end
         end
       end
     end
