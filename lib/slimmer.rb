@@ -7,7 +7,7 @@ require 'slimmer/version'
 require 'slimmer/railtie' if defined? Rails
 
 module Slimmer
-  CACHE_TTL = 900
+  CACHE_TTL = 60
 
   def self.cache
     @cache ||= defined?(Rails) ? Rails.cache : NoCache.new
