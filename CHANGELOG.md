@@ -1,3 +1,7 @@
+# Unreleased
+
+* Drop cache TTL to 60 seconds.
+
 # 12.1.0
 
 * Make sure that the metatags defined in the application are inserted at the
