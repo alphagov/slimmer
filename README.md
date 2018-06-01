@@ -15,8 +15,7 @@ Slimmer provides a Railtie so no configuration is necessary.
 
 ## Caching
 
-Slimmer makes HTTP requests to `static` for templates, components and locales. These
-are cached for 15 minutes. Slimmer uses `Rails.cache` for this.
+Slimmer makes HTTP requests to `static` for templates. These are cached using `Rails.cache`.
 
 ## Asset tag helpers
 
@@ -79,54 +78,6 @@ By default if you pass in a logger with its log level set to `debug`, slimmer wi
 ```rb
 YourApp::Application.configure do
   config.slimmer.enable_debugging = true
-end
-```
-
-## GOV.UK Components
-
-To use [shared template components](https://govuk-static.herokuapp.com/component-guide) you need to include the GOV.UK component module:
-
-```rb
-class ApplicationController < ActionController::Base
-  include Slimmer::GovukComponents
-end
-```
-
-This will make calls out to static when you try and render a partial prefixed with `govuk_component`:
-
-```erb
-<%= render partial: 'govuk_component/example_component' %>
-```
-
-You will need a copy of static running for the templates to be loaded from.
-
-### Testing components
-
-In test mode (when `Rails.env.test?` returns `true`), shared components are not
-fetched from Static. Instead they are rendered as a dummy tag which contains a
-JSON dump of the `locals` - the arguments passed to the component.
-
-A test helper is included which returns a CSS selector for finding a given
-component to assert that it was used. You can make it available in your tests
-with:
-
-```rb
-require 'slimmer/test_helpers/govuk_components'
-include Slimmer::TestHelpers::GovukComponents
-```
-
-And then assert that the component has been used:
-
-```rb
-page.should have_css(shared_component_selector('metadata'))
-```
-
-Or look for one of the arguments to the component which will have been
-`JSON.dump`ed inside the tag:
-
-```rb
-within(shared_component_selector('title')) do
-  expect(page).to have_content(expected_title_text)
 end
 ```
 
