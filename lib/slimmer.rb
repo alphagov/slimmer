@@ -27,13 +27,6 @@ module Slimmer
   autoload :Headers, 'slimmer/headers'
   autoload :HTTPClient, 'slimmer/http_client'
 
-  autoload :GovukComponents, 'slimmer/govuk_components'
-  autoload :LocalGovukComponents, 'slimmer/local_govuk_components'
-  autoload :ComponentResolver, 'slimmer/component_resolver'
-  autoload :NetworkComponentResolver, 'slimmer/network_component_resolver'
-  autoload :LocalComponentResolver, 'slimmer/local_component_resolver'
-  autoload :I18nBackend, 'slimmer/i18n_backend'
-
   module Processors
     autoload :BodyClassCopier, 'slimmer/processors/body_class_copier'
     autoload :BodyInserter, 'slimmer/processors/body_inserter'
