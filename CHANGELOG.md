@@ -1,7 +1,7 @@
-# Unreleased
+# 13.0.0
 
 * Drop cache TTL to 60 seconds.
-* Remove the component system, components are now consumed via the [govuk_publishing_components gem](https://github.com/alphagov/govuk_publishing_components)
+* BREAKING: Remove the component system, components are now consumed via the [govuk_publishing_components gem](https://github.com/alphagov/govuk_publishing_components)
 
 # 12.1.0
 
