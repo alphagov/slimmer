@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake', '~> 0.9.2.2'
   s.add_development_dependency 'rack-test', '~> 0.6.1'
   s.add_development_dependency 'mocha', '~> 1.1'
-  s.add_development_dependency 'webmock', '1.18.0'
+  s.add_development_dependency 'webmock', '3.4.2'
   s.add_development_dependency 'timecop', '~> 0.5.1'
   s.add_development_dependency 'govuk-lint', '~> 3.9.0'
   s.files = Dir[
