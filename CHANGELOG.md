@@ -1,3 +1,7 @@
+# Unreleased
+
+* Add `js-enabled` to body tag of test templates.
+
 # 13.0.0
 
 * Drop cache TTL to 60 seconds.
