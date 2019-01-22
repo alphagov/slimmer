@@ -6,7 +6,7 @@ class TestTemplateDependencyOnStaticTest < MiniTest::Test
     Dir.foreach(template_path) do | template_file_name |
       next if ['.','..'].include? template_file_name
       doc = Nokogiri::HTML.fragment(File.read(File.join(template_path, template_file_name)))
-      scripts = doc.search("script").map { |node| node.attributes["src"].value }
+      scripts = doc.search("script[src]").map { |node| node.attributes["src"].value }
       failing_scripts = allowing_real_web_connections do
         scripts.select do |script_src|
           uri = URI.parse(script_src)
