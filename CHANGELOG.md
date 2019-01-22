@@ -1,6 +1,8 @@
 # Unreleased
 
-* Add `js-enabled` to body tag of test templates.
+# 13.1.0
+
+* Add `js-enabled` to body tag of test templates. (#226)
 
 # 13.0.0
 
