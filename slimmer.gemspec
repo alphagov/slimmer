@@ -15,8 +15,6 @@ Gem::Specification.new do |s|
   s.description = %q{Rack middleware for skinning pages using a specific template}
   s.license = 'MIT'
 
-  s.rubyforge_project = "slimmer"
-
   s.add_dependency 'nokogiri', '~> 1.7'
   s.add_dependency 'rack'
   s.add_dependency 'plek', '>= 1.1.0'
