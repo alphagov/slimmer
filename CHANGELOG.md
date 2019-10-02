@@ -1,5 +1,7 @@
 # Unreleased
 
+* Upgrade Ruby version to 2.6.5. (#234)
+
 # 13.1.0
 
 * Add `js-enabled` to body tag of test templates. (#226)
