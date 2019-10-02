@@ -2,8 +2,8 @@ module Slimmer::Processors
   class TagMover
     def filter(src, dest)
       move_tags(src, dest, 'script', dest_node: 'body', keys: %w(src inner_html))
-      move_tags(src, dest, 'link',   must_have: ['href'])
-      move_tags(src, dest, 'meta',   must_have: %w(name content), keys: ['name', 'content', 'http-equiv'], insertion_location: :top)
+      move_tags(src, dest, 'link',   must_have: %w[href])
+      move_tags(src, dest, 'meta',   must_have: %w(name content), keys: %w[name content http-equiv], insertion_location: :top)
       move_tags(src, dest, 'meta',   must_have: %w(property content), keys: %w(property content), insertion_location: :top)
     end
 
@@ -12,13 +12,15 @@ module Slimmer::Processors
     end
 
     def tag_fingerprint(node, attrs)
-      attrs.collect do |attr_name|
+      collected_attrs = attrs.collect do |attr_name|
         if attr_name == 'inner_html'
           node.content
         else
           node.has_attribute?(attr_name) ? node.attr(attr_name) : nil
         end
-      end.compact.sort
+      end
+
+      collected_attrs.compact.sort
     end
 
     def wrap_node(src, node)

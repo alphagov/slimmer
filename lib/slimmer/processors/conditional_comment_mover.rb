@@ -13,5 +13,3 @@ module Slimmer::Processors
     end
   end
 end
-
-

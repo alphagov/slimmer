@@ -6,7 +6,7 @@ module Slimmer::Processors
       @response = response
     end
 
-    def filter(content_document, page_template)
+    def filter(_content_document, page_template)
       search_form = page_template.at_css('form#search')
       if search_parameters && search_form
         search_parameters.each_pair do |name, value|

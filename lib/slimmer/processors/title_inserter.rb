@@ -1,10 +1,10 @@
 module Slimmer::Processors
   class TitleInserter
-    def filter(src,dest)
+    def filter(src, dest)
       title = src.at_css('head title')
       head  = dest.at_xpath('/html/head')
       if head && title
-        insert_title(title,head)
+        insert_title(title, head)
       end
     end
 
