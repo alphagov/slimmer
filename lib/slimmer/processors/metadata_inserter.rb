@@ -5,7 +5,7 @@ module Slimmer::Processors
       @app_name = app_name
     end
 
-    def filter(src, dest)
+    def filter(_src, dest)
       head = dest.at_css('head')
 
       add_meta_tag('analytics:organisations', @headers[Slimmer::Headers::ORGANISATIONS_HEADER], head)

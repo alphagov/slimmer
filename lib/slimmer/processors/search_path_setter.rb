@@ -4,7 +4,7 @@ module Slimmer::Processors
       @response = response
     end
 
-    def filter(content_document, page_template)
+    def filter(_content_document, page_template)
       if search_scope && page_template.at_css('form#search')
         page_template.at_css('form#search').attributes["action"].value = search_scope
       end

@@ -4,7 +4,7 @@ module Slimmer::Processors
       @headers = headers
     end
 
-    def filter(src,dest)
+    def filter(_src, dest)
       if @headers.include?(Slimmer::Headers::REMOVE_SEARCH_HEADER)
         search = dest.at_css("#global-header #search")
         search.remove if search

@@ -6,7 +6,7 @@ namespace :slimmer do
     path_to_static = "../static/public"
     path_to_public = "public"
     commands = ["cd #{path_to_public}"]
-    dirs_to_link = Dir.glob("../static/public/*") {|f|
+    Dir.glob("../static/public/*") { |f|
       commands << "ln -s #{path_to_static}/#{f}"
     }
     commands << ["cd .."]

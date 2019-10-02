@@ -1,5 +1,4 @@
 class Slimmer::Processors::NavigationMover
-
   def initialize(skin)
     @skin = skin
   end
