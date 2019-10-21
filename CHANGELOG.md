@@ -1,4 +1,4 @@
-# Unreleased
+# 13.2.0
 
 * Upgrade Ruby version to 2.6.5. (#234)
 * Fix linting issues. (#234)
