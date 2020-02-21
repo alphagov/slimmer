@@ -1,4 +1,4 @@
-require_relative '../test_helper'
+require_relative "../test_helper"
 
 class InsideHeaderInserterTest < MiniTest::Test
   def test_should_insert_into_header
@@ -27,10 +27,12 @@ class InsideHeaderInserterTest < MiniTest::Test
 
     Slimmer::Processors::InsideHeaderInserter.new.filter(source, template)
 
-    assert_in template,
+    assert_in(
+      template,
       "div.header-global .header-logo + h2",
       "Inserted Page Title",
-      'Expecting the H2 to be inserted after .header-logo'
+      "Expecting the H2 to be inserted after .header-logo",
+    )
   end
 
   def test_should_fail_gracefully_if_logo_not_present

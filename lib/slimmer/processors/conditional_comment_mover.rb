@@ -1,9 +1,9 @@
 module Slimmer::Processors
   class ConditionalCommentMover
     def filter(src, dest)
-      src.xpath('//comment()').each do |comment|
+      src.xpath("//comment()").each do |comment|
         if match_conditional_comments(comment)
-          dest.at_xpath('/html/head') << comment
+          dest.at_xpath("/html/head") << comment
         end
       end
     end

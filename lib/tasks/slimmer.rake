@@ -1,4 +1,4 @@
-require 'rake'
+require "rake"
 
 namespace :slimmer do
   desc "Symlink from public directory to static directory"

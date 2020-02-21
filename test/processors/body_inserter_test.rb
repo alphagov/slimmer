@@ -14,7 +14,7 @@ class BodyInserterTest < MiniTest::Test
   end
 
   def test_should_copy_across_unicode_characters_without_messing_with_their_encoding
-    unicode_endash = [0x2013].pack('U*')
+    unicode_endash = [0x2013].pack("U*")
     template = as_nokogiri %{
       <html><body><div><div id="wrapper"></div></div></body></html>
     }

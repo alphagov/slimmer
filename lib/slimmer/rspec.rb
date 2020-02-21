@@ -1,4 +1,4 @@
-require 'rspec/core'
+require "rspec/core"
 
-require 'slimmer'
-require 'slimmer/test'
+require "slimmer"
+require "slimmer/test"

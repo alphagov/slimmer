@@ -1,5 +1,5 @@
-require 'rest_client'
-require 'slimmer/govuk_request_id'
+require "rest_client"
+require "slimmer/govuk_request_id"
 
 module Slimmer
   class Skin
@@ -10,7 +10,7 @@ module Slimmer
       @asset_host = options[:asset_host]
 
       @logger = options[:logger] || NullLogger.instance
-      @strict = options[:strict] || %w{development test}.include?(ENV['RACK_ENV'])
+      @strict = options[:strict] || %w{development test}.include?(ENV["RACK_ENV"])
     end
 
     def template(template_name)
@@ -30,7 +30,7 @@ module Slimmer
 
     def template_url(template_name)
       host = asset_host.dup
-      host += '/' unless host =~ /\/$/
+      host += "/" unless host =~ /\/$/
       "#{host}templates/#{template_name}.html.erb"
     end
 
@@ -59,7 +59,7 @@ module Slimmer
       lines = [""] + html.split("\n")
       from = [1, error.line - context_size].max
       to = [lines.size - 1, error.line + context_size].min
-      context = (from..to).zip(lines[from..to]).map { |lineno, line| "%4d: %s" % [lineno, line] } # rubocop:disable Style/FormatStringToken
+      context = (from..to).zip(lines[from..to]).map { |lineno, line| "%4d: %s" % [lineno, line] }
       marker = " " * (error.column - 1) + "-----v"
       context.insert(context_size, marker)
       context.join("\n")
@@ -92,7 +92,7 @@ module Slimmer
     end
 
     def success(source_request, response, body)
-      wrapper_id = options[:wrapper_id] || 'wrapper'
+      wrapper_id = options[:wrapper_id] || "wrapper"
 
       processors = [
         Processors::TitleInserter.new,
@@ -109,13 +109,13 @@ module Slimmer
         Processors::SearchRemover.new(response.headers),
       ]
 
-      template_name = response.headers[Headers::TEMPLATE_HEADER] || 'core_layout'
+      template_name = response.headers[Headers::TEMPLATE_HEADER] || "core_layout"
       process(processors, body, template(template_name), source_request.env)
     end
 
     def error(template_name, body, rack_env)
       processors = [
-        Processors::TitleInserter.new
+        Processors::TitleInserter.new,
       ]
       process(processors, body, template(template_name), rack_env)
     end

@@ -1,4 +1,4 @@
-require 'slimmer/govuk_request_id'
+require "slimmer/govuk_request_id"
 
 module Slimmer
   class App
@@ -10,15 +10,11 @@ module Slimmer
 
       logger = options[:logger] || NullLogger.instance
       self.logger = logger
-      begin
-        if logger.level.zero? # Log set to debug level
-          unless options[:enable_debugging]
-            self.logger = logger.dup
-            self.logger.level = 1 # info
-          end
+      if logger&.level&.zero? # Log set to debug level
+        unless options[:enable_debugging]
+          self.logger = logger.dup
+          self.logger.level = 1 # info
         end
-      rescue NoMethodError # rubocop:disable Lint/HandleExceptions
-        # In case logger doesn't respond_to? :level
       end
 
       if options.key? :template_path
@@ -56,11 +52,11 @@ module Slimmer
     end
 
     def in_development?
-      ENV['RAILS_ENV'] == 'development'
+      ENV["RAILS_ENV"] == "development"
     end
 
     def skip_slimmer_param?(env)
-      skip = Rack::Request.new(env).params['skip_slimmer']
+      skip = Rack::Request.new(env).params["skip_slimmer"]
       skip && skip.to_i.positive?
     end
 
@@ -86,24 +82,24 @@ module Slimmer
       request = Rack::Request.new(env)
 
       # Store the request id so it can be passed on with any template requests
-      GovukRequestId.value = env['HTTP_GOVUK_REQUEST_ID']
+      GovukRequestId.value = env["HTTP_GOVUK_REQUEST_ID"]
 
       rewritten_body = case response.status
                        when 200
                          @skin.success request, response, s(response.body)
                        when 403
-                         @skin.error '403', s(response.body), request.env
+                         @skin.error "403", s(response.body), request.env
                        when 404
-                         @skin.error '404', s(response.body), request.env
+                         @skin.error "404", s(response.body), request.env
                        when 410
-                         @skin.error '410', s(response.body), request.env
+                         @skin.error "410", s(response.body), request.env
                        else
-                         @skin.error '500', s(response.body), request.env
+                         @skin.error "500", s(response.body), request.env
                        end
 
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
       response.body = rewritten_body
-      response.headers['Content-Length'] = content_length(response.body)
+      response.headers["Content-Length"] = content_length(response.body)
 
       response.finish
     end

@@ -1,3 +1,3 @@
-require 'cucumber'
+require "cucumber"
 
-require 'slimmer/test'
+require "slimmer/test"

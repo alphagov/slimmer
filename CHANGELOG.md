@@ -4,6 +4,7 @@
   `module_parent_name`. `parent_name` is deprecated and will be removed in
   Rails 6.1. (#237)
 * Migrate from govuk-lint to rubocop-govuk (#237)
+* Fix linting issues (#237)
 
 # 13.2.0
 

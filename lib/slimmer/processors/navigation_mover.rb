@@ -9,16 +9,16 @@ class Slimmer::Processors::NavigationMover
     if proposition_header && global_header
       proposition_header.remove
 
-      global_header['class'] = [global_header['class'], 'with-proposition'].compact.join(' ')
+      global_header["class"] = [global_header["class"], "with-proposition"].compact.join(" ")
 
       header_block = Nokogiri::HTML.fragment(proposition_header_block)
-      header_block.at_css('.content') << proposition_header
+      header_block.at_css(".content") << proposition_header
 
-      global_header.at_css('.header-wrapper') << header_block
+      global_header.at_css(".header-wrapper") << header_block
     end
   end
 
   def proposition_header_block
-    @proposition_header_block ||= @skin.template('proposition_menu')
+    @proposition_header_block ||= @skin.template("proposition_menu")
   end
 end

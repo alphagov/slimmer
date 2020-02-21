@@ -1,26 +1,25 @@
 #! /usr/bin/env ruby
 
-require 'optparse'
-require 'slimmer'
-require 'logger'
+require "optparse"
+require "slimmer"
+require "logger"
 
 options = {}
-OptionParser.new do |opts|
-  opts.on '-t', '--template=TEMPLATE',
-    'Template to render' do |v|
+option_parser = OptionParser.new do |opts|
+  opts.on "-t", "--template=TEMPLATE", "Template to render" do |v|
     options[:template] = v
   end
 
-  opts.on '-h', '--asset-host=HOST',
-    'Host that serves assets used in the template' do |v|
+  opts.on "-h", "--asset-host=HOST", "Host that serves assets used in the template" do |v|
     options[:asset_host] = v
   end
 
-  opts.on '-o', '--output-file=FILE',
-    'File to write static error page to' do |v|
+  opts.on "-o", "--output-file=FILE", "File to write static error page to" do |v|
     options[:file] = v
   end
-end.parse!
+end
+
+option_parser.parse!
 
 raise "Please specify a template" unless options[:template]
 raise "Please specify an asset host" unless options[:asset_host]
@@ -28,13 +27,13 @@ raise "Please specify an output file" unless options[:file]
 
 logger = Logger.new STDOUT
 logger.level = Logger::DEBUG
-skin = Slimmer::Skin.new options[:asset_host], false, :logger => logger
+skin = Slimmer::Skin.new options[:asset_host], false, logger: logger
 static_error = skin.error nil, options[:template], Nokogiri::HTML("").to_html
 
-if options[:file] == '-'
+if options[:file] == "-"
   STDOUT.print static_error
 else
-  File.open options[:file], 'w' do |f|
+  File.open options[:file], "w" do |f|
     f.print static_error
   end
 end
