@@ -5,6 +5,10 @@
   Rails 6.1. (#237)
 * Migrate from govuk-lint to rubocop-govuk (#237)
 * Fix linting issues (#237)
+* Fix deprecation warning: Mocha deprecation warning at
+  /my/local/path/to/test/test_helper.rb:6:in 'require': Require
+  'mocha/test_unit', 'mocha/minitest' or 'mocha/api' instead of 'mocha/setup'.
+  (#237)
 
 # 13.2.0
 

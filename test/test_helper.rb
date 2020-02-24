@@ -3,7 +3,7 @@ require "minitest/autorun"
 require "rack/test"
 require "json"
 require "logger"
-require "mocha/setup"
+require "mocha/minitest"
 require "timecop"
 
 MiniTest::Test.class_eval do
