@@ -1,3 +1,9 @@
+# Unreleased
+
+* Fix deprecation warning: `Module#parent_name` has been renamed to
+  `module_parent_name`. `parent_name` is deprecated and will be removed in
+  Rails 6.1. (#237)
+
 # 13.2.0
 
 * Upgrade Ruby version to 2.6.5. (#234)
