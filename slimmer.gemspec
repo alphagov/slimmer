@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha', '~> 1.1'
   s.add_development_dependency 'webmock', '3.5.0'
   s.add_development_dependency 'timecop', '~> 0.5.1'
-  s.add_development_dependency 'govuk-lint', '~> 3.11.5'
+  s.add_development_dependency 'rubocop-govuk', '~> 2.0.0'
   s.files = Dir[
     'README.md',
     'CHANGELOG.md',
