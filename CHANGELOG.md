@@ -4,6 +4,7 @@
   `module_parent_name`. `parent_name` is deprecated and will be removed in
   Rails 6.1. (#237)
 * Migrate from govuk-lint to rubocop-govuk (#237)
+* Remove lint rake task (#237)
 * Fix linting issues (#237)
 * Fix deprecation warning: Mocha deprecation warning at
   /my/local/path/to/test/test_helper.rb:6:in 'require': Require

@@ -21,4 +21,4 @@ test 4.2.x 2.3
 test 4.2.x 2.2
 
 bundle install --path "${HOME}/bundles/${JOB_NAME}"
-bundle exec rake lint
+bundle exec rubocop --format clang
