@@ -1,4 +1,4 @@
-# Unreleased
+# 13.2.1
 
 * Fix deprecation warning: `Module#parent_name` has been renamed to
   `module_parent_name`. `parent_name` is deprecated and will be removed in
