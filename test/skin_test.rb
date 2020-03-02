@@ -1,15 +1,14 @@
 require_relative "test_helper"
 
 describe Slimmer::Skin do
-
   describe "loading templates" do
     it "should be able to load the template" do
       skin = Slimmer::Skin.new asset_host: "http://example.local/"
 
       expected_url = "http://example.local/templates/example.html.erb"
-      stub_request(:get, expected_url).to_return :body => "<foo />"
+      stub_request(:get, expected_url).to_return body: "<foo />"
 
-      template = skin.template 'example'
+      template = skin.template "example"
 
       assert_requested :get, expected_url
       assert_equal "<foo />", template
@@ -20,13 +19,13 @@ describe Slimmer::Skin do
         @skin = Slimmer::Skin.new asset_host: "http://example.local/"
 
         @expected_url = "http://example.local/templates/example.html.erb"
-        stub_request(:get, @expected_url).to_return :body => "<foo />"
+        stub_request(:get, @expected_url).to_return body: "<foo />"
 
-        Slimmer::GovukRequestId.value = '12345'
-        template = @skin.template('example')
+        Slimmer::GovukRequestId.value = "12345"
+        template = @skin.template("example")
 
         assert_requested :get, @expected_url do |request|
-          request.headers['Govuk-Request-Id'] == '12345'
+          request.headers["Govuk-Request-Id"] == "12345"
         end
         assert_equal "<foo />", template
       end
@@ -36,10 +35,10 @@ describe Slimmer::Skin do
       skin = Slimmer::Skin.new asset_host: "http://example.local/"
 
       expected_url = "http://example.local/templates/example.html.erb"
-      stub_request(:get, expected_url).to_return(:status => '404')
+      stub_request(:get, expected_url).to_return(status: "404")
 
       assert_raises(Slimmer::TemplateNotFoundException) do
-        skin.template 'example'
+        skin.template "example"
       end
     end
 
@@ -50,7 +49,7 @@ describe Slimmer::Skin do
       stub_request(:get, expected_url).to_raise(Errno::ECONNREFUSED)
 
       assert_raises(Slimmer::CouldNotRetrieveTemplate) do
-        skin.template 'example'
+        skin.template "example"
       end
     end
 
@@ -61,7 +60,7 @@ describe Slimmer::Skin do
       stub_request(:get, expected_url).to_raise(SocketError)
 
       assert_raises(Slimmer::CouldNotRetrieveTemplate) do
-        skin.template 'example'
+        skin.template "example"
       end
     end
 
@@ -72,7 +71,7 @@ describe Slimmer::Skin do
       stub_request(:get, expected_url).to_raise(OpenSSL::SSL::SSLError)
 
       assert_raises(Slimmer::CouldNotRetrieveTemplate) do
-        skin.template 'example'
+        skin.template "example"
       end
     end
   end

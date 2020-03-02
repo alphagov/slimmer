@@ -56,7 +56,6 @@ class TagMoverTest < MiniTest::Test
     assert @template.to_s.index("foo.js") > @template.to_s.index("existing.js"), "Expected foo.js to be after existing.js"
   end
 
-
   def test_should_move_link_tags_into_the_head
     assert_in @template, "link[href='http://www.example.com/foo.css']", nil, "Should have moved the link tag with href 'http://www.example.com/foo.css'"
   end
@@ -68,7 +67,6 @@ class TagMoverTest < MiniTest::Test
   def test_should_ignore_link_tags_already_in_the_destination_with_the_same_href
     assert @template.css("link[href='http://www.example.com/duplicate.css']").length == 1, "Expected there to only be one link tag with href 'http://www.example.com/duplicate.css'"
   end
-
 
   def test_should_move_meta_tags_into_the_head
     assert_in @template, "meta[name='foo'][content='bar']", nil, "Should have moved the foo=bar meta tag"

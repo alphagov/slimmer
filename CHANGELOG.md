@@ -1,3 +1,16 @@
+# Unreleased
+
+* Fix deprecation warning: `Module#parent_name` has been renamed to
+  `module_parent_name`. `parent_name` is deprecated and will be removed in
+  Rails 6.1. (#237)
+* Migrate from govuk-lint to rubocop-govuk (#237)
+* Remove lint rake task (#237)
+* Fix linting issues (#237)
+* Fix deprecation warning: Mocha deprecation warning at
+  /my/local/path/to/test/test_helper.rb:6:in 'require': Require
+  'mocha/test_unit', 'mocha/minitest' or 'mocha/api' instead of 'mocha/setup'.
+  (#237)
+
 # 13.2.0
 
 * Upgrade Ruby version to 2.6.5. (#234)

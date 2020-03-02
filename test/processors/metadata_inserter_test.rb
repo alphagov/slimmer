@@ -1,8 +1,7 @@
 require_relative "../test_helper"
 
 module MetadataInserterTest
-
-  GENERIC_DOCUMENT = <<-END
+  GENERIC_DOCUMENT = <<-HTML.freeze
     <html>
       <head>
         <title>The title of the page</title>
@@ -11,7 +10,7 @@ module MetadataInserterTest
         <div id="wrapper">The body of the page</div>
       </body>
     </html>
-  END
+  HTML
 
   module MetaTagAssertions
     def assert_meta_tag(name, content)
@@ -35,7 +34,7 @@ module MetadataInserterTest
         Slimmer::Headers::FORMAT_HEADER => "custard",
         Slimmer::Headers::RESULT_COUNT_HEADER => "3",
         Slimmer::Headers::ORGANISATIONS_HEADER => "<P1><D422>",
-        Slimmer::Headers::WORLD_LOCATIONS_HEADER => "<WL3>"
+        Slimmer::Headers::WORLD_LOCATIONS_HEADER => "<WL3>",
       }
 
       given_response 200, GENERIC_DOCUMENT, headers

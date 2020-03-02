@@ -1,8 +1,8 @@
 module Slimmer::Processors
   class BodyInserter
-    def initialize(source_id = 'wrapper', destination_id = 'wrapper')
-      @source_selector = '#' + source_id
-      @destination_selector = '#' + destination_id
+    def initialize(source_id = "wrapper", destination_id = "wrapper")
+      @source_selector = "#" + source_id
+      @destination_selector = "#" + destination_id
     end
 
     def filter(src, dest)

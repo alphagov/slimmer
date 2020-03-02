@@ -1,12 +1,12 @@
-require_relative '../test_helper'
+require_relative "../test_helper"
 
 class NavigationMoverTest < MiniTest::Test
   def setup
     super
-    @proposition_header_block = File.read( File.dirname(__FILE__) + "/../fixtures/proposition_menu.html.erb" )
-    @skin = stub("Skin", :template => @proposition_header_block)
+    @proposition_header_block = File.read(File.dirname(__FILE__) + "/../fixtures/proposition_menu.html.erb")
+    @skin = stub("Skin", template: @proposition_header_block)
   end
-  
+
   def test_should_add_proposition_menu
     source = as_nokogiri %{
       <html>
