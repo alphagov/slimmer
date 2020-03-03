@@ -27,11 +27,13 @@ Gem::Specification.new do |s| # rubocop:disable Metrics/BlockLength
   s.add_development_dependency "minitest", "~> 5.4"
   s.add_development_dependency "mocha", "~> 1.1"
   s.add_development_dependency "rack-test", "~> 0.6.1"
+  s.add_development_dependency "rails", "~> 6.0.2"
   s.add_development_dependency "rake", "~> 0.9.2.2"
   s.add_development_dependency "rubocop-govuk", "~> 2.0.0"
   s.add_development_dependency "timecop", "~> 0.5.1"
   s.add_development_dependency "webmock", "3.5.0"
   s.add_development_dependency "yard", "0.8.7.6"
+
   s.files = Dir[
     "README.md",
     "CHANGELOG.md",
