@@ -1,3 +1,7 @@
+# Unreleased
+
+* Fix bug where parent_name was called without app
+
 # 13.2.1
 
 * Fix deprecation warning: `Module#parent_name` has been renamed to
