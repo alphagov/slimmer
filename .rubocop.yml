@@ -1,4 +1,7 @@
-# .rubocop.yml
 inherit_gem:
   rubocop-govuk:
     - config/default.yml
+
+inherit_mode:
+  merge:
+    - Exclude
