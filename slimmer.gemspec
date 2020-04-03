@@ -5,7 +5,7 @@ $:.unshift lib unless $:.include?(lib)
 
 require "slimmer/version"
 
-Gem::Specification.new do |s| # rubocop:disable Metrics/BlockLength
+Gem::Specification.new do |s|
   s.name        = "slimmer"
   s.version     = Slimmer::VERSION
   s.platform    = Gem::Platform::RUBY
