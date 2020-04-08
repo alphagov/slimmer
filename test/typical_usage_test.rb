@@ -295,6 +295,27 @@ module TypicalUsage
     end
   end
 
+  class IgnoreErrorTest < SlimmerIntegrationTest
+    given_response 422, %{
+      <html>
+      <head><title>422 Session expired</title>
+      <meta name="something" content="yes">
+      <script src="blah.js"></script>
+      <link href="app.css" rel="stylesheet" type="text/css">
+      </head>
+      <body class="body_class">
+      <div id="wrapper"><p class='message'>Your session expired</p></div>
+      </body>
+      </html>
+      <html>
+    }, "X-Slimmer-Ignore-Error" => "true"
+
+
+    def test_should_include_the_existing_error_message
+      assert_rendered_in_template "p.message", /^Your session expired/
+    end
+  end
+
   class ArbitraryWrapperIdTest < SlimmerIntegrationTest
     given_response 200, %{
       <html>
