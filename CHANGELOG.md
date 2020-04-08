@@ -1,3 +1,7 @@
+# 13.3.0
+
+* Add X-Slimmer-Ignore-Error header flag to prevent overriding non-200 status responses
+
 # 13.2.2
 
 * Fix bug where parent_name was called without app
