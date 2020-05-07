@@ -82,15 +82,7 @@ class SlimmerIntegrationTest < MiniTest::Test
       end
     end
 
-    template_name = case code
-                    when 200 then "core_layout"
-                    when 404 then "404"
-                    when 410 then "410"
-                    else          "500"
-                    end
-
-    use_template(template_name)
-
+    use_template("core_layout") if code == 200
     fetch_page
   end
 

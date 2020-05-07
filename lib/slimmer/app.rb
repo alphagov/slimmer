@@ -80,24 +80,14 @@ module Slimmer
 
     def rewrite_response(env, response)
       request = Rack::Request.new(env)
+      return response.finish unless response.status == 200
 
       # Store the request id so it can be passed on with any template requests
       GovukRequestId.value = env["HTTP_GOVUK_REQUEST_ID"]
 
-      rewritten_body = case response.status
-                       when 200
-                         @skin.success request, response, s(response.body)
-                       when 403
-                         @skin.error "403", s(response.body), request.env
-                       when 404
-                         @skin.error "404", s(response.body), request.env
-                       when 410
-                         @skin.error "410", s(response.body), request.env
-                       else
-                         @skin.error "500", s(response.body), request.env
-                       end
-
+      rewritten_body = @skin.success request, response, s(response.body)
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
+
       response.body = rewritten_body
       response.headers["Content-Length"] = content_length(response.body)
 
