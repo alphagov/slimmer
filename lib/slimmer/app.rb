@@ -64,10 +64,6 @@ module Slimmer
       !!response.headers[Headers::SKIP_HEADER]
     end
 
-    def ignore_error_header?(response)
-      !!response.headers[Headers::IGNORE_ERROR_HEADER]
-    end
-
     def s(body)
       return body.to_s unless body.respond_to?(:each)
 
@@ -88,30 +84,24 @@ module Slimmer
       # Store the request id so it can be passed on with any template requests
       GovukRequestId.value = env["HTTP_GOVUK_REQUEST_ID"]
 
-      body = rewritten_body(request, response)
+      rewritten_body = case response.status
+                       when 200
+                         @skin.success request, response, s(response.body)
+                       when 403
+                         @skin.error "403", s(response.body), request.env
+                       when 404
+                         @skin.error "404", s(response.body), request.env
+                       when 410
+                         @skin.error "410", s(response.body), request.env
+                       else
+                         @skin.error "500", s(response.body), request.env
+                       end
 
-      body = [body] unless body.respond_to?(:each)
-      response.body = body
+      rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
+      response.body = rewritten_body
       response.headers["Content-Length"] = content_length(response.body)
 
       response.finish
-    end
-
-    def rewritten_body(request, response)
-      return @skin.success request, response, s(response.body) if ignore_error_header?(response)
-
-      case response.status
-      when 200
-        @skin.success request, response, s(response.body)
-      when 403
-        @skin.error "403", s(response.body), request.env
-      when 404
-        @skin.error "404", s(response.body), request.env
-      when 410
-        @skin.error "410", s(response.body), request.env
-      else
-        @skin.error "500", s(response.body), request.env
-      end
     end
 
     def strip_slimmer_headers(headers)
