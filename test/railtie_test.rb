@@ -7,29 +7,36 @@ describe Slimmer::Railtie do
   after { ENV["GOVUK_APP_NAME"] = nil }
 
   it "gets the app name from env when the app name is set in the environment" do
-    # set the app name in the environment
     ENV["GOVUK_APP_NAME"] = "TestApp1"
-    # run app using slimmer initializer
+
     Slimmer::Railtie.initializers.first.run(app1)
 
-    # check that slimmer initializer sets the correct app name in config from environment
-    assert_equal app1.middleware.use.first, [:use, [Slimmer::App, { app_name: "TestApp1" }], nil]
+    middleware = MiniTest::Mock.new
+    middleware.expect :use, nil, [Slimmer::App, { app_name: "TestApp1" }]
+
+    # The 'use' method is meant to be a setter, but happens to return the underlying array of
+    # lambda proxies, of which we're assuming the first one is Slimmer::App. Each lambda proxy
+    # takes a 'real' middleware and repeats the same call to 'use' on it. We should avoid using
+    # this pattern in other tests, and investigate some other way to test our config.
+    app1.middleware.use.first.call(middleware)
   end
 
   it "gets the app name from module_parent_name when the app name is not set in the environment" do
-    # make sure environment does not contain app name
     ENV["GOVUK_APP_NAME"] = nil
 
-    # set mock to return app name
     klass = MiniTest::Mock.new
     klass.expect :module_parent_name, "TestApp2"
 
-    # run the test stubbing out the app name
+    middleware = MiniTest::Mock.new
+    middleware.expect :use, nil, [Slimmer::App, { app_name: "TestApp2" }]
+
     TestApp2::Application.stub :class, klass do
-      # run app using slimmer initializer
       Slimmer::Railtie.initializers.first.run(app2)
-      # check that slimmer initializer sets the correct app name in config from the app parent_name
-      assert_equal app2.middleware.use.first, [:use, [Slimmer::App, { app_name: "TestApp2" }], nil]
+      # The 'use' method is meant to be a setter, but happens to return the underlying array of
+      # lambda proxies, of which we're assuming the first one is Slimmer::App. Each lambda proxy
+      # takes a 'real' middleware and repeats the same call to 'use' on it. We should avoid using
+      # this pattern in other tests, and investigate some other way to test our config.
+      app2.middleware.use.first.call(middleware)
     end
   end
 end

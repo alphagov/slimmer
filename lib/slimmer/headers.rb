@@ -20,7 +20,6 @@ module Slimmer
       skip:                 "Skip",
       template:             "Template",
       remove_search:        "Remove-Search",
-      ignore_error:         "Ignore-Error",
     }.freeze
 
     # @private
@@ -56,15 +55,10 @@ module Slimmer
     # @private
     REMOVE_SEARCH_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_search]}".freeze
 
-    # @private
-    IGNORE_ERROR_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:ignore_error]}".freeze
-
-
     # Set the "slimmer headers" to configure the page
     #
     # @param hash [Hash] the options
     # @option hash [String] application_name
-    # @option hash [String] ignore_error
     # @option hash [String] format
     # @option hash [String] organisations
     # @option hash [String] page_owner
