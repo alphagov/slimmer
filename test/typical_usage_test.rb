@@ -201,43 +201,8 @@ module TypicalUsage
       </html>
     }
 
-    def test_should_not_replace_the_wrapper_using_the_app_response
-      assert_not_rendered_in_template "Something bad happened"
-    end
-
-    def test_should_include_default_500_error_message
-      assert_rendered_in_template "body .content header h1", "We seem to be having a problem."
-    end
-
-    def test_should_replace_the_title_using_the_app_response
+    def test_should_return_the_response_unchanged
       assert_rendered_in_template "head title", "500 Error"
-    end
-  end
-
-  class Error404ResponseTest < SlimmerIntegrationTest
-    given_response 404, %{
-      <html>
-      <head><title>404 Missing</title>
-      <meta name="something" content="yes">
-      <script src="blah.js"></script>
-      <link href="app.css" rel="stylesheet" type="text/css">
-      </head>
-      <body class="body_class">
-      <div id="wrapper"><p class='message'>Something bad happened</p></div>
-      </body>
-      </html>
-    }
-
-    def test_should_not_replace_the_wrapper_using_the_app_response
-      assert_not_rendered_in_template "Something bad happened"
-    end
-
-    def test_should_include_default_404_error_message
-      assert_rendered_in_template "body .content header h1", "Oops! We can't find what you're looking for."
-    end
-
-    def test_should_replace_the_title_using_the_app_response
-      assert_rendered_in_template "head title", "404 Missing"
     end
   end
 
@@ -255,15 +220,7 @@ module TypicalUsage
       </html>
     }
 
-    def test_should_not_replace_the_wrapper_using_the_app_response
-      assert_not_rendered_in_template "Something bad happened"
-    end
-
-    def test_should_include_default_non_404_error_message
-      assert_rendered_in_template "body .content header h1", "We seem to be having a problem."
-    end
-
-    def test_should_replace_the_title_using_the_app_response
+    def test_should_return_the_response_unchanged
       assert_rendered_in_template "head title", "406 Not Acceptable"
     end
   end
@@ -282,15 +239,7 @@ module TypicalUsage
       </html>
     }
 
-    def test_should_not_replace_the_wrapper_using_the_app_response
-      assert_not_rendered_in_template "Something bad happened"
-    end
-
-    def test_should_include_default_410_error_message
-      assert_rendered_in_template "body .content header h1", "That's gone now, sorry."
-    end
-
-    def test_should_replace_the_title_using_the_app_response
+    def test_should_return_the_response_unchanged
       assert_rendered_in_template "head title", "410 Gone"
     end
   end

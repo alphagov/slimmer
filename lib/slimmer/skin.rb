@@ -112,12 +112,5 @@ module Slimmer
       template_name = response.headers[Headers::TEMPLATE_HEADER] || "core_layout"
       process(processors, body, template(template_name), source_request.env)
     end
-
-    def error(template_name, body, rack_env)
-      processors = [
-        Processors::TitleInserter.new,
-      ]
-      process(processors, body, template(template_name), rack_env)
-    end
   end
 end
