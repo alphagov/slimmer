@@ -1,3 +1,7 @@
+# 14.0.0
+
+* Remove handling of non-200 responses (#245)
+
 # 13.4.0
 
 * Revert X-Slimmer-Ignore-Error header (#246)
