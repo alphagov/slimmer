@@ -1,5 +1,8 @@
 # Unreleased
 
+* BREAKING: Test templates no longer embed links to production JavaScript files,
+  apps should provide their own dependencies.
+
 # 13.1.0
 
 * Add `js-enabled` to body tag of test templates. (#226)
