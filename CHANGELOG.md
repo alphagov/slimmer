@@ -1,3 +1,8 @@
+# Unreleased
+
+* BREAKING: Test templates no longer embed links to production JavaScript files,
+  apps should provide their own dependencies.
+
 # 14.0.0
 
 * Remove handling of non-200 responses (#245)
