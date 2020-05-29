@@ -3,7 +3,7 @@ require_relative "../test_helper"
 class SearchRemoverTest < MiniTest::Test
   def setup
     super
-    @template = as_nokogiri %{
+    @template = as_nokogiri %(
       <html>
         <head>
         </head>
@@ -15,7 +15,7 @@ class SearchRemoverTest < MiniTest::Test
           <div id='search'></div>
         </body>
       </html>
-    }
+    )
   end
 
   def test_should_remove_search_from_template_if_header_is_set

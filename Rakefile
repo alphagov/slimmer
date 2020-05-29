@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 require "bundler/gem_tasks"
 require "rdoc/task"
 require "rake/testtask"

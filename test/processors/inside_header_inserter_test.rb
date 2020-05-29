@@ -2,7 +2,7 @@ require_relative "../test_helper"
 
 class InsideHeaderInserterTest < MiniTest::Test
   def test_should_insert_into_header
-    source = as_nokogiri %{
+    source = as_nokogiri %(
       <html>
         <body>
           <div class="slimmer-inside-header">
@@ -10,8 +10,8 @@ class InsideHeaderInserterTest < MiniTest::Test
           </div>
         </body>
       </html>
-    }
-    template = as_nokogiri %{
+    )
+    template = as_nokogiri %(
       <html>
         <body>
           <div class="header-global">
@@ -23,7 +23,7 @@ class InsideHeaderInserterTest < MiniTest::Test
           </div>
         </body>
       </html>
-    }
+    )
 
     Slimmer::Processors::InsideHeaderInserter.new.filter(source, template)
 
@@ -36,7 +36,7 @@ class InsideHeaderInserterTest < MiniTest::Test
   end
 
   def test_should_fail_gracefully_if_logo_not_present
-    source = as_nokogiri %{
+    source = as_nokogiri %(
       <html>
         <body>
           <div class="slimmer-inside-header">
@@ -44,12 +44,12 @@ class InsideHeaderInserterTest < MiniTest::Test
           </div>
         </body>
       </html>
-    }
-    template = as_nokogiri %{
+    )
+    template = as_nokogiri %(
       <html>
         <body></body>
       </html>
-    }
+    )
 
     # No exception should be thrown
     Slimmer::Processors::InsideHeaderInserter.new.filter(source, template)

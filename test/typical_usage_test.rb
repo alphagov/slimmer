@@ -2,7 +2,7 @@ require_relative "test_helper"
 
 module TypicalUsage
   class SkippingSlimmerTest < SlimmerIntegrationTest
-    given_response 200, %{Don't template me}, "X-Slimmer-Skip" => "true"
+    given_response 200, %(Don't template me), "X-Slimmer-Skip" => "true"
 
     def test_should_return_the_response_as_is
       assert_equal "Don't template me", last_response.body
@@ -10,7 +10,7 @@ module TypicalUsage
   end
 
   class SkipUsingQueryParamTest < SlimmerIntegrationTest
-    given_response 200, %{<html><body><div id='unskinned'>Unskinned</div><div id="wrapper">Don't template me</div></body></html>}, {}
+    given_response 200, %(<html><body><div id='unskinned'>Unskinned</div><div id="wrapper">Don't template me</div></body></html>), {}
 
     def fetch_page; end
 
@@ -67,7 +67,7 @@ module TypicalUsage
   end
 
   class ContentLengthTest < SlimmerIntegrationTest
-    given_response 200, %{
+    given_response 200, %(
       <html>
       <head><title>The title of the page</title>
       <meta name="something" content="yes">
@@ -78,7 +78,7 @@ module TypicalUsage
       <div id="wrapper">The body of the page</div>
       </body>
       </html>
-    }
+    )
 
     def test_should_set_correct_content_length_header
       expected = last_response.body.bytesize
@@ -89,7 +89,7 @@ module TypicalUsage
   class NormalResponseTest < SlimmerIntegrationTest
     def setup
       super
-      given_response 200, %{
+      given_response 200, %(
         <html>
         <head><title>The title of the page</title>
         <meta name="something" content="yes">
@@ -100,7 +100,7 @@ module TypicalUsage
         <div id="wrapper">The body of the page</div>
         </body>
         </html>
-      }, {}
+      ), {}
     end
 
     def test_should_replace_the_wrapper_using_the_app_response
@@ -129,14 +129,14 @@ module TypicalUsage
   end
 
   class ConditionalCommentTest < SlimmerIntegrationTest
-    given_response 200, %{
+    given_response 200, %(
       <html>
       <head><title>The title of the page</title>
       <!--[if lt IE 9]><link href="app-ie.css" rel="stylesheet" type="text/css"><![endif]-->
       </head>
       <body class="body_class"><div id="wrapper"></div></body>
       </html>
-    }
+    )
     def test_should_find_conditional_comments_copied_into_the_head
       element = Nokogiri::HTML.parse(last_response.body).at_xpath("//comment()")
       assert_match(
@@ -148,14 +148,14 @@ module TypicalUsage
   end
 
   class WrapTagTest < SlimmerIntegrationTest
-    given_response 200, %{
+    given_response 200, %(
       <html>
       <head>
       <!--[if gt IE 8]><!--><link href="app.css" rel="stylesheet" type="text/css"><!--<![endif]-->
       </head>
       <body class="body_class"><div id="wrapper"></div></body>
       </html>
-    }
+    )
     def test_should_find_stylesheet_wrapped_with_conditional_comments
       assert_rendered_in_template "head link[href='app.css']"
       element = Nokogiri::HTML.parse(last_response.body).at_xpath("/html/head")
@@ -168,7 +168,7 @@ module TypicalUsage
   end
 
   class HeaderContextResponseTest < SlimmerIntegrationTest
-    given_response 200, %{
+    given_response 200, %(
       <html>
       <head><title>The title of the page</title>
       <meta name="something" content="yes">
@@ -180,7 +180,7 @@ module TypicalUsage
       <div id="wrapper">The body of the page</div>
       </body>
       </html>
-    }
+    )
 
     def test_should_replace_the_header_context_using_the_app_response
       assert_rendered_in_template ".header-context.custom-class", "app-specific header context"
@@ -188,7 +188,7 @@ module TypicalUsage
   end
 
   class Error500ResponseTest < SlimmerIntegrationTest
-    given_response 500, %{
+    given_response 500, %(
       <html>
       <head><title>500 Error</title>
       <meta name="something" content="yes">
@@ -199,7 +199,7 @@ module TypicalUsage
       <div id="wrapper"><p class='message'>Something bad happened</p></div>
       </body>
       </html>
-    }
+    )
 
     def test_should_return_the_response_unchanged
       assert_rendered_in_template "head title", "500 Error"
@@ -207,7 +207,7 @@ module TypicalUsage
   end
 
   class Error406ResponseTest < SlimmerIntegrationTest
-    given_response 406, %{
+    given_response 406, %(
       <html>
       <head><title>406 Not Acceptable</title>
       <meta name="something" content="yes">
@@ -218,7 +218,7 @@ module TypicalUsage
       <div id="wrapper"><p class='message'>Something bad happened</p></div>
       </body>
       </html>
-    }
+    )
 
     def test_should_return_the_response_unchanged
       assert_rendered_in_template "head title", "406 Not Acceptable"
@@ -226,7 +226,7 @@ module TypicalUsage
   end
 
   class Error410ResponseTest < SlimmerIntegrationTest
-    given_response 410, %{
+    given_response 410, %(
       <html>
       <head><title>410 Gone</title>
       <meta name="something" content="yes">
@@ -237,7 +237,7 @@ module TypicalUsage
       <div id="wrapper"><p class='message'>Something bad happened</p></div>
       </body>
       </html>
-    }
+    )
 
     def test_should_return_the_response_unchanged
       assert_rendered_in_template "head title", "410 Gone"
@@ -245,13 +245,13 @@ module TypicalUsage
   end
 
   class ArbitraryWrapperIdTest < SlimmerIntegrationTest
-    given_response 200, %{
+    given_response 200, %(
       <html>
       <body>
       <div id="custom_wrapper">The body of the page</div>
       </body>
       </html>
-    }, {}, wrapper_id: "custom_wrapper"
+    ), {}, wrapper_id: "custom_wrapper"
 
     def test_should_replace_wrapper_with_custom_wrapper
       assert_rendered_in_template "body #custom_wrapper", /^The body of the page/
@@ -263,45 +263,41 @@ module TypicalUsage
     def test_should_strip_all_slimmer_headers_from_final_response
       given_response(
         200,
-        %{
+        %(
           <html>
           <body>
           <div id="wrapper">The body of the page</div>
           </body>
           </html>
-        },
-        # rubocop:disable Style/BracesAroundHashParameters
+        ),
         {
           "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
           "X-Custom-Header" => "Something else",
-        }
-        # rubocop:enable Style/BracesAroundHashParameters
+        },
       )
 
-      refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
+      refute last_response.headers.key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end
 
     def test_should_strip_slimmer_headers_even_when_skipping_slimmer
       given_response(
         200,
-        %{
+        %(
           <html>
           <body>
           <div id="wrapper">The body of the page</div>
           </body>
           </html>
-        },
-        # rubocop:disable Style/BracesAroundHashParameters
+        ),
         {
           "#{Slimmer::Headers::HEADER_PREFIX}-Foo" => "Something",
           "X-Custom-Header" => "Something else",
           Slimmer::Headers::SKIP_HEADER => "1",
-        }
-        # rubocop:enable Style/BracesAroundHashParameters
+        },
       )
 
-      refute last_response.headers.has_key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
+      refute last_response.headers.key?("#{Slimmer::Headers::HEADER_PREFIX}-Foo")
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end
   end

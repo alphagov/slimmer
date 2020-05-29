@@ -8,21 +8,21 @@ class NavigationMoverTest < MiniTest::Test
   end
 
   def test_should_add_proposition_menu
-    source = as_nokogiri %{
+    source = as_nokogiri %(
       <html>
         <body>
           <div id="proposition-menu"></div>
         </body>
       </html>
-    }
-    template = as_nokogiri %{
+    )
+    template = as_nokogiri %(
       <html>
         <body>
           <div id="global-header"><div class="header-wrapper"></div></div>
           <div id="wrapper"></div>
         </body>
       </html>
-    }
+    )
 
     Slimmer::Processors::NavigationMover.new(@skin).filter(source, template)
     assert_in template, "div#global-header.with-proposition"
@@ -30,21 +30,21 @@ class NavigationMoverTest < MiniTest::Test
   end
 
   def test_should_not_add_proposition_menu_if_not_in_source
-    source = as_nokogiri %{
+    source = as_nokogiri %(
       <html>
         <body>
           <div id="wrapper"></div>
         </body>
       </html>
-    }
-    template = as_nokogiri %{
+    )
+    template = as_nokogiri %(
       <html>
         <body>
           <div id="global_header"><div class="header-wrapper"></div></div>
           <div id="wrapper"></div>
         </body>
       </html>
-    }
+    )
 
     @skin.expects(:template).never # Shouldn't fetch template when not inserting block
     Slimmer::Processors::NavigationMover.new(@skin).filter(source, template)

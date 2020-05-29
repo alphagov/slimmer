@@ -1,7 +1,5 @@
-# -*- encoding: utf-8 -*-
-
 lib = File.expand_path("lib", __dir__)
-$:.unshift lib unless $:.include?(lib)
+$LOAD_PATH.unshift lib unless $LOAD_PATH.include?(lib)
 
 require "slimmer/version"
 
@@ -29,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rack-test", "~> 0.6.1"
   s.add_development_dependency "rails", "~> 6.0.2"
   s.add_development_dependency "rake", "~> 0.9.2.2"
-  s.add_development_dependency "rubocop-govuk", "~> 2.0.0"
+  s.add_development_dependency "rubocop-govuk", "~> 3"
   s.add_development_dependency "timecop", "~> 0.5.1"
   s.add_development_dependency "webmock", "3.5.0"
   s.add_development_dependency "yard", "0.8.7.6"
