@@ -1,4 +1,4 @@
-# Unreleased
+# 15.0.0
 
 * BREAKING: Test templates no longer embed links to production JavaScript files,
   apps should provide their own dependencies.
