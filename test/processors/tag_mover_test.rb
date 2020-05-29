@@ -3,7 +3,7 @@ require_relative "../test_helper"
 class TagMoverTest < MiniTest::Test
   def setup
     super
-    @source = as_nokogiri %{
+    @source = as_nokogiri %(
       <html>
         <head>
           <link rel="stylesheet" href="http://www.example.com/foo.css" />
@@ -24,8 +24,8 @@ class TagMoverTest < MiniTest::Test
           <script src="http://www.example.com/duplicate.js"></script>
         </body>
       </html>
-    }
-    @template = as_nokogiri %{
+    )
+    @template = as_nokogiri %(
       <html>
         <head>
           <link rel="stylesheet" href="http://www.example.com/duplicate.css" />
@@ -40,7 +40,7 @@ class TagMoverTest < MiniTest::Test
           <script src="http://www.example.com/existing.js"></script>
         </body>
       </html>
-    }
+    )
     Slimmer::Processors::TagMover.new.filter(@source, @template)
   end
 
@@ -56,7 +56,6 @@ class TagMoverTest < MiniTest::Test
     assert @template.to_s.index("foo.js") > @template.to_s.index("existing.js"), "Expected foo.js to be after existing.js"
   end
 
-
   def test_should_move_link_tags_into_the_head
     assert_in @template, "link[href='http://www.example.com/foo.css']", nil, "Should have moved the link tag with href 'http://www.example.com/foo.css'"
   end
@@ -68,7 +67,6 @@ class TagMoverTest < MiniTest::Test
   def test_should_ignore_link_tags_already_in_the_destination_with_the_same_href
     assert @template.css("link[href='http://www.example.com/duplicate.css']").length == 1, "Expected there to only be one link tag with href 'http://www.example.com/duplicate.css'"
   end
-
 
   def test_should_move_meta_tags_into_the_head
     assert_in @template, "meta[name='foo'][content='bar']", nil, "Should have moved the foo=bar meta tag"

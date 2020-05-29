@@ -1,10 +1,10 @@
-require 'slimmer/govuk_request_id'
+require "slimmer/govuk_request_id"
 
 module Slimmer
   class App
     attr_accessor :logger
 
-    def initialize(app, *args, &block)
+    def initialize(app, *args)
       options = args.first || {}
       @app = app
 
@@ -38,7 +38,7 @@ module Slimmer
       if response_can_be_rewritten?(status, headers)
         response = Rack::Response.new(body, status, headers)
 
-        if !skip_slimmer?(env, response)
+        unless skip_slimmer?(env, response)
           status, headers, body = rewrite_response(env, response)
         end
       end
@@ -55,12 +55,12 @@ module Slimmer
     end
 
     def in_development?
-      ENV['RAILS_ENV'] == 'development'
+      ENV["RAILS_ENV"] == "development"
     end
 
     def skip_slimmer_param?(env)
-      skip = Rack::Request.new(env).params['skip_slimmer']
-      skip and skip.to_i > 0
+      skip = Rack::Request.new(env).params["skip_slimmer"]
+      skip && (skip.to_i > 0)
     end
 
     def skip_slimmer_header?(response)
@@ -69,8 +69,9 @@ module Slimmer
 
     def s(body)
       return body.to_s unless body.respond_to?(:each)
+
       b = ""
-      body.each {|a| b << a }
+      body.each { |a| b << a }
       b
     end
 
@@ -84,30 +85,30 @@ module Slimmer
       request = Rack::Request.new(env)
 
       # Store the request id so it can be passed on with any template requests
-      GovukRequestId.value = env['HTTP_GOVUK_REQUEST_ID']
+      GovukRequestId.value = env["HTTP_GOVUK_REQUEST_ID"]
 
       rewritten_body = case response.status
-      when 200
-        @skin.success request, response, s(response.body)
-      when 403
-        @skin.error '403', s(response.body), request.env
-      when 404
-        @skin.error '404', s(response.body), request.env
-      when 410
-        @skin.error '410', s(response.body), request.env
-      else
-        @skin.error '500', s(response.body), request.env
+                       when 200
+                         @skin.success request, response, s(response.body)
+                       when 403
+                         @skin.error "403", s(response.body), request.env
+                       when 404
+                         @skin.error "404", s(response.body), request.env
+                       when 410
+                         @skin.error "410", s(response.body), request.env
+                       else
+                         @skin.error "500", s(response.body), request.env
       end
 
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
       response.body = rewritten_body
-      response.headers['Content-Length'] = content_length(response.body)
+      response.headers["Content-Length"] = content_length(response.body)
 
       response.finish
     end
 
     def strip_slimmer_headers(headers)
-      headers.reject {|k, v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
+      headers.reject { |k, _v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
     end
   end
 end

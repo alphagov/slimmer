@@ -1,8 +1,7 @@
 require "test_helper"
 
 module SearchParameterInserterTest
-
-  DOCUMENT_WITH_SEARCH = <<-END
+  DOCUMENT_WITH_SEARCH = <<-END.freeze
     <html>
       <head>
       </head>
@@ -23,8 +22,8 @@ module SearchParameterInserterTest
     given_response 200, DOCUMENT_WITH_SEARCH, headers
 
     def test_should_add_hidden_input
-      hidden_inputs = Nokogiri::HTML.parse(last_response.body).css('#search input[type=hidden]')
-      assert_equal %{<input type="hidden" name="filter_organisations[]" value="land-registry"><input type="hidden" name="count" value="20">}, hidden_inputs.to_s
+      hidden_inputs = Nokogiri::HTML.parse(last_response.body).css("#search input[type=hidden]")
+      assert_equal %(<input type="hidden" name="filter_organisations[]" value="land-registry"><input type="hidden" name="count" value="20">), hidden_inputs.to_s
     end
   end
 
@@ -32,7 +31,7 @@ module SearchParameterInserterTest
     given_response 200, DOCUMENT_WITH_SEARCH, {}
 
     def test_should_leave_original_search_action
-      hidden_inputs = Nokogiri::HTML.parse(last_response.body).at_css('#search input[type=hidden]')
+      hidden_inputs = Nokogiri::HTML.parse(last_response.body).at_css("#search input[type=hidden]")
       assert_nil hidden_inputs
     end
   end

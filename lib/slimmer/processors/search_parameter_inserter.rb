@@ -1,4 +1,4 @@
-require 'json'
+require "json"
 
 module Slimmer::Processors
   class SearchParameterInserter
@@ -6,8 +6,8 @@ module Slimmer::Processors
       @response = response
     end
 
-    def filter(content_document, page_template)
-      search_form = page_template.at_css('form#search')
+    def filter(_content_document, page_template)
+      search_form = page_template.at_css("form#search")
       if search_parameters && search_form
         search_parameters.each_pair do |name, value|
           # Value can either be a string or an array of values
@@ -24,10 +24,10 @@ module Slimmer::Processors
     end
 
     def add_hidden_input(search_form, name, value)
-      element = Nokogiri::XML::Node.new('input', search_form)
-      element['type'] = 'hidden'
-      element['name'] = name
-      element['value'] = value.to_s
+      element = Nokogiri::XML::Node.new("input", search_form)
+      element["type"] = "hidden"
+      element["name"] = name
+      element["value"] = value.to_s
       search_form.add_child(element)
     end
 

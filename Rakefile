@@ -1,10 +1,8 @@
-# -*- encoding: utf-8 -*-
-
 require "bundler/gem_tasks"
 require "rdoc/task"
-require 'rake/testtask'
+require "rake/testtask"
 
-Dir.glob('lib/tasks/*.rake').each { |r| import r }
+Dir.glob("lib/tasks/*.rake").each { |r| import r }
 
 RDoc::Task.new do |rd|
   rd.rdoc_files.include("lib/**/*.rb")
@@ -18,4 +16,4 @@ Rake::TestTask.new("test") do |t|
   t.verbose = true
 end
 
-task :default => [:test, :lint]
+task default: %i[test lint]

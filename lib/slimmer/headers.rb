@@ -5,55 +5,55 @@ module Slimmer
     InvalidHeader = Class.new(RuntimeError)
 
     # @private
-    HEADER_PREFIX = "X-Slimmer"
+    HEADER_PREFIX = "X-Slimmer".freeze
 
     # @private
     SLIMMER_HEADER_MAPPING = {
-      application_name:     "Application-Name",
-      format:               "Format",
-      page_owner:           "Page-Owner",
-      organisations:        "Organisations",
-      world_locations:      "World-Locations",
-      result_count:         "Result-Count",
-      search_parameters:    "Search-Parameters",
-      section:              "Section",
-      skip:                 "Skip",
-      template:             "Template",
-      remove_search:        "Remove-Search",
-    }
+      application_name: "Application-Name",
+      format: "Format",
+      page_owner: "Page-Owner",
+      organisations: "Organisations",
+      world_locations: "World-Locations",
+      result_count: "Result-Count",
+      search_parameters: "Search-Parameters",
+      section: "Section",
+      skip: "Skip",
+      template: "Template",
+      remove_search: "Remove-Search",
+    }.freeze
 
     # @private
-    APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}"
+    APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}".freeze
 
     # @private
-    FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}"
+    FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}".freeze
 
     # @private
-    ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}"
+    ORGANISATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:organisations]}".freeze
 
     # @private
-    WORLD_LOCATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:world_locations]}"
+    WORLD_LOCATIONS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:world_locations]}".freeze
 
     # @private
-    PAGE_OWNER_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:page_owner]}"
+    PAGE_OWNER_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:page_owner]}".freeze
 
     # @private
-    RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:result_count]}"
+    RESULT_COUNT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:result_count]}".freeze
 
     # @private
-    SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path"
+    SEARCH_PATH_HEADER = "#{HEADER_PREFIX}-Search-Path".freeze
 
     # @private
-    SEARCH_PARAMETERS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:search_parameters]}"
+    SEARCH_PARAMETERS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:search_parameters]}".freeze
 
     # @private
-    SKIP_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:skip]}"
+    SKIP_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:skip]}".freeze
 
     # @private
-    TEMPLATE_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:template]}"
+    TEMPLATE_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:template]}".freeze
 
     # @private
-    REMOVE_SEARCH_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_search]}"
+    REMOVE_SEARCH_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_search]}".freeze
 
     # Set the "slimmer headers" to configure the page
     #
@@ -71,6 +71,7 @@ module Slimmer
     # @option hash [String] world_locations
     def set_slimmer_headers(hash)
       raise InvalidHeader if (hash.keys - SLIMMER_HEADER_MAPPING.keys).any?
+
       SLIMMER_HEADER_MAPPING.each do |hash_key, header_suffix|
         value = hash[hash_key]
         headers["#{HEADER_PREFIX}-#{header_suffix}"] = value.to_s if value

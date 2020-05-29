@@ -1,16 +1,16 @@
-require 'rest_client'
-require 'slimmer/govuk_request_id'
+require "rest_client"
+require "slimmer/govuk_request_id"
 
 module Slimmer
   class Skin
     attr_accessor :asset_host, :logger, :strict, :options
 
-    def initialize options = {}
+    def initialize(options = {})
       @options = options
       @asset_host = options[:asset_host]
 
       @logger = options[:logger] || NullLogger.instance
-      @strict = options[:strict] || (%w{development test}.include?(ENV['RACK_ENV']))
+      @strict = options[:strict] || %w[development test].include?(ENV["RACK_ENV"])
     end
 
     def template(template_name)
@@ -30,19 +30,19 @@ module Slimmer
 
     def template_url(template_name)
       host = asset_host.dup
-      host += '/' unless host =~ /\/$/
+      host += "/" unless host =~ /\/$/
       "#{host}templates/#{template_name}.html.erb"
     end
 
-    def report_parse_errors_if_strict!(nokogiri_doc, description_for_error_message)
+    def report_parse_errors_if_strict!(nokogiri_doc, _description_for_error_message)
       nokogiri_doc
     end
 
     def parse_html(html, description_for_error_message)
       doc = Nokogiri::HTML.parse(html)
       if strict
-        errors = doc.errors.select {|e| e.error?}.reject {|e| ignorable?(e)}
-        if errors.size > 0
+        errors = doc.errors.select(&:error?).reject { |e| ignorable?(e) }
+        unless errors.empty?
           error = errors.first
           message = "In #{description_for_error_message}: '#{error.message}' at line #{error.line} col #{error.column} (code #{error.code}).\n"
           message << "Add ?skip_slimmer=1 to the url to show the raw backend request.\n\n"
@@ -59,7 +59,7 @@ module Slimmer
       lines = [""] + html.split("\n")
       from = [1, error.line - context_size].max
       to = [lines.size - 1, error.line + context_size].min
-      context = (from..to).zip(lines[from..to]).map {|lineno, line| "%4d: %s" % [lineno, line] }
+      context = (from..to).zip(lines[from..to]).map { |lineno, line| sprintf("%4d: %s", lineno, line) }
       marker = " " * (error.column - 1) + "-----v"
       context.insert(context_size, marker)
       context.join("\n")
@@ -70,7 +70,7 @@ module Slimmer
       ignorable_codes.include?(error.code) || error.message.match(/Element script embeds close tag/) || error.message.match(/Unexpected end tag : noscript/)
     end
 
-    def process(processors,body,template, rack_env)
+    def process(processors, body, template, _rack_env)
       logger.debug "Slimmer: starting skinning process"
       src = parse_html(body.to_s, "backend response")
       dest = parse_html(template, "template")
@@ -92,30 +92,30 @@ module Slimmer
     end
 
     def success(source_request, response, body)
-      wrapper_id = options[:wrapper_id] || 'wrapper'
+      wrapper_id = options[:wrapper_id] || "wrapper"
 
       processors = [
-        Processors::TitleInserter.new(),
-        Processors::TagMover.new(),
+        Processors::TitleInserter.new,
+        Processors::TagMover.new,
         Processors::NavigationMover.new(self),
-        Processors::ConditionalCommentMover.new(),
+        Processors::ConditionalCommentMover.new,
         Processors::BodyInserter.new(wrapper_id),
         Processors::BodyClassCopier.new,
         Processors::InsideHeaderInserter.new,
-        Processors::HeaderContextInserter.new(),
+        Processors::HeaderContextInserter.new,
         Processors::MetadataInserter.new(response, options[:app_name]),
         Processors::SearchParameterInserter.new(response),
         Processors::SearchPathSetter.new(response),
         Processors::SearchRemover.new(response.headers),
       ]
 
-      template_name = response.headers[Headers::TEMPLATE_HEADER] || 'core_layout'
+      template_name = response.headers[Headers::TEMPLATE_HEADER] || "core_layout"
       process(processors, body, template(template_name), source_request.env)
     end
 
     def error(template_name, body, rack_env)
       processors = [
-        Processors::TitleInserter.new()
+        Processors::TitleInserter.new,
       ]
       process(processors, body, template(template_name), rack_env)
     end

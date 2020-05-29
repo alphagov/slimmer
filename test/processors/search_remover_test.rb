@@ -3,7 +3,7 @@ require_relative "../test_helper"
 class SearchRemoverTest < MiniTest::Test
   def setup
     super
-    @template = as_nokogiri %{
+    @template = as_nokogiri %(
       <html>
         <head>
         </head>
@@ -15,11 +15,10 @@ class SearchRemoverTest < MiniTest::Test
           <div id='search'></div>
         </body>
       </html>
-    }
+    )
   end
 
   def test_should_remove_search_from_template_if_header_is_set
-
     headers = { Slimmer::Headers::REMOVE_SEARCH_HEADER => true }
     Slimmer::Processors::SearchRemover.new(
       headers,
@@ -27,11 +26,9 @@ class SearchRemoverTest < MiniTest::Test
 
     assert_not_in @template, "#global-header #search"
     assert_in @template, "#search"
-
   end
 
   def test_should_not_remove_search_from_template_if_header_is_not_set
-
     headers = {}
     Slimmer::Processors::SearchRemover.new(
       headers,
@@ -41,7 +38,6 @@ class SearchRemoverTest < MiniTest::Test
   end
 
   def test_should_remove_search_link_from_template_if_header_is_set
-
     headers = { Slimmer::Headers::REMOVE_SEARCH_HEADER => true }
     Slimmer::Processors::SearchRemover.new(
       headers,
@@ -51,7 +47,6 @@ class SearchRemoverTest < MiniTest::Test
   end
 
   def test_should_not_remove_search_link_from_template_if_header_is_not_set
-
     headers = {}
     Slimmer::Processors::SearchRemover.new(
       headers,
