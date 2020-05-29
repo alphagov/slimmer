@@ -1,7 +1,7 @@
 require_relative "../test_helper"
 
 module MetadataInserterTest
-  GENERIC_DOCUMENT = <<-END.freeze
+  GENERIC_DOCUMENT = <<-HTML.freeze
     <html>
       <head>
         <title>The title of the page</title>
@@ -10,7 +10,7 @@ module MetadataInserterTest
         <div id="wrapper">The body of the page</div>
       </body>
     </html>
-  END
+  HTML
 
   module MetaTagAssertions
     def assert_meta_tag(name, content)

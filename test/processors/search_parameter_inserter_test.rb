@@ -1,7 +1,7 @@
 require "test_helper"
 
 module SearchParameterInserterTest
-  DOCUMENT_WITH_SEARCH = <<-END.freeze
+  DOCUMENT_WITH_SEARCH = <<-HTML.freeze
     <html>
       <head>
       </head>
@@ -12,7 +12,7 @@ module SearchParameterInserterTest
         </div>
       </body>
     </html>
-  END
+  HTML
 
   class WithHeaderTest < SlimmerIntegrationTest
     headers = {

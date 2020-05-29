@@ -11,13 +11,14 @@ module Slimmer
       logger = options[:logger] || NullLogger.instance
       self.logger = logger
       begin
-        if logger.level == 0 # Log set to debug level
+        if logger.level.zero? # Log set to debug level
           unless options[:enable_debugging]
             self.logger = logger.dup
             self.logger.level = 1 # info
           end
         end
-      rescue NoMethodError # In case logger doesn't respond_to? :level
+      rescue NoMethodError
+        # In case logger doesn't respond_to? :level
       end
 
       if options.key? :template_path
@@ -60,11 +61,11 @@ module Slimmer
 
     def skip_slimmer_param?(env)
       skip = Rack::Request.new(env).params["skip_slimmer"]
-      skip && (skip.to_i > 0)
+      skip && skip.to_i.positive?
     end
 
     def skip_slimmer_header?(response)
-      !!response.headers[Headers::SKIP_HEADER]
+      response.headers.key?(Headers::SKIP_HEADER)
     end
 
     def s(body)
@@ -98,7 +99,7 @@ module Slimmer
                          @skin.error "410", s(response.body), request.env
                        else
                          @skin.error "500", s(response.body), request.env
-      end
+                       end
 
       rewritten_body = [rewritten_body] unless rewritten_body.respond_to?(:each)
       response.body = rewritten_body
