@@ -23,7 +23,7 @@ module SearchParameterInserterTest
 
     def test_should_add_hidden_input
       hidden_inputs = Nokogiri::HTML.parse(last_response.body).css("#search input[type=hidden]")
-      assert_equal %{<input type="hidden" name="filter_organisations[]" value="land-registry"><input type="hidden" name="count" value="20">}, hidden_inputs.to_s
+      assert_equal %(<input type="hidden" name="filter_organisations[]" value="land-registry"><input type="hidden" name="count" value="20">), hidden_inputs.to_s
     end
   end
 

@@ -35,7 +35,7 @@ module Slimmer
       if response_can_be_rewritten?(status, headers)
         response = Rack::Response.new(body, status, headers)
 
-        if !skip_slimmer?(env, response)
+        unless skip_slimmer?(env, response)
           status, headers, body = rewrite_response(env, response)
         end
       end
@@ -61,7 +61,7 @@ module Slimmer
     end
 
     def skip_slimmer_header?(response)
-      !!response.headers[Headers::SKIP_HEADER]
+      response.headers.key?(Headers::SKIP_HEADER)
     end
 
     def s(body)

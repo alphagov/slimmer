@@ -5,12 +5,12 @@ module Slimmer
   class Skin
     attr_accessor :asset_host, :logger, :strict, :options
 
-    def initialize options = {}
+    def initialize(options = {})
       @options = options
       @asset_host = options[:asset_host]
 
       @logger = options[:logger] || NullLogger.instance
-      @strict = options[:strict] || %w{development test}.include?(ENV["RACK_ENV"])
+      @strict = options[:strict] || %w[development test].include?(ENV["RACK_ENV"])
     end
 
     def template(template_name)
@@ -42,7 +42,7 @@ module Slimmer
       doc = Nokogiri::HTML.parse(html)
       if strict
         errors = doc.errors.select(&:error?).reject { |e| ignorable?(e) }
-        if !errors.empty?
+        unless errors.empty?
           error = errors.first
           message = "In #{description_for_error_message}: '#{error.message}' at line #{error.line} col #{error.column} (code #{error.code}).\n"
           message << "Add ?skip_slimmer=1 to the url to show the raw backend request.\n\n"
@@ -59,7 +59,7 @@ module Slimmer
       lines = [""] + html.split("\n")
       from = [1, error.line - context_size].max
       to = [lines.size - 1, error.line + context_size].min
-      context = (from..to).zip(lines[from..to]).map { |lineno, line| "%4d: %s" % [lineno, line] }
+      context = (from..to).zip(lines[from..to]).map { |lineno, line| sprintf("%4d: %s", lineno, line) }
       marker = " " * (error.column - 1) + "-----v"
       context.insert(context_size, marker)
       context.join("\n")

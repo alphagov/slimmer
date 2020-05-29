@@ -3,7 +3,7 @@ require_relative "../test_helper"
 class TagMoverTest < MiniTest::Test
   def setup
     super
-    @source = as_nokogiri %{
+    @source = as_nokogiri %(
       <html>
         <head>
           <link rel="stylesheet" href="http://www.example.com/foo.css" />
@@ -24,8 +24,8 @@ class TagMoverTest < MiniTest::Test
           <script src="http://www.example.com/duplicate.js"></script>
         </body>
       </html>
-    }
-    @template = as_nokogiri %{
+    )
+    @template = as_nokogiri %(
       <html>
         <head>
           <link rel="stylesheet" href="http://www.example.com/duplicate.css" />
@@ -40,7 +40,7 @@ class TagMoverTest < MiniTest::Test
           <script src="http://www.example.com/existing.js"></script>
         </body>
       </html>
-    }
+    )
     Slimmer::Processors::TagMover.new.filter(@source, @template)
   end
 

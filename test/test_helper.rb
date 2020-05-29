@@ -92,8 +92,8 @@ class SlimmerIntegrationTest < MiniTest::Test
 
   def use_template(template_name)
     template = File.read File.dirname(__FILE__) + "/fixtures/#{template_name}.html.erb"
-    stub_request(:get, "http://template.local/templates/#{template_name}.html.erb").
-      to_return(body: template)
+    stub_request(:get, "http://template.local/templates/#{template_name}.html.erb")
+      .to_return(body: template)
   end
 
 private

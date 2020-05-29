@@ -9,17 +9,17 @@ module Slimmer
 
     # @private
     SLIMMER_HEADER_MAPPING = {
-      application_name:     "Application-Name",
-      format:               "Format",
-      page_owner:           "Page-Owner",
-      organisations:        "Organisations",
-      world_locations:      "World-Locations",
-      result_count:         "Result-Count",
-      search_parameters:    "Search-Parameters",
-      section:              "Section",
-      skip:                 "Skip",
-      template:             "Template",
-      remove_search:        "Remove-Search",
+      application_name: "Application-Name",
+      format: "Format",
+      page_owner: "Page-Owner",
+      organisations: "Organisations",
+      world_locations: "World-Locations",
+      result_count: "Result-Count",
+      search_parameters: "Search-Parameters",
+      section: "Section",
+      skip: "Skip",
+      template: "Template",
+      remove_search: "Remove-Search",
     }.freeze
 
     # @private

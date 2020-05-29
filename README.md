@@ -96,3 +96,7 @@ Add the following code to spec/spec_helper:
 ```rb
 require 'slimmer/rspec'
 ```
+
+## Licence
+
+[MIT License](LICENCE)

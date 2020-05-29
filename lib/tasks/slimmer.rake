@@ -6,9 +6,9 @@ namespace :slimmer do
     path_to_static = "../static/public"
     path_to_public = "public"
     commands = ["cd #{path_to_public}"]
-    Dir.glob("../static/public/*") { |f|
+    Dir.glob("../static/public/*") do |f|
       commands << "ln -s #{path_to_static}/#{f}"
-    }
+    end
     commands << ["cd .."]
     run commands.join(" && ")
   end
