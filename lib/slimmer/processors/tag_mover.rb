@@ -5,6 +5,7 @@ module Slimmer::Processors
       move_tags(src, dest, "link",   must_have: %w[href])
       move_tags(src, dest, "meta",   must_have: %w[name content], keys: %w[name content http-equiv], insertion_location: :top)
       move_tags(src, dest, "meta",   must_have: %w[property content], keys: %w[property content], insertion_location: :top)
+      move_tags(src, dest, "base",   must_have: %w[href])
     end
 
     def include_tag?(node, min_attrs)
