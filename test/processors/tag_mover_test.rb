@@ -17,6 +17,8 @@ class TagMoverTest < MiniTest::Test
           <meta property="p:empty" />
           <meta property="p:duplicate" content="name and content" />
           <meta property="og:image" content="custom-og-image" />
+          <base href="http://www.example.com/">
+          <base target="_self">
         </head>
         <body class="mainstream">
           <div id="wrapper"></div>
@@ -95,5 +97,13 @@ class TagMoverTest < MiniTest::Test
 
   def test_should_ignore_meta_tags_with_property_already_in_the_destination_with_the_same_name_and_content
     assert @template.css("meta[property='p:duplicate'][content='name and content']").length == 1, "Expected there to only be one duplicate=name and content meta (property) tag."
+  end
+
+  def test_should_move_base_tag_with_href_into_the_head
+    assert_in @template, "base[href='http://www.example.com/']", nil, "Should have moved the base tag"
+  end
+
+  def test_should_ignore_base_tag_with_target_but_no_href
+    assert_not_in @template, "base[target='_self']"
   end
 end
