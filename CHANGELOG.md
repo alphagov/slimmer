@@ -1,3 +1,7 @@
+# Unreleased
+
+* Amend toggle button selector (#251)
+
 # 15.1.0
 
 * Add `<base>` tag into the `<head>`.
