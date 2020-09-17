@@ -1,4 +1,4 @@
-# Unreleased
+# 15.1.1
 
 * Amend toggle button selector (#251)
 
