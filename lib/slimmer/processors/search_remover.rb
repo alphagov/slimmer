@@ -9,7 +9,7 @@ module Slimmer::Processors
         search = dest.at_css("#global-header #search")
         search.remove if search
 
-        search_link = dest.at_css("#global-header a[href='#search']")
+        search_link = dest.at_css("#global-header .search-toggle")
         search_link.remove if search_link
       end
     end

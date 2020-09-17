@@ -9,7 +9,7 @@ class SearchRemoverTest < MiniTest::Test
         </head>
         <body>
           <div id='global-header'>
-            <a href='#search'></a>
+            <button class='search-toggle'></button>
             <div id='search'></div>
           </div>
           <div id='search'></div>
@@ -43,7 +43,7 @@ class SearchRemoverTest < MiniTest::Test
       headers,
     ).filter(nil, @template)
 
-    assert_not_in @template, "#global-header a[href='#search']"
+    assert_not_in @template, "#global-header .search-toggle"
   end
 
   def test_should_not_remove_search_link_from_template_if_header_is_not_set
@@ -52,6 +52,6 @@ class SearchRemoverTest < MiniTest::Test
       headers,
     ).filter(nil, @template)
 
-    assert_in @template, "#global-header a[href='#search']"
+    assert_in @template, "#global-header .search-toggle"
   end
 end
