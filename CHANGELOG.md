@@ -1,3 +1,7 @@
+# Unreleased
+
+* Update to Ruby 2.7.2. (#254)
+
 # 15.1.1
 
 * Amend toggle button selector (#251)
