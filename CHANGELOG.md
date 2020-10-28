@@ -1,4 +1,4 @@
-# Unreleased
+# 15.2.0
 
 * Add X-Slimmer-Show-Accounts header to choose between accounts
   header components. (#255)
