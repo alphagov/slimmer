@@ -1,5 +1,7 @@
 # Unreleased
 
+* Add X-Slimmer-Show-Accounts header to choose between accounts
+  header components. (#255)
 * Update to Ruby 2.7.2. (#254)
 
 # 15.1.1

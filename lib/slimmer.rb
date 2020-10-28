@@ -28,6 +28,7 @@ module Slimmer
   autoload :HTTPClient, "slimmer/http_client"
 
   module Processors
+    autoload :AccountsShower, "slimmer/processors/accounts_shower"
     autoload :BodyClassCopier, "slimmer/processors/body_class_copier"
     autoload :BodyInserter, "slimmer/processors/body_inserter"
     autoload :ConditionalCommentMover, "slimmer/processors/conditional_comment_mover"
