@@ -20,6 +20,7 @@ module Slimmer
       skip: "Skip",
       template: "Template",
       remove_search: "Remove-Search",
+      show_accounts: "Show-Accounts",
     }.freeze
 
     # @private
@@ -55,6 +56,9 @@ module Slimmer
     # @private
     REMOVE_SEARCH_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_search]}".freeze
 
+    # @private
+    SHOW_ACCOUNTS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:show_accounts]}".freeze
+
     # Set the "slimmer headers" to configure the page
     #
     # @param hash [Hash] the options
@@ -66,6 +70,7 @@ module Slimmer
     # @option hash [String] result_count
     # @option hash [String] search_parameters
     # @option hash [String] section
+    # @option hash [String] show_accounts
     # @option hash [String] skip
     # @option hash [String] template
     # @option hash [String] world_locations
