@@ -23,15 +23,17 @@ module Slimmer
       url = template_url(template_name)
       HTTPClient.get(url)
     rescue Errno::ECONNREFUSED, SocketError, OpenSSL::SSL::SSLError, RestClient::Exception => e
+      message = "Unable to fetch: '#{template_name}' from '#{url}' because #{e}"
+
       if e.is_a?(RestClient::Exception) && e.http_code == 404
-        raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
+        raise TemplateNotFoundException, message, caller
       end
 
       if e.is_a?(RestClient::Exception) && [502, 503, 504].include?(e.http_code)
-        raise IntermittentRetrievalError, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
+        raise IntermittentRetrievalError, message, caller
       end
 
-      raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
+      raise CouldNotRetrieveTemplate, message, caller
     end
 
     def template_url(template_name)
