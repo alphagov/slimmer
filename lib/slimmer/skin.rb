@@ -27,6 +27,10 @@ module Slimmer
         raise TemplateNotFoundException, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
       end
 
+      if e.is_a?(RestClient::Exception) && [502, 503, 504].include?(e.http_code)
+        raise IntermittentRetrievalError, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
+      end
+
       raise CouldNotRetrieveTemplate, "Unable to fetch: '#{template_name}' from '#{url}' because #{e}", caller
     end
 

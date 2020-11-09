@@ -47,4 +47,5 @@ module Slimmer
 
   class TemplateNotFoundException < StandardError; end
   class CouldNotRetrieveTemplate < StandardError; end
+  class IntermittentRetrievalError < StandardError; end
 end
