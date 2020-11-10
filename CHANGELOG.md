@@ -1,3 +1,8 @@
+# 15.3.0
+
+* Introduce separate, internal exception class for intermittent
+template retrieval errors.
+
 # 15.2.0
 
 * Add X-Slimmer-Show-Accounts header to choose between accounts

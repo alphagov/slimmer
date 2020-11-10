@@ -35,9 +35,20 @@ describe Slimmer::Skin do
       skin = Slimmer::Skin.new asset_host: "http://example.local/"
 
       expected_url = "http://example.local/templates/example.html.erb"
-      stub_request(:get, expected_url).to_return(status: "404")
+      stub_request(:get, expected_url).to_return(status: 404)
 
       assert_raises(Slimmer::TemplateNotFoundException) do
+        skin.template "example"
+      end
+    end
+
+    it "should raise appropriate exception for intermittent errors" do
+      skin = Slimmer::Skin.new asset_host: "http://example.local/"
+
+      expected_url = "http://example.local/templates/example.html.erb"
+      stub_request(:get, expected_url).to_return(status: 504)
+
+      assert_raises(Slimmer::IntermittentRetrievalError) do
         skin.template "example"
       end
     end
