@@ -45,7 +45,7 @@ module Slimmer
     autoload :TitleInserter, "slimmer/processors/title_inserter"
   end
 
-  class TemplateNotFoundException < StandardError; end
   class CouldNotRetrieveTemplate < StandardError; end
-  class IntermittentRetrievalError < StandardError; end
+  class TemplateNotFoundException < CouldNotRetrieveTemplate; end
+  class IntermittentRetrievalError < CouldNotRetrieveTemplate; end
 end
