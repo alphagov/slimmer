@@ -1,6 +1,6 @@
 --no-private
 --markup markdown
---output-dir docs
+--output-dir yard-docs
 --embed-mixins
 --no-stats
 --api public
