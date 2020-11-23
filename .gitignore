@@ -2,4 +2,3 @@ slimmer-*.gem
 Gemfile.lock
 gemfiles/*.lock
 .yardoc
-docs
