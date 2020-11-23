@@ -1,6 +1,6 @@
 Slimmer is a piece of Rack Middleware that is inserted near the top of the middleware stack.
 
-It takes the response from the Rails app, and a template from static, and combines these into a single response.  It does this be taking various bits from the Rails response and inserting them into the template.  It has a number of processor classes that are each called in turn, and are responsible for a single piece of the transformation.  The set of processors depends on the response.  Error responses (4xx and 5xx) have one set.  Admin layout templates (triggered by requesting the admin template), have a different set, and then everything else has the default set.
+It takes the response from the Rails app, and a template from static, and combines these into a single response. It does this be taking various bits from the Rails response and inserting them into the template. It has a number of processor classes that are each called in turn, and are responsible for a single piece of the transformation. The set of processors depends on the response. Error responses (4xx and 5xx) have one set. Admin layout templates (triggered by requesting the admin template), have a different set, and then everything else has the default set.
 
 ## Default Set
 
@@ -22,32 +22,32 @@ Takes any conditional comments from the Rails response, and appends them to the 
 
 ### BodyInserter
 
-Takes the entirety of the element `#wrapper` (by default), and replaces the corresponding `#wrapper` element in the template with it.  Both the source and destination selector can be configured.
+Takes the entirety of the element `#wrapper` (by default), and replaces the corresponding `#wrapper` element in the template with it. Both the source and destination selector can be configured.
 
 ### BodyClassCopier
 
-Takes any classes applied to the `<body>` element in the Rails response, and adds them to the `<body>` element in the template.  This will add to any classes already existing in the template.
+Takes any classes applied to the `<body>` element in the Rails response, and adds them to the `<body>` element in the template. This will add to any classes already existing in the template.
 
 ### HeaderContextInserter
 
-Takes an element in the Rails response with a selector of `.header-context` (by default), and replaces the corresponding element in the template with it.  Does nothing unless the selector exists in both.
+Takes an element in the Rails response with a selector of `.header-context` (by default), and replaces the corresponding element in the template with it. Does nothing unless the selector exists in both.
 
 The `.header-context` element typically wraps the 'breadcrumb' trail on the site.
 
 ### SectionInserter
 
-Used to add a content specific section links to the 'breadcrumb' trail
+Used to add a content specific section links to the 'breadcrumb' trail.
 
-This looks at the artefact it's given, and finds the primary section.  It then adds links for this section and all its ancestors in reverse order.  It uses the tag's `web_url` property for the link.
+This looks at the artefact it's given, and finds the primary section. It then adds links for this section and all its ancestors in reverse order. It uses the tag's `web_url` property for the link.
 
 ### GoogleAnalyticsConfigurator
 
-This appends lines to the Google analytics config JS content to add corresponding custom vars.  It adds the following items:
+This appends lines to the Google analytics config JS content to add corresponding custom vars. It adds the following items:
 
 * Section - This is the title of the artefacts primary root section (aka base section).
 * Format - This is set from the `X-Slimmer-Format` HTTP header
 * NeedID - This is set from the artefact
-* Proposition - This is set from the artefact.  If the `business_proposition` boolean entry is present, this is set to 'business' or 'citizen' based on it.
+* Proposition - This is set from the artefact. If the `business_proposition` boolean entry is present, this is set to 'business' or 'citizen' based on it.
 * ResultCount - This is set from the `X-Slimmer-Result-Count` HTTP header
 
 ### SearchPathSetter
@@ -58,7 +58,7 @@ If there is an `X-Slimmer-Search-Path` header in the Rails response, it finds th
 
 Populates the contents of the related items box.
 
-If a related items placeholder (`body.mainstream div#related-items`) is present in the Rails response, and an artefact has been given, a related items block is rendered using the related.raw template from static, and the artefact data.  This is then inserted replacing the placeholder in the template.
+If a related items placeholder (`body.mainstream div#related-items`) is present in the Rails response, and an artefact has been given, a related items block is rendered using the related.raw template from static, and the artefact data. This is then inserted replacing the placeholder in the template.
 
 ## Error set
 
