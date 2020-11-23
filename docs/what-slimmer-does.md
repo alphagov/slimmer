@@ -71,7 +71,6 @@ This applies the following set:
 * TitleInserter
 * TagMover
 * AdminTitleInserter
-* FooterRemover
 * BodyInserter
 * BodyClassCopier
 
@@ -80,7 +79,3 @@ These are documented above except for:
 ### AdminTitleInserter
 
 Looks for a `#site-title` in the Rails template, and replaces the content of the template's `.gds-header h2` with it's content.
-
-### FooterRemover
-
-Removes the `#footer` element from the Rails response.
