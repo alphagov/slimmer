@@ -1,8 +1,29 @@
-Slimmer is a piece of Rack Middleware that is inserted near the top of the middleware stack.
+Slimmer is a piece of Rack Middleware that is inserted near the top of the middleware stack. Note that Slimmer is used in frontend apps such as finder-frontend, rather than publishing apps.
 
-It takes the response from the Rails app, and a template from static, and combines these into a single response.  It does this be taking various bits from the Rails response and inserting them into the template.  It has a number of processor classes that are each called in turn, and are responsible for a single piece of the transformation.  The set of processors depends on the response.  Error responses (4xx and 5xx) have one set.  Admin layout templates (triggered by requesting the admin template), have a different set, and then everything else has the default set.
+It takes a response from the Rails app, and a template from [Static](https://github.com/alphagov/static/), and combines these into a single response. This allows us to do things like add 'Sign in' / 'Sign out' links to the header (or, more accurately, remove whichever link is not applicable) prior to rendering the page. This can't be done natively in Static because it would mean we can't cache responses from Static, which is a hosted service (i.e. templates are downloaded over HTTP). Slimmer is local to the app, so just a means of sharing the code that interfaces with Static, and can cache the fetched templates, locales and components.
 
-## Default Set
+## How Slimmer works
+
+- The Rails app defines the 'slimmer' gem as a dependency in the Gemfile.
+- Slimmer [bundles all its `lib` files](https://github.com/alphagov/slimmer/blob/3cdf3bfb6db35c03992ecd9c1210e866f99464f3/slimmer.gemspec#L420) in the gem, so that they're available to the Rails app.
+- The gem (and all its `lib/` files) is `require`'d in to the Rails app [via Bundler](https://github.com/alphagov/finder-frontend/blob/918bdd9c5539181e01229fc1e9a95f8db9e68b0c/config%2Fapplication.rb#L20). As an aside, Rails' `boot.rb` [calls Bundler's setup script](https://github.com/alphagov/finder-frontend/blob/68bb527f1658d1e1dd3e1d59c3bfa1fb9aa22e7e/config%2Fboot.rb#L3), which modifies the `GEM_PATH`, meaning we don't need to explicitly `require` our Slimmer classes before we include them in the Rails app.
+- One of the pulled in classes is `Slimmer::Railtie`, which [adds initialization steps to the Rails boot process](https://api.rubyonrails.org/classes/Rails/Railtie.html#class-Rails::Railtie-label-Initializers) to [automatically invoke `Slimmer::App`](https://github.com/alphagov/slimmer/blob/5d760839a03db958bfdcfc5ac7582009aa4cab86/lib%2Fslimmer%2Frailtie.rb#L5-L11), which in turn [initialises `Slimmer::Skin`](https://github.com/alphagov/slimmer/blob/3cdf3bfb6db35c03992ecd9c1210e866f99464f3/lib%2Fslimmer%2Fapp.rb#L28) where much of the functionality happens.
+- Back to the Rails app now. The Rails app [defines what Slimmer template it needs](https://github.com/alphagov/finder-frontend/blob/3d8cb97f0aa70cf5f54bac5520d39f5303378a0c/app%2Fcontrollers%2Fapplication_controller.rb#L3-L4), in the `ApplicationController`.
+- Every request to the app goes through the `ApplicationController`, and every response from the app therefore gets proxied through `Slimmer::App`. The response is passed to its [`call` method](https://github.com/alphagov/slimmer/blob/3cdf3bfb6db35c03992ecd9c1210e866f99464f3/lib%2Fslimmer%2Fapp.rb#L31-L44), which delegates to `Slimmer::Skin` to rewrite the response. 
+- `Slimmer::Skin` lists [all of the processors](https://github.com/alphagov/slimmer/blob/862dcd5bdd4b87f3db7196f1d491be76398dbe6d/lib%2Fslimmer%2Fskin.rb#L105-L119) to be applied to the response. Each processor has its own class (e.g. [`Slimmer::Processors::AccountsShower`](https://github.com/alphagov/slimmer/blob/53017b64aede73de04bda2d301adea282fbaa832/lib%2Fslimmer%2Fprocessors%2Faccounts_shower.rb#L2)) responsible for defining the HTML to be removed, replaced or added.
+- `Slimmer::Skin` also determines which [template](https://github.com/alphagov/slimmer/blob/862dcd5bdd4b87f3db7196f1d491be76398dbe6d/lib%2Fslimmer%2Fskin.rb#L121) to mix the response with. The template name is determined via [mappings in `Slimmer::Headers`](https://github.com/alphagov/slimmer/blob/53017b64aede73de04bda2d301adea282fbaa832/lib%2Fslimmer%2Fheaders.rb#L21), which is ultimately set in the Rails app via its `slimmer_template` call earlier, defaulting to "core_layout".
+- The template name is [converted to a URL](https://github.com/alphagov/slimmer/blob/862dcd5bdd4b87f3db7196f1d491be76398dbe6d/lib/slimmer/skin.rb#L39-L43) that points to Static.
+- Requests to Static get [routed to the RootController](https://github.com/alphagov/static/blob/33be5158c3922516cadba9473609cccd5d85fdae/config%2Froutes.rb#L12), which route to the chosen template (e.g. [`views/root/core_layout.html.erb`](https://github.com/alphagov/static/blob/875b5a5c74bf85d324d9650bed0c4b173da26902/app%2Fviews%2Froot%2Fcore_layout.html.erb)).
+- The template is fetched and then [cached using the Rails cache](https://github.com/alphagov/slimmer/blob/1d270026389f1d893c506c082c124501560ef03d/lib/slimmer.rb#L13).
+- The [processors are mixed with the template](https://github.com/alphagov/slimmer/blob/862dcd5bdd4b87f3db7196f1d491be76398dbe6d/lib/slimmer/skin.rb#L81-L100), the [headers recalculated](https://github.com/alphagov/slimmer/blob/3cdf3bfb6db35c03992ecd9c1210e866f99464f3/lib%2Fslimmer%2Fapp.rb#L92) and the [response returned](https://github.com/alphagov/slimmer/blob/3cdf3bfb6db35c03992ecd9c1210e866f99464f3/lib%2Fslimmer%2Fapp.rb#L94).
+
+## Templates
+
+There are a few [different templates in Static](https://github.com/alphagov/static/tree/master/app/views/root) so that apps can render consistent error pages, core layout pages, pages without footer links and so on.
+
+Apps can choose to look for templates somewhere other than Static by [specifying the `asset_host`](https://github.com/alphagov/slimmer/blob/3cdf3bfb6db35c03992ecd9c1210e866f99464f3/lib%2Fslimmer%2Fapp.rb#L24-L26).
+
+## Processors
 
 ### TitleInserter
 
@@ -22,65 +43,18 @@ Takes any conditional comments from the Rails response, and appends them to the 
 
 ### BodyInserter
 
-Takes the entirety of the element `#wrapper` (by default), and replaces the corresponding `#wrapper` element in the template with it.  Both the source and destination selector can be configured.
+Takes the entirety of the element `#wrapper` (by default), and replaces the corresponding `#wrapper` element in the template with it. Both the source and destination selector can be configured.
 
 ### BodyClassCopier
 
-Takes any classes applied to the `<body>` element in the Rails response, and adds them to the `<body>` element in the template.  This will add to any classes already existing in the template.
+Takes any classes applied to the `<body>` element in the Rails response, and adds them to the `<body>` element in the template. This will add to any classes already existing in the template.
 
 ### HeaderContextInserter
 
-Takes an element in the Rails response with a selector of `.header-context` (by default), and replaces the corresponding element in the template with it.  Does nothing unless the selector exists in both.
+Takes an element in the Rails response with a selector of `.header-context` (by default), and replaces the corresponding element in the template with it. Does nothing unless the selector exists in both.
 
 The `.header-context` element typically wraps the 'breadcrumb' trail on the site.
-
-### SectionInserter
-
-Used to add a content specific section links to the 'breadcrumb' trail
-
-This looks at the artefact it's given, and finds the primary section.  It then adds links for this section and all its ancestors in reverse order.  It uses the tag's `web_url` property for the link.
-
-### GoogleAnalyticsConfigurator
-
-This appends lines to the Google analytics config JS content to add corresponding custom vars.  It adds the following items:
-
-* Section - This is the title of the artefacts primary root section (aka base section).
-* Format - This is set from the `X-Slimmer-Format` HTTP header
-* NeedID - This is set from the artefact
-* Proposition - This is set from the artefact.  If the `business_proposition` boolean entry is present, this is set to 'business' or 'citizen' based on it.
-* ResultCount - This is set from the `X-Slimmer-Result-Count` HTTP header
 
 ### SearchPathSetter
 
 If there is an `X-Slimmer-Search-Path` header in the Rails response, it finds the search form (`form#search`) in the template, and replaces the action attribute with the value of the header.
-
-### RelatedItemsInserter
-
-Populates the contents of the related items box.
-
-If a related items placeholder (`body.mainstream div#related-items`) is present in the Rails response, and an artefact has been given, a related items block is rendered using the related.raw template from static, and the artefact data.  This is then inserted replacing the placeholder in the template.
-
-## Error set
-
-This just applies the TitleInserter processor
-
-## Admin set
-
-This applies the following set:
-
-* TitleInserter
-* TagMover
-* AdminTitleInserter
-* FooterRemover
-* BodyInserter
-* BodyClassCopier
-
-These are documented above except for:
-
-### AdminTitleInserter
-
-Looks for a `#site-title` in the Rails template, and replaces the content of the template's `.gds-header h2` with it's content.
-
-### FooterRemover
-
-Removes the `#footer` element from the Rails response.
