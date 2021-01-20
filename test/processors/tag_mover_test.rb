@@ -19,9 +19,13 @@ class TagMoverTest < MiniTest::Test
           <meta property="og:image" content="custom-og-image" />
           <base href="http://www.example.com/">
           <base target="_self">
-        </head>
-        <body class="mainstream">
+          <script async src="http://www.example.com/async_head.js"></script>
+          <script defer src="http://www.example.com/defer_head.js"></script>
+          </head>
+          <body class="mainstream">
           <div id="wrapper"></div>
+          <script async src="http://www.example.com/async_body.js"></script>
+          <script defer src="http://www.example.com/defer_body.js"></script>
           <script src="http://www.example.com/foo.js"></script>
           <script src="http://www.example.com/duplicate.js"></script>
         </body>
@@ -52,6 +56,17 @@ class TagMoverTest < MiniTest::Test
 
   def test_should_ignore_script_tags_already_in_the_destination_with_the_same_src_and_content
     assert @template.css("script[src='http://www.example.com/duplicate.js']").length == 1, "Expected there to only be one script tag with src 'http://www.example.com/duplicate.js'"
+  end
+
+  def test_should_move_async_and_defer_script_tags_into_the_head
+    assert_in @template, "head script[async][src='http://www.example.com/async_head.js']", nil, "Should have moved the script tag with attribute 'async' from head to head"
+    assert_in @template, "head script[defer][src='http://www.example.com/defer_head.js']", nil, "Should have moved the script tag with attribute 'defer' from head to head"
+    assert_in @template, "head script[async][src='http://www.example.com/async_body.js']", nil, "Should have moved the script tag with attribute 'async' from body to head"
+    assert_in @template, "head script[defer][src='http://www.example.com/defer_body.js']", nil, "Should have moved the script tag with attribute 'defer' from body to head"
+  end
+
+  def test_should_place_async_and_defer_script_tags_before_other_tags
+    assert @template.to_s.index("async_head.js") < @template.to_s.index("duplicate.css"), "Expected async_head.js to be before duplicate.css"
   end
 
   def test_should_place_source_script_tags_after_template_ones

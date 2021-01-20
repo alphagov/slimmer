@@ -1,3 +1,7 @@
+# 15.4.0
+
+* Hoist `<async>` and `<defer>` JS Script tags to `<head>`. (#261)
+
 # 15.3.0
 
 * Introduce separate, internal exception class for intermittent
