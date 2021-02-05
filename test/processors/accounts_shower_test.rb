@@ -15,19 +15,17 @@ class AccountsShowerTest < MiniTest::Test
           <div id='accounts-signed-out'></div>
           <div id='accounts-signed-in'></div>
           <div class='gem-c-layout-header'>
-            <div class='govuk-header__navigation-container'>
-              <ul>
-                <li>
-                  <a data-link-for='accounts-signed-out'></a>
-                </li>
-                <li>
-                  <a data-link-for='accounts-signed-out'></a>
-                </li>
-                <li>
-                  <a data-link-for='accounts-signed-in'></a>
-                </li>
-              </ul>
-            </div>
+            <ul>
+              <li>
+                <a data-link-for='accounts-signed-out'></a>
+              </li>
+              <li>
+                <a data-link-for='accounts-signed-out'></a>
+              </li>
+              <li>
+                <a data-link-for='accounts-signed-in'></a>
+              </li>
+            </ul>
           </div>
         </body>
       </html>
