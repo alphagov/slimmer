@@ -1,3 +1,7 @@
+# 15.4.1
+
+* Add support for layout header component in static (#263)
+
 # 15.4.0
 
 * Hoist `<async>` and `<defer>` JS Script tags to `<head>`. (#261)
