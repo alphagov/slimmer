@@ -8,9 +8,10 @@ module Slimmer::Processors
       header_value = @headers[Slimmer::Headers::SHOW_ACCOUNTS_HEADER]
       layout_header = dest.at_css(".gem-c-layout-header")
       static_header = dest.at_css("#global-header")
+
       if header_value && layout_header
         static_header.remove if static_header
-      elsif !header_value
+      elsif !header_value && !is_gem_layout?
         layout_header.remove if layout_header
       end
 
@@ -42,6 +43,12 @@ module Slimmer::Processors
       signed_in_link.each do |link|
         link.parent.remove
       end
+    end
+
+  private
+
+    def is_gem_layout?
+      @headers[Slimmer::Headers::TEMPLATE_HEADER]&.starts_with?("gem_layout")
     end
   end
 end
