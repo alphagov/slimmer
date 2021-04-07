@@ -82,7 +82,7 @@ class SlimmerIntegrationTest < MiniTest::Test
       end
     end
 
-    use_template("core_layout") if code == 200
+    use_templates if code == 200
     fetch_page
   end
 
@@ -90,10 +90,14 @@ class SlimmerIntegrationTest < MiniTest::Test
     get "/"
   end
 
-  def use_template(template_name)
-    template = File.read File.dirname(__FILE__) + "/fixtures/#{template_name}.html.erb"
-    stub_request(:get, "http://template.local/templates/#{template_name}.html.erb")
+  def use_templates
+    templates = %w[gem_layout core_layout]
+
+    templates.each do |template_name|
+      template = File.read File.dirname(__FILE__) + "/fixtures/#{template_name}.html.erb"
+      stub_request(:get, "http://template.local/templates/#{template_name}.html.erb")
       .to_return(body: template)
+    end
   end
 
 private

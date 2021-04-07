@@ -11,6 +11,9 @@ module Slimmer::Processors
 
         search_link = dest.at_css("#global-header .search-toggle")
         search_link.remove if search_link
+
+        gem_search = dest.at_css(".gem-c-layout-header__search")
+        gem_search.remove if gem_search
       end
     end
   end
