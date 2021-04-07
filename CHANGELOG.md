@@ -1,3 +1,6 @@
+# 15.5.0
+* Add support for gem layout in static (#265)
+
 # 15.4.1
 
 * Add support for layout header component in static (#263)
