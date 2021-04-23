@@ -23,7 +23,14 @@ module Slimmer::Processors
         remove_signed_out(dest)
         remove_signed_in(dest)
       end
+
+      if is_navigation_empty?(dest)
+        header_content = dest.at_css(".govuk-header__content")
+        header_content.remove if header_content
+      end
     end
+
+  private
 
     def remove_signed_out(dest)
       signed_out = dest.at_css("#global-header #accounts-signed-out")
@@ -45,7 +52,9 @@ module Slimmer::Processors
       end
     end
 
-  private
+    def is_navigation_empty?(dest)
+      dest.at_css(".govuk-header__navigation a").nil?
+    end
 
     def is_gem_layout?
       @headers[Slimmer::Headers::TEMPLATE_HEADER]&.starts_with?("gem_layout")
