@@ -101,13 +101,14 @@ module Slimmer
 
     def success(source_request, response, body)
       wrapper_id = options[:wrapper_id] || "wrapper"
+      template_wrapper_id = "wrapper" # All templates in Static use `#wrapper`
 
       processors = [
         Processors::TitleInserter.new,
         Processors::TagMover.new,
         Processors::NavigationMover.new(self),
         Processors::ConditionalCommentMover.new,
-        Processors::BodyInserter.new(wrapper_id),
+        Processors::BodyInserter.new(wrapper_id, template_wrapper_id, response.headers),
         Processors::BodyClassCopier.new,
         Processors::InsideHeaderInserter.new,
         Processors::HeaderContextInserter.new,
