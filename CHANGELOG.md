@@ -1,3 +1,6 @@
+# 15.5.1
+* Update gem_layout template support (#267)
+
 # 15.5.0
 * Add support for gem layout in static (#265)
 
