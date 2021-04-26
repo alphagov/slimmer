@@ -28,7 +28,7 @@ class BodyInserterTest < MiniTest::Test
 
   def test_should_allow_replacement_of_arbitrary_segments_into_wrapper
     template = as_nokogiri %(
-      <html><body><div>
+      <html><body>
       <div id="wrapper">don't touch this</div>
       </body></html>
     )
@@ -39,5 +39,131 @@ class BodyInserterTest < MiniTest::Test
     Slimmer::Processors::BodyInserter.new("some_other_id").filter(source, template)
     assert_not_in template, "#wrapper"
     assert_in template, "#some_other_id", %(<p>this should be moved</p>)
+  end
+
+  def test_should_merge_wrapper_css_classes_when_using_gem_layout
+    template = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper" class="template-css-class">Lorum ipsum.</div>
+        </body>
+      </html>
+    )
+    source = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper" class="source-css-class"><p>Source content.</p></div>
+        </body>
+      </html>
+    )
+
+    headers = {
+      Slimmer::Headers::TEMPLATE_HEADER => "gem_layout",
+    }
+
+    Slimmer::Processors::BodyInserter.new("wrapper", "wrapper", headers).filter(source, template)
+    assert_in template, "#wrapper", "<p>Source content.</p>"
+    assert_in template, ".source-css-class.template-css-class", "<p>Source content.</p>"
+  end
+
+  def test_should_merge_wrapper_css_classes_and_dedupe_when_using_gem_layout
+    template = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper" class="template-css-class another-class">Lorum ipsum.</div>
+        </body>
+      </html>
+    )
+    source = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper" class="source-css-class another-class"><p>Source content.</p></div>
+        </body>
+      </html>
+    )
+
+    headers = {
+      Slimmer::Headers::TEMPLATE_HEADER => "gem_layout",
+    }
+
+    Slimmer::Processors::BodyInserter.new("wrapper", "wrapper", headers).filter(source, template)
+    assert_in template, "#wrapper", "<p>Source content.</p>"
+    assert_in template, "[class='source-css-class another-class template-css-class']", "<p>Source content.</p>"
+  end
+
+  def test_should_not_merge_wrapper_css_classes_when_using_core_layout
+    template = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper" class="template-css-class">Lorum ipsum.</div>
+        </body>
+      </html>
+    )
+    source = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper" class="source-css-class"><p>Source content.</p></div>
+        </body>
+      </html>
+    )
+
+    headers = {
+      Slimmer::Headers::TEMPLATE_HEADER => "core_layout",
+    }
+
+    Slimmer::Processors::BodyInserter.new("wrapper", "wrapper", headers).filter(source, template)
+    assert_in template, "#wrapper", "<p>Source content.</p>"
+    assert_not_in template, ".template-css-class"
+    assert_in template, "[class='source-css-class']", "<p>Source content.</p>"
+  end
+
+  def test_should_merge_wrapper_css_classes_when_using_gem_layout_when_only_template_has_classes
+    template = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper" class="template-css-class">Lorum ipsum.</div>
+        </body>
+      </html>
+    )
+    source = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper"><p>Source content.</p></div>
+        </body>
+      </html>
+    )
+
+    headers = {
+      Slimmer::Headers::TEMPLATE_HEADER => "gem_layout",
+    }
+
+    Slimmer::Processors::BodyInserter.new("wrapper", "wrapper", headers).filter(source, template)
+    assert_in template, "#wrapper", "<p>Source content.</p>"
+    assert_in template, "[class='template-css-class']", "<p>Source content.</p>"
+  end
+
+  def test_should_merge_wrapper_css_classes_when_using_gem_layout_when_only_source_has_classes
+    template = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper">Lorum ipsum.</div>
+        </body>
+      </html>
+    )
+    source = as_nokogiri %(
+      <html>
+        <body>
+          <div id="wrapper" class="source-css-class"><p>Source content.</p></div>
+        </body>
+      </html>
+    )
+
+    headers = {
+      Slimmer::Headers::TEMPLATE_HEADER => "gem_layout",
+    }
+
+    Slimmer::Processors::BodyInserter.new("wrapper", "wrapper", headers).filter(source, template)
+    assert_in template, "#wrapper", "<p>Source content.</p>"
+    assert_in template, "[class='source-css-class']", "<p>Source content.</p>"
   end
 end
