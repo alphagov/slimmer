@@ -116,7 +116,7 @@ module Slimmer
         Processors::SearchParameterInserter.new(response),
         Processors::SearchPathSetter.new(response),
         Processors::SearchRemover.new(response.headers),
-        Processors::AccountsShower.new(response.headers),
+        Processors::LayoutHeaderManager.new(response.headers),
       ]
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || "core_layout"

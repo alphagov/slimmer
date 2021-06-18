@@ -1,12 +1,12 @@
 module Slimmer::Processors
-  class AccountsShower
+  class LayoutHeaderManager
     def initialize(headers)
       @headers = headers
     end
 
     def filter(_src, dest)
       header_value = @headers[Slimmer::Headers::SHOW_ACCOUNTS_HEADER]
-      layout_header = dest.at_css(".gem-c-layout-header")
+      layout_header = dest.xpath("//*[not (@id='wrapper')]/header[@class='gem-c-layout-header']")
       static_header = dest.at_css("#global-header")
 
       if header_value && layout_header
@@ -27,6 +27,15 @@ module Slimmer::Processors
       if is_navigation_empty?(dest)
         header_content = dest.at_css(".govuk-header__content")
         header_content.remove if header_content
+      end
+
+      if has_app_level_layout_header?(dest)
+        app_level_layout_header = dest.at_css("#wrapper .gem-c-layout-header")
+        layout = dest.at_css("body > .gem-c-layout-header")
+        static = dest.at_css("#global-header")
+
+        static.replace(app_level_layout_header) if static
+        layout.replace(app_level_layout_header) if layout
       end
     end
 
@@ -50,6 +59,10 @@ module Slimmer::Processors
       signed_in_link.each do |link|
         link.parent.remove
       end
+    end
+
+    def has_app_level_layout_header?(dest)
+      !dest.at_css("#wrapper .gem-c-layout-header").nil?
     end
 
     def is_navigation_empty?(dest)
