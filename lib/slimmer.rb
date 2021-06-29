@@ -32,6 +32,7 @@ module Slimmer
     autoload :BodyClassCopier, "slimmer/processors/body_class_copier"
     autoload :BodyInserter, "slimmer/processors/body_inserter"
     autoload :ConditionalCommentMover, "slimmer/processors/conditional_comment_mover"
+    autoload :FeedbackURLSwapper, "slimmer/processors/feedback_url_swapper"
     autoload :MetadataInserter, "slimmer/processors/metadata_inserter"
     autoload :HeaderContextInserter, "slimmer/processors/header_context_inserter"
     autoload :InsideHeaderInserter, "slimmer/processors/inside_header_inserter"
