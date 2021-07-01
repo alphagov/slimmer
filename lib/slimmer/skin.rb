@@ -109,6 +109,7 @@ module Slimmer
         Processors::NavigationMover.new(self),
         Processors::ConditionalCommentMover.new,
         Processors::BodyInserter.new(wrapper_id, template_wrapper_id, response.headers),
+        Processors::FeedbackURLSwapper.new(source_request, response.headers),
         Processors::BodyClassCopier.new,
         Processors::InsideHeaderInserter.new,
         Processors::HeaderContextInserter.new,
