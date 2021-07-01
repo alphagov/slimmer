@@ -1,4 +1,4 @@
-# Unreleased
+# 15.6.0
 
 * Add feedback url swapper (#271)
 
