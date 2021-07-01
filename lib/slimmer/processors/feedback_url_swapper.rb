@@ -24,7 +24,7 @@ module Slimmer::Processors
     # need to be kept in sync.
     def remove_pii(string)
       email_regex = /[^\s=\/?&]+(?:@|%40)[^\s=\/?&]+/
-      string.gsub(email_regex, "[email]")
+      string.gsub(email_regex, "[email]").force_encoding("UTF-8")
     end
 
     def is_gem_layout?
