@@ -9,10 +9,10 @@ module Slimmer::Processors
       return dest unless is_gem_layout?
 
       original_url_without_pii = remove_pii(@request.base_url + @request.fullpath)
-      dest.at_css(".gem-c-feedback input[name='url']").set_attribute("value", original_url_without_pii)
+      dest.at_css(".gem-c-feedback input[name='url']")&.set_attribute("value", original_url_without_pii)
 
       full_path_without_pii = remove_pii(@request.fullpath)
-      dest.at_css(".gem-c-feedback input[name='email_survey_signup[survey_source]']").set_attribute("value", full_path_without_pii)
+      dest.at_css(".gem-c-feedback input[name='email_survey_signup[survey_source]']")&.set_attribute("value", full_path_without_pii)
 
       dest
     end
