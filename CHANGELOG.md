@@ -1,3 +1,6 @@
+# 15.6.1
+* Use safe navigation operator in feedback url swapper (#273)
+
 # 15.6.0
 
 * Add feedback url swapper (#271)
