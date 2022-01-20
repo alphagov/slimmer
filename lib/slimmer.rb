@@ -36,7 +36,6 @@ module Slimmer
     autoload :MetadataInserter, "slimmer/processors/metadata_inserter"
     autoload :HeaderContextInserter, "slimmer/processors/header_context_inserter"
     autoload :InsideHeaderInserter, "slimmer/processors/inside_header_inserter"
-    autoload :NavigationMover, "slimmer/processors/navigation_mover"
     autoload :SearchPathSetter, "slimmer/processors/search_path_setter"
     autoload :SearchParameterInserter, "slimmer/processors/search_parameter_inserter"
     autoload :SearchRemover, "slimmer/processors/search_remover"

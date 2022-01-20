@@ -106,7 +106,6 @@ module Slimmer
       processors = [
         Processors::TitleInserter.new,
         Processors::TagMover.new,
-        Processors::NavigationMover.new(self),
         Processors::ConditionalCommentMover.new,
         Processors::BodyInserter.new(wrapper_id, template_wrapper_id, response.headers),
         Processors::FeedbackURLSwapper.new(source_request, response.headers),
