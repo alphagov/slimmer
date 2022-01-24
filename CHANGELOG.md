@@ -1,3 +1,6 @@
+# Unreleased
+* BREAKING: Remove NavigationMover processor (#275)
+
 # 15.6.1
 * Use safe navigation operator in feedback url swapper (#273)
 
