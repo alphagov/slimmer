@@ -1,4 +1,4 @@
-# Unreleased
+# 16.0.0
 * BREAKING: Remove NavigationMover processor (#275)
 
 # 15.6.1
