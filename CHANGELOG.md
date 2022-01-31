@@ -1,3 +1,6 @@
+# 16.0.1
+* Resolve Nokogiri deprecation warning (#277)
+
 # 16.0.0
 * BREAKING: Remove NavigationMover processor (#275)
 
