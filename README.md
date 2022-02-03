@@ -57,6 +57,10 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+## Use in before_action renders
+
+If you have a non-default layout and want to render in a before_action method, note that you may have to explicitly call `slimmer_template(:your_template_name)` in the action before rendering. Rendering in a before_action immediately stops the action chain, and since slimmer usually calls slimmer_template as an after_action, it would be skipped over (and you'd get the default layout). 
+
 ## Logging
 
 Slimmer can be configured with a logger by passing in a logger instance
