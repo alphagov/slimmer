@@ -119,7 +119,7 @@ module Slimmer
         Processors::AccountsShower.new(response.headers),
       ]
 
-      template_name = response.headers[Headers::TEMPLATE_HEADER] || "core_layout"
+      template_name = response.headers[Headers::TEMPLATE_HEADER] || "gem_layout"
       process(processors, body, template(template_name), source_request.env)
     end
   end
