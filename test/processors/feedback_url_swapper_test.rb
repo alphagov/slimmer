@@ -34,39 +34,6 @@ class FeedbackURLSwapperTest < MiniTest::Test
     assert_in template, "#test-input-two[value='https://new-example.com/new_path']"
   end
 
-  def test_should_not_replace_input_url_values_when_not_gem_layout
-    template = as_nokogiri %(
-      <html>
-        <body>
-          <div class="gem-c-feedback">
-            <input
-              id="test-input"
-              type="hidden"
-              name="email_survey_signup[survey_source]"
-              value="/old_path"
-            >
-            <input
-              id="test-input-two"
-              type="hidden"
-              name="url"
-              value="https://example.com/old_path"
-            >
-          </div>
-        </body>
-      </html>
-    )
-
-    env = Rack::MockRequest.env_for("https://new-example.com/new_path")
-    request = Rack::Request.new(env)
-
-    headers = { Slimmer::Headers::TEMPLATE_HEADER => "core_layout" }
-
-    Slimmer::Processors::FeedbackURLSwapper.new(request, headers).filter(nil, template)
-
-    assert_in template, "#test-input[value='/old_path']"
-    assert_in template, "#test-input-two[value='https://example.com/old_path']"
-  end
-
   def test_should_redact_an_email_adress_in_the_url
     template = as_nokogiri %(
       <html>
