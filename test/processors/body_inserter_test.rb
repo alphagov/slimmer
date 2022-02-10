@@ -91,32 +91,6 @@ class BodyInserterTest < MiniTest::Test
     assert_in template, "[class='source-css-class another-class template-css-class']", "<p>Source content.</p>"
   end
 
-  def test_should_not_merge_wrapper_css_classes_when_using_core_layout
-    template = as_nokogiri %(
-      <html>
-        <body>
-          <div id="wrapper" class="template-css-class">Lorum ipsum.</div>
-        </body>
-      </html>
-    )
-    source = as_nokogiri %(
-      <html>
-        <body>
-          <div id="wrapper" class="source-css-class"><p>Source content.</p></div>
-        </body>
-      </html>
-    )
-
-    headers = {
-      Slimmer::Headers::TEMPLATE_HEADER => "core_layout",
-    }
-
-    Slimmer::Processors::BodyInserter.new("wrapper", "wrapper", headers).filter(source, template)
-    assert_in template, "#wrapper", "<p>Source content.</p>"
-    assert_not_in template, ".template-css-class"
-    assert_in template, "[class='source-css-class']", "<p>Source content.</p>"
-  end
-
   def test_should_merge_wrapper_css_classes_when_using_gem_layout_when_only_template_has_classes
     template = as_nokogiri %(
       <html>

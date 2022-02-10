@@ -91,7 +91,7 @@ class SlimmerIntegrationTest < MiniTest::Test
   end
 
   def use_templates
-    templates = %w[gem_layout core_layout]
+    templates = %w[gem_layout]
 
     templates.each do |template_name|
       template = File.read File.dirname(__FILE__) + "/fixtures/#{template_name}.html.erb"
