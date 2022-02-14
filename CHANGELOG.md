@@ -1,6 +1,6 @@
-# Unreleased
+# 17.0.0
 
-* Set default template to `gem_layout` and remove references to the deprecated `core_layout`.
+* BREAKING: Set default template to `gem_layout` and remove references to the deprecated `core_layout`.
 
 # 16.0.1
 * Resolve Nokogiri deprecation warning (#277)
