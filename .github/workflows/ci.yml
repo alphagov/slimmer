@@ -1,0 +1,36 @@
+on: [push, pull_request]
+
+jobs:
+  # This matrix job runs the test suite against multiple Ruby versions
+  test_matrix:
+    strategy:
+      fail-fast: false
+      matrix:
+        # Due to https://github.com/actions/runner/issues/849, we have to use quotes for '3.0'
+        ruby: [ 2.7, '3.0', 3.1 ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - run: bundle exec rake
+
+  # Branch protection rules cannot directly depend on status checks from matrix jobs.
+  # So instead we define `test` as a dummy job which only runs after the preceding `test_matrix` checks have passed.
+  # Solution inspired by: https://github.community/t/status-check-for-a-matrix-jobs/127354/3
+  test:
+    needs: test_matrix
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "All matrix tests have passed 🚀"
+
+  publish:
+    needs: test
+    if: ${{ github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write
+    uses: alphagov/govuk-infrastructure/.github/workflows/publish-rubygem.yaml@main
+    secrets:
+      GEM_HOST_API_KEY: ${{ secrets.ALPHAGOV_RUBYGEMS_API_KEY }}
