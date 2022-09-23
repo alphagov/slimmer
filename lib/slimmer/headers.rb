@@ -21,6 +21,7 @@ module Slimmer
       template: "Template",
       remove_search: "Remove-Search",
       show_accounts: "Show-Accounts",
+      show_mirror_banner: "Show-Mirror-Banner",
     }.freeze
 
     # @private
@@ -59,6 +60,9 @@ module Slimmer
     # @private
     SHOW_ACCOUNTS_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:show_accounts]}".freeze
 
+    # @private
+    SHOW_MIRROR_BANNER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:show_mirror_banner]}".freeze
+
     # Set the "slimmer headers" to configure the page
     #
     # @param hash [Hash] the options
@@ -71,6 +75,7 @@ module Slimmer
     # @option hash [String] search_parameters
     # @option hash [String] section
     # @option hash [String] show_accounts
+    # @option hash [String] show_mirror_banner
     # @option hash [String] skip
     # @option hash [String] template
     # @option hash [String] world_locations

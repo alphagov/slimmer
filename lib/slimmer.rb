@@ -34,6 +34,7 @@ module Slimmer
     autoload :ConditionalCommentMover, "slimmer/processors/conditional_comment_mover"
     autoload :FeedbackURLSwapper, "slimmer/processors/feedback_url_swapper"
     autoload :MetadataInserter, "slimmer/processors/metadata_inserter"
+    autoload :MirrorBannerShower, "slimmer/processors/mirror_banner_shower"
     autoload :HeaderContextInserter, "slimmer/processors/header_context_inserter"
     autoload :InsideHeaderInserter, "slimmer/processors/inside_header_inserter"
     autoload :SearchPathSetter, "slimmer/processors/search_path_setter"
