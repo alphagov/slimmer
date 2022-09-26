@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.description = "Rack middleware for skinning pages using a specific template"
   s.license = "MIT"
 
-  s.add_dependency "activesupport"
   s.add_dependency "json"
   s.add_dependency "nokogiri", "~> 1.7"
   s.add_dependency "null_logger"
