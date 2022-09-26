@@ -4,7 +4,6 @@ require "rack/test"
 require "json"
 require "logger"
 require "mocha/minitest"
-require "timecop"
 require "test_apps/test_apps"
 
 MiniTest::Test.class_eval do
@@ -31,10 +30,6 @@ MiniTest::Test.class_eval do
     result = yield
     WebMock.disable_net_connect!
     result
-  end
-
-  def teardown
-    Timecop.return
   end
 end
 
