@@ -69,6 +69,8 @@ class SlimmerIntegrationTest < MiniTest::Test
 
   def given_response(code, body, headers = {}, app_options = {})
     self.class.class_eval do
+      remove_method(:app) if method_defined?(:app)
+
       define_method(:app) do
         inner_app = proc { |_env|
           [code, { "Content-Type" => "text/html" }.merge(headers), body]
