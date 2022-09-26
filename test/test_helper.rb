@@ -4,7 +4,6 @@ require "rack/test"
 require "json"
 require "logger"
 require "mocha/minitest"
-require "test_apps/test_apps"
 
 MiniTest::Test.class_eval do
   def as_nokogiri(html_string)
