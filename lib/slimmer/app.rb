@@ -95,7 +95,9 @@ module Slimmer
     end
 
     def strip_slimmer_headers(headers)
-      headers.reject { |k, _v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
+      # Convert Rack::Util::HeaderHash to a simple hash to avoid a Ruby warning
+      # of extra states not copied. Can be removed once Ruby < 3.1 support is removed.
+      headers.to_h.reject { |k, _v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
     end
   end
 end
