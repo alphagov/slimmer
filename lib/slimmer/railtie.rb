@@ -7,7 +7,10 @@ module Slimmer
       app_name = ENV["GOVUK_APP_NAME"] || Slimmer::Railtie.parent_name(app)
       slimmer_config = slimmer_config.reverse_merge(app_name: app_name)
 
-      app.middleware.use Slimmer::App, slimmer_config
+      # The extra kwargs **{} is for Ruby 2.7 so that it doesn't recognise the
+      # slimmer_config as kwargs, this change can be removed once Ruby 2.7
+      # support is dropped
+      app.middleware.use Slimmer::App, slimmer_config, **{}
     end
 
     # TODO: remove this method when all our apps are in rails 6 and substitute
