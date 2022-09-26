@@ -36,24 +36,6 @@ end
 require "webmock/minitest"
 WebMock.disable_net_connect!
 
-# Including action_view is difficult because it depends on rails and internal
-# ~*magic*~. To avoid depending on the whole of rails mock out the method we
-# need so we can tests the internal implementations which don't depend on rails
-module ActionView
-  class Resolver
-  end
-  class Template
-    attr_reader :args
-    def initialize(*args)
-      @args = args
-    end
-
-    def self.registered_template_handler(*args)
-      args
-    end
-  end
-end
-
 class SlimmerIntegrationTest < MiniTest::Test
   include Rack::Test::Methods
 
