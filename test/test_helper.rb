@@ -35,6 +35,7 @@ end
 
 require "webmock/minitest"
 WebMock.disable_net_connect!
+Slimmer.cache = Slimmer::NoCache.new
 
 class SlimmerIntegrationTest < MiniTest::Test
   include Rack::Test::Methods
