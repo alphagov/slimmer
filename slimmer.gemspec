@@ -28,7 +28,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "rubocop-govuk", "~> 3"
   s.add_development_dependency "webmock", "3.5.0"
-  s.add_development_dependency "yard", "0.8.7.6"
 
   s.files = Dir[
     "README.md",
