@@ -3,7 +3,6 @@ require "minitest/autorun"
 require "rack/test"
 require "json"
 require "logger"
-require "mocha/minitest"
 
 MiniTest::Test.class_eval do
   def as_nokogiri(html_string)

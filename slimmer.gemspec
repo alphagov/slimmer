@@ -22,7 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rest-client"
 
   s.add_development_dependency "minitest", "~> 5.4"
-  s.add_development_dependency "mocha", "~> 1.1"
   s.add_development_dependency "rack-test", "~> 0.6.1"
   s.add_development_dependency "rails", "~> 7"
   s.add_development_dependency "rake"
