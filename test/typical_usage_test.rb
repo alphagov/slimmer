@@ -14,25 +14,15 @@ module TypicalUsage
 
     def fetch_page; end
 
-    def with_rails_env(new_env, &block)
-      old_env = ENV["RAILS_ENV"]
-      ENV["RAILS_ENV"] = new_env
-      begin
-        block.call
-      ensure
-        ENV["RAILS_ENV"] = old_env
-      end
-    end
-
     def test_should_return_the_response_as_is_in_development
-      with_rails_env("development") do
+      ClimateControl.modify(RAILS_ENV: "development") do
         get "/some-slug?skip_slimmer=1"
       end
       assert_rendered_in_template "#unskinned", "Unskinned"
     end
 
     def test_not_skip_slimmer_in_test
-      with_rails_env("test") do
+      ClimateControl.modify(RAILS_ENV: "test") do
         get "/some-slug?skip_slimmer=1"
       end
       assert_rendered_in_template "#wrapper", /^Don't template me/

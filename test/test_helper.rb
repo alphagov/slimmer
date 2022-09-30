@@ -1,6 +1,7 @@
 require_relative "../lib/slimmer"
 require "minitest/autorun"
 require "rack/test"
+require "climate_control"
 require "json"
 require "logger"
 
