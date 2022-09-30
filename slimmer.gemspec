@@ -34,6 +34,5 @@ Gem::Specification.new do |s|
     "lib/**/*",
     "Rakefile"
   ]
-  s.executables   = %w[render_slimmer_error]
   s.require_paths = %w[lib]
 end

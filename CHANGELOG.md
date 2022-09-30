@@ -1,3 +1,7 @@
+# Unreleased
+
+* Remove `bin/render_slimmer_error` as a feature - it's expected that this is unused.
+
 # 17.0.0
 
 * BREAKING: Set default template to `gem_layout` and remove references to the deprecated `core_layout`.
