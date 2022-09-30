@@ -10,11 +10,9 @@ module Slimmer
 
       logger = options[:logger] || NullLogger.instance
       self.logger = logger
-      if logger&.level&.zero? # Log set to debug level
-        unless options[:enable_debugging]
-          self.logger = logger.dup
-          self.logger.level = 1 # info
-        end
+      if logger&.level&.zero? && !(options[:enable_debugging])
+        self.logger = logger.dup
+        self.logger.level = 1 # info
       end
 
       if options.key? :template_path

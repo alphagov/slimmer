@@ -15,9 +15,10 @@ module Slimmer::Processors
         layout_header.remove if layout_header
       end
 
-      if header_value == "signed-in"
+      case header_value
+      when "signed-in"
         remove_signed_out(dest)
-      elsif header_value == "signed-out"
+      when "signed-out"
         remove_signed_in(dest)
       else
         remove_signed_out(dest)

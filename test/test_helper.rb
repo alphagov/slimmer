@@ -12,7 +12,7 @@ MiniTest::Test.class_eval do
   def assert_in(template, selector, content = nil, message = nil)
     message ||= "Expected to find #{content ? "#{content.inspect} at " : ''}#{selector.inspect} in the output template"
 
-    assert template.at_css(selector), message + ", but selector not found."
+    assert template.at_css(selector), "#{message}, but selector not found."
 
     if content
       assert_equal content, template.at_css(selector).inner_html.to_s, message
@@ -96,7 +96,7 @@ private
                 end
 
     matched_elements = Nokogiri::HTML.parse(last_response.body).css(selector)
-    assert !matched_elements.empty?, message + ", but selector not found."
+    assert !matched_elements.empty?, "#{message}, but selector not found."
 
     if content
       inner_htmls = matched_elements.map(&:inner_html)

@@ -14,6 +14,8 @@ Gem::Specification.new do |s|
   s.description = "Rack middleware for skinning pages using a specific template"
   s.license = "MIT"
 
+  s.required_ruby_version = "> 2.7.0"
+
   s.add_dependency "json"
   s.add_dependency "nokogiri", "~> 1.7"
   s.add_dependency "null_logger"
@@ -25,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rack-test", "~> 2"
   s.add_development_dependency "rails", "~> 7"
   s.add_development_dependency "rake"
-  s.add_development_dependency "rubocop-govuk", "~> 3"
+  s.add_development_dependency "rubocop-govuk", "4.7.0"
   s.add_development_dependency "webmock", "~> 3.8"
 
   s.files = Dir[
