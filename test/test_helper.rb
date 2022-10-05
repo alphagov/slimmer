@@ -1,11 +1,9 @@
 require_relative "../lib/slimmer"
 require "minitest/autorun"
 require "rack/test"
+require "climate_control"
 require "json"
 require "logger"
-require "mocha/minitest"
-require "timecop"
-require "test_apps/test_apps"
 
 MiniTest::Test.class_eval do
   def as_nokogiri(html_string)
@@ -15,7 +13,7 @@ MiniTest::Test.class_eval do
   def assert_in(template, selector, content = nil, message = nil)
     message ||= "Expected to find #{content ? "#{content.inspect} at " : ''}#{selector.inspect} in the output template"
 
-    assert template.at_css(selector), message + ", but selector not found."
+    assert template.at_css(selector), "#{message}, but selector not found."
 
     if content
       assert_equal content, template.at_css(selector).inner_html.to_s, message
@@ -32,32 +30,11 @@ MiniTest::Test.class_eval do
     WebMock.disable_net_connect!
     result
   end
-
-  def teardown
-    Timecop.return
-  end
 end
 
 require "webmock/minitest"
 WebMock.disable_net_connect!
-
-# Including action_view is difficult because it depends on rails and internal
-# ~*magic*~. To avoid depending on the whole of rails mock out the method we
-# need so we can tests the internal implementations which don't depend on rails
-module ActionView
-  class Resolver
-  end
-  class Template
-    attr_reader :args
-    def initialize(*args)
-      @args = args
-    end
-
-    def self.registered_template_handler(*args)
-      args
-    end
-  end
-end
+Slimmer.cache = Slimmer::NoCache.new
 
 class SlimmerIntegrationTest < MiniTest::Test
   include Rack::Test::Methods
@@ -74,6 +51,8 @@ class SlimmerIntegrationTest < MiniTest::Test
 
   def given_response(code, body, headers = {}, app_options = {})
     self.class.class_eval do
+      remove_method(:app) if method_defined?(:app)
+
       define_method(:app) do
         inner_app = proc { |_env|
           [code, { "Content-Type" => "text/html" }.merge(headers), body]
@@ -118,7 +97,7 @@ private
                 end
 
     matched_elements = Nokogiri::HTML.parse(last_response.body).css(selector)
-    assert !matched_elements.empty?, message + ", but selector not found."
+    assert !matched_elements.empty?, "#{message}, but selector not found."
 
     if content
       inner_htmls = matched_elements.map(&:inner_html)

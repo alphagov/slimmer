@@ -1,3 +1,9 @@
+# Unreleased
+
+* Drop support for determining Rails < 6 application names
+* Require Ruby >= 2.7.0
+* Remove `bin/render_slimmer_error` as a feature - it's expected that this is unused.
+
 # 17.0.0
 
 * BREAKING: Set default template to `gem_layout` and remove references to the deprecated `core_layout`.

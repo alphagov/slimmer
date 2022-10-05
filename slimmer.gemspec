@@ -14,7 +14,8 @@ Gem::Specification.new do |s|
   s.description = "Rack middleware for skinning pages using a specific template"
   s.license = "MIT"
 
-  s.add_dependency "activesupport"
+  s.required_ruby_version = "> 2.7.0"
+
   s.add_dependency "json"
   s.add_dependency "nokogiri", "~> 1.7"
   s.add_dependency "null_logger"
@@ -22,15 +23,13 @@ Gem::Specification.new do |s|
   s.add_dependency "rack"
   s.add_dependency "rest-client"
 
-  s.add_development_dependency "minitest", "~> 5.4"
-  s.add_development_dependency "mocha", "~> 1.1"
-  s.add_development_dependency "rack-test", "~> 0.6.1"
-  s.add_development_dependency "rails", "~> 6.0.2"
-  s.add_development_dependency "rake", "~> 0.9.2.2"
-  s.add_development_dependency "rubocop-govuk", "~> 3"
-  s.add_development_dependency "timecop", "~> 0.5.1"
-  s.add_development_dependency "webmock", "3.5.0"
-  s.add_development_dependency "yard", "0.8.7.6"
+  s.add_development_dependency "climate_control", "~> 1.1"
+  s.add_development_dependency "minitest", "~> 5.16"
+  s.add_development_dependency "rack-test", "~> 2"
+  s.add_development_dependency "rails", "~> 7"
+  s.add_development_dependency "rake"
+  s.add_development_dependency "rubocop-govuk", "4.7.0"
+  s.add_development_dependency "webmock", "~> 3.8"
 
   s.files = Dir[
     "README.md",
@@ -38,6 +37,5 @@ Gem::Specification.new do |s|
     "lib/**/*",
     "Rakefile"
   ]
-  s.executables   = %w[render_slimmer_error]
   s.require_paths = %w[lib]
 end

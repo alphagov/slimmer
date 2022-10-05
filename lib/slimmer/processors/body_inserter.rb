@@ -1,8 +1,8 @@
 module Slimmer::Processors
   class BodyInserter
     def initialize(source_id = "wrapper", destination_id = "wrapper", headers = {})
-      @source_selector = "#" + source_id
-      @destination_selector = "#" + destination_id
+      @source_selector = "##{source_id}"
+      @destination_selector = "##{destination_id}"
       @headers = headers
     end
 
@@ -22,7 +22,7 @@ module Slimmer::Processors
   private
 
     def is_gem_layout?
-      @headers[Slimmer::Headers::TEMPLATE_HEADER]&.starts_with?("gem_layout")
+      @headers[Slimmer::Headers::TEMPLATE_HEADER]&.start_with?("gem_layout")
     end
   end
 end

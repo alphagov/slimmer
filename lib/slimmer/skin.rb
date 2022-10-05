@@ -68,7 +68,7 @@ module Slimmer
       from = [1, error.line - context_size].max
       to = [lines.size - 1, error.line + context_size].min
       context = (from..to).zip(lines[from..to]).map { |lineno, line| sprintf("%4d: %s", lineno, line) }
-      marker = " " * (error.column - 1) + "-----v"
+      marker = "#{' ' * (error.column - 1)}-----v"
       context.insert(context_size, marker)
       context.join("\n")
     end

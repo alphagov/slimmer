@@ -14,25 +14,15 @@ module TypicalUsage
 
     def fetch_page; end
 
-    def with_rails_env(new_env, &block)
-      old_env = ENV["RAILS_ENV"]
-      ENV["RAILS_ENV"] = new_env
-      begin
-        block.call
-      ensure
-        ENV["RAILS_ENV"] = old_env
-      end
-    end
-
     def test_should_return_the_response_as_is_in_development
-      with_rails_env("development") do
+      ClimateControl.modify(RAILS_ENV: "development") do
         get "/some-slug?skip_slimmer=1"
       end
       assert_rendered_in_template "#unskinned", "Unskinned"
     end
 
     def test_not_skip_slimmer_in_test
-      with_rails_env("test") do
+      ClimateControl.modify(RAILS_ENV: "test") do
         get "/some-slug?skip_slimmer=1"
       end
       assert_rendered_in_template "#wrapper", /^Don't template me/
@@ -48,21 +38,24 @@ module TypicalUsage
   end
 
   class SkipDoesntInteractWithNonHtmlBodies < SlimmerIntegrationTest
+    def setup
+      super
+      use_templates
+    end
+
     def test_non_html_response_bodies_are_passed_through_untouched
       # Rack::SendFile doesn't work if to_s, to_str or each are called on the
       # response body (as happens when building a Rack::Response)
-      body = stub("body")
-      inner_app = proc { |_env|
-        [200, { "Content-Type" => "application/json" }, body]
-      }
+      inner_app = ->(env) { env["request"] }
       app = Slimmer::App.new inner_app, asset_host: "http://template.local"
 
-      body.expects(:to_s).never
-      body.expects(:to_str).never
-      body.expects(:each).never
-      Rack::Response.expects(:new).never
+      body = "{}"
+      response = app.call({ "request" => [200, { "Content-Type" => "application/json" }, body] })
+      assert_equal body.object_id, response.last.object_id
 
-      app.call({})
+      body = '<div id="wrapper"></div>'
+      response = app.call({ "request" => [200, { "Content-Type" => "text/html" }, body] })
+      refute_equal body.object_id, response.last.object_id
     end
   end
 

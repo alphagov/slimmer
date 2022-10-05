@@ -10,11 +10,9 @@ module Slimmer
 
       logger = options[:logger] || NullLogger.instance
       self.logger = logger
-      if logger&.level&.zero? # Log set to debug level
-        unless options[:enable_debugging]
-          self.logger = logger.dup
-          self.logger.level = 1 # info
-        end
+      if logger&.level&.zero? && !(options[:enable_debugging])
+        self.logger = logger.dup
+        self.logger.level = 1 # info
       end
 
       if options.key? :template_path
@@ -95,7 +93,9 @@ module Slimmer
     end
 
     def strip_slimmer_headers(headers)
-      headers.reject { |k, _v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
+      # Convert Rack::Util::HeaderHash to a simple hash to avoid a Ruby warning
+      # of extra states not copied. Can be removed once Ruby < 3.1 support is removed.
+      headers.to_h.reject { |k, _v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
     end
   end
 end

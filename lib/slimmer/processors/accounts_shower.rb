@@ -15,9 +15,10 @@ module Slimmer::Processors
         layout_header.remove if layout_header
       end
 
-      if header_value == "signed-in"
+      case header_value
+      when "signed-in"
         remove_signed_out(dest)
-      elsif header_value == "signed-out"
+      when "signed-out"
         remove_signed_in(dest)
       else
         remove_signed_out(dest)
@@ -57,7 +58,7 @@ module Slimmer::Processors
     end
 
     def is_gem_layout?
-      @headers[Slimmer::Headers::TEMPLATE_HEADER]&.starts_with?("gem_layout")
+      @headers[Slimmer::Headers::TEMPLATE_HEADER]&.start_with?("gem_layout")
     end
   end
 end

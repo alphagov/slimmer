@@ -83,11 +83,11 @@ class FeedbackURLSwapperTest < MiniTest::Test
       </div>
     )
 
-    # Need to use a stub as a MockRequest will throw an exception on ASCII
-    # characters.
-    request = stub("Rack::Request",
-                   base_url: "https://example.com".force_encoding("ASCII-8BIT"),
-                   fullpath: "/test?áscii=%EE%90%80".force_encoding("ASCII-8BIT"))
+    request = Rack::Request.new({
+      "PATH_INFO" => "/test?áscii=%EE%90%80".force_encoding("ASCII-8BIT"),
+      "HTTP_HOST" => "example.com",
+      "HTTPS" => "on",
+    })
 
     headers = { Slimmer::Headers::TEMPLATE_HEADER => "gem_layout" }
 
