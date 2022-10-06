@@ -20,7 +20,7 @@ module Slimmer
       end
 
       unless options[:asset_host]
-        options[:asset_host] = Plek.current.find("static")
+        options[:asset_host] = Plek.find("static")
       end
 
       @skin = Skin.new options.merge(logger: self.logger)
