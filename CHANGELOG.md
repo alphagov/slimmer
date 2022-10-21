@@ -1,8 +1,9 @@
-# Unreleased
+# 18.0.0
 
-* Drop support for determining Rails < 6 application names
+* BREAKING: Drop support for determining Rails < 6 application names
+* BREAKING: Remove `bin/render_slimmer_error` as a feature - it's expected that this is unused.
 * Require Ruby >= 2.7.0
-* Remove `bin/render_slimmer_error` as a feature - it's expected that this is unused.
+* Resolve deprecation warning for Plek.current
 
 # 17.0.0
 
