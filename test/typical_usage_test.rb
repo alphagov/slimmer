@@ -294,4 +294,23 @@ module TypicalUsage
       assert_equal "Something else", last_response.headers["X-Custom-Header"]
     end
   end
+
+  # Not using the SlimmerIntergrationTest class for this integration test
+  # as it requires a custom rack request
+  class NonceInsertingTest < MiniTest::Test
+    def test_should_insert_nonces_into_templates_for_inline_script_elements
+      stub_request(:get, "http://template.local/templates/gem_layout.html.erb")
+        .to_return(body: %{<html><body><script>document.write('hello')</script><div id="wrapper"></div></body></html>})
+
+      inner_app = ->(env) { env["request"] }
+      app = Slimmer::App.new inner_app, asset_host: "http://template.local"
+      _, _, body_array = app.call({
+        "request" => [200, { "Content-Type" => "text/html" }, %(<div id="wrapper"></div>)],
+        # replicate how ActionDispatch configures the Rails nonce generator
+        ActionDispatch::ContentSecurityPolicy::Request::NONCE_GENERATOR => ->(_) { "123456" },
+      })
+
+      assert_match %r{<script nonce="123456">document\.write\('hello'\)</script>}, body_array.first
+    end
+  end
 end

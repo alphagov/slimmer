@@ -1,3 +1,7 @@
+# Unreleased
+
+* Decorate inline script elements with nonce attribute for appropriately configured Rails requests
+
 # 18.0.0
 
 * BREAKING: Drop support for determining Rails < 6 application names

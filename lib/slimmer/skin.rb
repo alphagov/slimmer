@@ -104,6 +104,7 @@ module Slimmer
       template_wrapper_id = "wrapper" # All templates in Static use `#wrapper`
 
       processors = [
+        Processors::NonceInserter.new(source_request.env), # for security, this needs to be run before any application HTML is inserted
         Processors::TitleInserter.new,
         Processors::TagMover.new,
         Processors::ConditionalCommentMover.new,
