@@ -14,7 +14,7 @@ module Slimmer::Processors
       css_classes << source_markup.attributes["class"].to_s.split(/ +/) if source_markup.has_attribute?("class")
       css_classes << destination_markup.attributes["class"].to_s.split(/ +/) if destination_markup.has_attribute?("class")
 
-      body = Nokogiri::HTML.fragment(source_markup.to_html)
+      body = Nokogiri::HTML5.fragment(source_markup.to_html)
       dest.at_css(@destination_selector).replace(body)
       dest.at_css(@destination_selector).set_attribute("class", css_classes.flatten.uniq.join(" ")) if is_gem_layout? && css_classes.any?
     end

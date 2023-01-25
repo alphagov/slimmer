@@ -47,7 +47,7 @@ module Slimmer
     end
 
     def parse_html(html, description_for_error_message)
-      doc = Nokogiri::HTML.parse(html)
+      doc = Nokogiri::HTML5.parse(html)
       if strict
         errors = doc.errors.select(&:error?).reject { |e| ignorable?(e) }
         unless errors.empty?
