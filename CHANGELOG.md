@@ -1,3 +1,7 @@
+# Unreleased
+
+* Drop support for Ruby 2.7.
+
 # 18.1.0
 
 * Decorate inline script elements with nonce attribute for appropriately configured Rails requests
