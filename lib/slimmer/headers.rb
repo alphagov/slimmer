@@ -19,12 +19,16 @@ module Slimmer
       section: "Section",
       skip: "Skip",
       template: "Template",
+      remove_blue_bar: "Remove-Blue-Bar",
       remove_search: "Remove-Search",
       show_accounts: "Show-Accounts",
     }.freeze
 
     # @private
     APPLICATION_NAME_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:application_name]}".freeze
+
+    # @private
+    REMOVE_BLUE_BAR_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:remove_blue_bar]}".freeze
 
     # @private
     FORMAT_HEADER = "#{HEADER_PREFIX}-#{SLIMMER_HEADER_MAPPING[:format]}".freeze
@@ -66,6 +70,7 @@ module Slimmer
     # @option hash [String] format
     # @option hash [String] organisations
     # @option hash [String] page_owner
+    # @option hash [String] remove_blue_bar
     # @option hash [String] remove_search
     # @option hash [String] result_count
     # @option hash [String] search_parameters
