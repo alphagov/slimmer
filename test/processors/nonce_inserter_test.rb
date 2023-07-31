@@ -1,6 +1,6 @@
 require "test_helper"
 
-class NonceInserterTest < MiniTest::Test
+class NonceInserterTest < Minitest::Test
   def test_decorates_an_inline_script_element
     request_env = Rack::MockRequest.env_for("https://new-example.com/new_path")
     request_env[ActionDispatch::ContentSecurityPolicy::Request::NONCE_GENERATOR] = ->(_) { "123456" }

@@ -297,7 +297,7 @@ module TypicalUsage
 
   # Not using the SlimmerIntergrationTest class for this integration test
   # as it requires a custom rack request
-  class NonceInsertingTest < MiniTest::Test
+  class NonceInsertingTest < Minitest::Test
     def test_should_insert_nonces_into_templates_for_inline_script_elements
       stub_request(:get, "http://template.local/templates/gem_layout.html.erb")
         .to_return(body: %{<html><body><script>document.write('hello')</script><div id="wrapper"></div></body></html>})

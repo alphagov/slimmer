@@ -1,6 +1,6 @@
 require "test_helper"
 
-class FeedbackURLSwapperTest < MiniTest::Test
+class FeedbackURLSwapperTest < Minitest::Test
   def test_should_replace_input_url_values_in_gem_layout
     template = as_nokogiri %(
       <html>

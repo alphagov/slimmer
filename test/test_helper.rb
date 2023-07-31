@@ -5,7 +5,7 @@ require "climate_control"
 require "json"
 require "logger"
 
-MiniTest::Test.class_eval do
+Minitest::Test.class_eval do
   def as_nokogiri(html_string)
     Nokogiri::HTML.parse(html_string.strip)
   end
@@ -36,7 +36,7 @@ require "webmock/minitest"
 WebMock.disable_net_connect!
 Slimmer.cache = Slimmer::NoCache.new
 
-class SlimmerIntegrationTest < MiniTest::Test
+class SlimmerIntegrationTest < Minitest::Test
   include Rack::Test::Methods
 
   # given_response can either be called from a setup method, or in the class scope.

@@ -5,7 +5,7 @@ describe Slimmer::Railtie do
   it "gets the app name from env when the app name is set in the environment" do
     ClimateControl.modify(GOVUK_APP_NAME: "TestApp1") do
       app = Class.new(Rails::Application)
-      middleware = MiniTest::Mock.new
+      middleware = Minitest::Mock.new
       middleware.expect :use, nil, [Slimmer::App, { app_name: "TestApp1" }]
 
       app.stub :middleware, middleware do
@@ -17,10 +17,10 @@ describe Slimmer::Railtie do
   it "gets the app name from module_parent_name when the app name is not set in the environment" do
     ClimateControl.modify(GOVUK_APP_NAME: nil) do
       app = Class.new(Rails::Application)
-      klass = MiniTest::Mock.new
+      klass = Minitest::Mock.new
       klass.expect :module_parent_name, "TestApp2"
 
-      middleware = MiniTest::Mock.new
+      middleware = Minitest::Mock.new
       middleware.expect :use, nil, [Slimmer::App, { app_name: "TestApp2" }]
 
       app.stub :class, klass do
