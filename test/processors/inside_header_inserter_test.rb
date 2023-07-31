@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-class InsideHeaderInserterTest < MiniTest::Test
+class InsideHeaderInserterTest < Minitest::Test
   def test_should_insert_into_header
     source = as_nokogiri %(
       <html>

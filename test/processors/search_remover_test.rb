@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-class SearchRemoverTest < MiniTest::Test
+class SearchRemoverTest < Minitest::Test
   def setup
     super
     @template = as_nokogiri %(

@@ -1,6 +1,6 @@
 require "test_helper"
 
-class TestTemplateDependencyOnStaticTest < MiniTest::Test
+class TestTemplateDependencyOnStaticTest < Minitest::Test
   def test_scripts_on_static_referenced_in_test_templates_exist
     template_path = File.dirname(__FILE__).gsub("/test", "/lib/slimmer/test_templates")
     Dir.foreach(template_path) do |template_file_name|

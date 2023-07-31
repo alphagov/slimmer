@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-class TagMoverTest < MiniTest::Test
+class TagMoverTest < Minitest::Test
   def setup
     super
     @source = as_nokogiri %(

@@ -1,6 +1,6 @@
 require_relative "../test_helper"
 
-class AccountsShowerTest < MiniTest::Test
+class AccountsShowerTest < Minitest::Test
   def setup
     super
     @template = as_nokogiri %(
