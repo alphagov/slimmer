@@ -42,7 +42,7 @@ module Slimmer
     end
 
     def response_can_be_rewritten?(status, headers)
-      Rack::Utils::HeaderHash.new(headers)["Content-Type"] =~ /text\/html/ && ![301, 302, 304].include?(status)
+      Rack::Headers.new.merge(headers)["Content-Type"] =~ /text\/html/ && ![301, 302, 304].include?(status)
     end
 
     def skip_slimmer?(env, response)
@@ -93,9 +93,7 @@ module Slimmer
     end
 
     def strip_slimmer_headers(headers)
-      # Convert Rack::Util::HeaderHash to a simple hash to avoid a Ruby warning
-      # of extra states not copied. Can be removed once Ruby < 3.1 support is removed.
-      headers.to_h.reject { |k, _v| k =~ /\A#{Headers::HEADER_PREFIX}/ }
+      headers.reject { |k, _v| k =~ /\A#{Headers::HEADER_PREFIX}/i }
     end
   end
 end

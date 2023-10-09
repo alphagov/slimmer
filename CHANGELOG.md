@@ -1,6 +1,7 @@
 # Unreleased
 
 * Drop support for Ruby 2.7.
+* Update reference to deprecated Rack::Utils::HeaderHash
 
 # 18.1.0
 
