@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "nokogiri", "~> 1.7"
   s.add_dependency "null_logger"
   s.add_dependency "plek", ">= 1.1.0"
-  s.add_dependency "rack"
+  s.add_dependency "rack", ">= 3.0"
   s.add_dependency "rest-client"
 
   s.add_development_dependency "climate_control", "~> 1.1"
