@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.description = "Rack middleware for skinning pages using a specific template"
   s.license = "MIT"
 
-  s.required_ruby_version = ">= 3.3"
+  s.required_ruby_version = ">= 3.1.4"
 
   s.add_dependency "json"
   s.add_dependency "nokogiri", "~> 1.7"
