@@ -1,3 +1,7 @@
+# Unreleased
+
+* Update body classes for govuk-frontend-v5
+
 # 18.4.0
 
 * Drop support for Ruby 3.0. Ruby 3.2 is now required.
