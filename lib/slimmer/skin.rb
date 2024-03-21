@@ -122,6 +122,12 @@ module Slimmer
 
       template_name = response.headers[Headers::TEMPLATE_HEADER] || "gem_layout"
       process(processors, body, template(template_name), source_request.env)
+    rescue SourceWrapperNotFoundError => e
+      message = "#{e.message} "\
+                "at: #{source_request.base_url}#{source_request.path} "\
+                "length: #{body.to_s.length} "\
+                "html: #{body.to_s[0, 300].match?(/<html>/i)}"
+      raise SourceWrapperNotFoundError, message, caller
     end
   end
 end

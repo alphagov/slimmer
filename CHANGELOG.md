@@ -1,3 +1,7 @@
+# Unreleased
+
+* Raise more specific error when wrapper not found
+
 # 18.4.0
 
 * Drop support for Ruby 3.0. Ruby 3.2 is now required.

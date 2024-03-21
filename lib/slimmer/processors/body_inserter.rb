@@ -10,6 +10,8 @@ module Slimmer::Processors
       source_markup = src.at_css(@source_selector)
       destination_markup = dest.at_css(@destination_selector)
 
+      raise(Slimmer::SourceWrapperNotFoundError, "Source wrapper div not found", caller) if source_markup.nil?
+
       css_classes = []
       css_classes << source_markup.attributes["class"].to_s.split(/ +/) if source_markup.has_attribute?("class")
       css_classes << destination_markup.attributes["class"].to_s.split(/ +/) if destination_markup.has_attribute?("class")
