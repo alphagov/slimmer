@@ -1,6 +1,18 @@
 require "test_helper"
 
 class BodyInserterTest < Minitest::Test
+  def test_should_raise_source_wrapper_div_not_found_error_when_wrapper_not_found
+    template = as_nokogiri %(
+      <html><body><div><div id="wrapper"></div></div></body></html>
+    )
+    source = as_nokogiri %(
+      <html><body><nav></nav><div><p>this should be moved</p></div></body></html>
+    )
+    assert_raises(Slimmer::SourceWrapperNotFoundError) do
+      Slimmer::Processors::BodyInserter.new.filter(source, template)
+    end
+  end
+
   def test_should_replace_contents_of_wrapper_in_template
     template = as_nokogiri %(
       <html><body><div><div id="wrapper"></div></div></body></html>

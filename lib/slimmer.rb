@@ -51,4 +51,5 @@ module Slimmer
   class CouldNotRetrieveTemplate < StandardError; end
   class TemplateNotFoundException < CouldNotRetrieveTemplate; end
   class IntermittentRetrievalError < CouldNotRetrieveTemplate; end
+  class SourceWrapperNotFoundError < StandardError; end
 end
