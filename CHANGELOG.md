@@ -1,6 +1,6 @@
 # Unreleased
 
-* Raise more specific error when wrapper not found
+* Raise more specific error when wrapper not found. This will only be active when the host app has SLIMMER_WRAPPER_CHECK=true set in the host app's environment.
 
 # 18.4.0
 
