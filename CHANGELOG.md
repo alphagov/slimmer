@@ -1,3 +1,7 @@
+# Unreleased
+
+* Raise more specific error when wrapper not found. This will only be active when the host app has SLIMMER_WRAPPER_CHECK=true set in the host app's environment.
+
 # 18.4.0
 
 * Drop support for Ruby 3.0. Ruby 3.2 is now required.
