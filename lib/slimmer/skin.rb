@@ -100,6 +100,7 @@ module Slimmer
     end
 
     def success(source_request, response, body)
+      original_body = body.dup
       wrapper_id = options[:wrapper_id] || "wrapper"
       template_wrapper_id = "wrapper" # All templates in Static use `#wrapper`
 
@@ -125,8 +126,8 @@ module Slimmer
     rescue SourceWrapperNotFoundError => e
       message = "#{e.message} "\
                 "at: #{source_request.base_url}#{source_request.path} "\
-                "length: #{body.to_s.length} "\
-                "html: #{body.to_s[0, 300].match?(/<html>/i)}"
+                "length: #{original_body.to_s.length} "\
+                "body: original_body.to_s[0..2000]"
       raise SourceWrapperNotFoundError, message, caller
     end
   end

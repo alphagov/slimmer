@@ -1,3 +1,7 @@
+# Unreleased
+
+* Include a part of the body in the error message text
+
 # 18.5.0
 
 * Raise more specific error when wrapper not found. This will only be active when the host app has SLIMMER_WRAPPER_CHECK=true set in the host app's environment.
