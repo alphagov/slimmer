@@ -127,7 +127,7 @@ module Slimmer
       message = "#{e.message} "\
                 "at: #{source_request.base_url}#{source_request.path} "\
                 "length: #{original_body.to_s.length} "\
-                "body: original_body.to_s[0..2000]"
+                "body: #{original_body.to_s[0..2000]}"
       raise SourceWrapperNotFoundError, message, caller
     end
   end
