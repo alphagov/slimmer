@@ -1,4 +1,4 @@
-# Unreleased
+# 18.5.2
 
 * Fix a mistake in 18.5.1
 
