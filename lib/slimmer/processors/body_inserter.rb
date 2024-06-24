@@ -38,7 +38,7 @@ module Slimmer::Processors
     end
 
     def wrapper_check?
-      ENV["SLIMMER_WRAPPER_CHECK"] == "true"
+      true
     end
   end
 end
