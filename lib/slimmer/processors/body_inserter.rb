@@ -10,7 +10,17 @@ module Slimmer::Processors
       source_markup = src.at_css(@source_selector)
       destination_markup = dest.at_css(@destination_selector)
 
-      raise(Slimmer::SourceWrapperNotFoundError, "Source wrapper div not found", caller) if source_markup.nil? && wrapper_check?
+      if source_markup.nil? && wrapper_check?
+        raise(Slimmer::SourceWrapperNotFoundError, <<~END_STRING, caller)
+          Slimmer did not find the wrapper div in the source HTML.
+          The following cause can be safely ignored, other need
+          to be investigated. One possible cause is that the
+          requested format was different from HTML e.g. JavaScript,
+          but the action only supports the HTML template and layout.
+          Rails only applies layouts matching the requested format,
+          so the layout was not applied.
+        END_STRING
+      end
 
       css_classes = []
       css_classes << source_markup.attributes["class"].to_s.split(/ +/) if source_markup.has_attribute?("class")
