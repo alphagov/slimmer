@@ -10,7 +10,14 @@ module Slimmer::Processors
       source_markup = src.at_css(@source_selector)
       destination_markup = dest.at_css(@destination_selector)
 
-      raise(Slimmer::SourceWrapperNotFoundError, "Source wrapper div not found", caller) if source_markup.nil? && wrapper_check?
+      if source_markup.nil?
+        raise(Slimmer::SourceWrapperNotFoundError, <<~ERROR_MESSAGE, caller)
+          Slimmer did not find a div with ID "wrapper" in the source HTML.
+          This could be because a request was made to your Rails application
+          for a format that it does not support. For example a JavaScript request,
+          when the application only has HTML templates.
+        ERROR_MESSAGE
+      end
 
       css_classes = []
       css_classes << source_markup.attributes["class"].to_s.split(/ +/) if source_markup.has_attribute?("class")
@@ -25,10 +32,6 @@ module Slimmer::Processors
 
     def is_gem_layout?
       @headers[Slimmer::Headers::TEMPLATE_HEADER]&.start_with?("gem_layout")
-    end
-
-    def wrapper_check?
-      ENV["SLIMMER_WRAPPER_CHECK"] == "true"
     end
   end
 end

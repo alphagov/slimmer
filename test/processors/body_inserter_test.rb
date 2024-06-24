@@ -1,7 +1,7 @@
 require "test_helper"
 
 class BodyInserterTest < Minitest::Test
-  def test_should_raise_source_wrapper_div_not_found_error_when_wrapper_not_found_and_env_set
+  def test_should_raise_source_wrapper_div_not_found_error_when_wrapper_not_found
     template = as_nokogiri %(
       <html><body><div><div id="wrapper"></div></div></body></html>
     )
@@ -9,27 +9,8 @@ class BodyInserterTest < Minitest::Test
       <html><body><nav></nav><div><p>this should be moved</p></div></body></html>
     )
 
-    ClimateControl.modify(SLIMMER_WRAPPER_CHECK: "true") do
-      assert_raises(Slimmer::SourceWrapperNotFoundError) do
-        Slimmer::Processors::BodyInserter.new.filter(source, template)
-      end
-    end
-  end
-
-  def test_should_not_raise_source_wrapper_div_not_found_error_when_wrapper_not_found_and_env_not_set
-    template = as_nokogiri %(
-      <html><body><div><div id="wrapper"></div></div></body></html>
-    )
-    source = as_nokogiri %(
-      <html><body><nav></nav><div><p>this should be moved</p></div></body></html>
-    )
-
-    # NoMethodError is the current fail is source wrapper is missing
-    # it's not good, but we want it to behave the same for now
-    ClimateControl.modify(SLIMMER_WRAPPER_CHECK: nil) do
-      assert_raises(NoMethodError) do
-        Slimmer::Processors::BodyInserter.new.filter(source, template)
-      end
+    assert_raises(Slimmer::SourceWrapperNotFoundError) do
+      Slimmer::Processors::BodyInserter.new.filter(source, template)
     end
   end
 
