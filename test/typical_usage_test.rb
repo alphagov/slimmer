@@ -81,31 +81,27 @@ module TypicalUsage
 
   class EmptyResponseTest < SlimmerIntegrationTest
     def test_should_raise_source_wrapper_div_not_found_error
-      ClimateControl.modify(SLIMMER_WRAPPER_CHECK: "true") do
-        assert_raises(Slimmer::SourceWrapperNotFoundError) do
-          given_response 200, ""
-        end
+      assert_raises(Slimmer::SourceWrapperNotFoundError) do
+        given_response 200, ""
       end
     end
   end
 
   class ResponseWithNoWrapperTest < SlimmerIntegrationTest
     def test_should_raise_source_wrapper_div_not_found_error
-      ClimateControl.modify(SLIMMER_WRAPPER_CHECK: "true") do
-        assert_raises(Slimmer::SourceWrapperNotFoundError) do
-          given_response 200, %(
-            <html>
-            <head><title>The title of the page</title>
-            <meta name="something" content="yes">
-            <script src="blah.js"></script>
-            <link href="app.css" rel="stylesheet" type="text/css">
-            </head>
-            <body class="body_class">
-            <div>The body of the page</div>
-            </body>
-            </html>
-          )
-        end
+      assert_raises(Slimmer::SourceWrapperNotFoundError) do
+        given_response 200, %(
+          <html>
+          <head><title>The title of the page</title>
+          <meta name="something" content="yes">
+          <script src="blah.js"></script>
+          <link href="app.css" rel="stylesheet" type="text/css">
+          </head>
+          <body class="body_class">
+          <div>The body of the page</div>
+          </body>
+          </html>
+        )
       end
     end
   end
