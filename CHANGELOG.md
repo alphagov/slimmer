@@ -1,4 +1,4 @@
-# Unreleased
+# 18.6.0
 
 * Remove the part of the body from the error message for SourceWrapperNotFoundError and do some cleanup
   Use more explanatory error message. Apply this globally to all apps.
