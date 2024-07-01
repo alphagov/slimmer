@@ -1,4 +1,4 @@
-# Unreleased
+# 18.6.1
 
 * Update body classes for govuk-frontend-v5
 
