@@ -1,3 +1,3 @@
 module Slimmer
-  VERSION = "18.6.0".freeze
+  VERSION = "18.6.1".freeze
 end
