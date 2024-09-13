@@ -45,11 +45,11 @@ module MetadataInserterTest
     end
 
     def test_should_include_organisations_meta_tag
-      assert_meta_tag "analytics:organisations", "<P1><D422>"
+      assert_meta_tag "organisations", "<P1><D422>"
     end
 
     def test_should_include_world_locations_meta_tag
-      assert_meta_tag "analytics:world-locations", "<WL3>"
+      assert_meta_tag "world-locations", "<WL3>"
     end
 
     def test_should_include_search_result_count_meta_tag
@@ -71,11 +71,11 @@ module MetadataInserterTest
     end
 
     def test_should_omit_organisations
-      refute_meta_tag "analytics:organisations"
+      refute_meta_tag "organisations"
     end
 
     def test_should_omit_world_locations
-      refute_meta_tag "analytics:world-locations"
+      refute_meta_tag "world-locations"
     end
 
     def test_should_omit_result_count
