@@ -1,4 +1,4 @@
-# Unreleased
+# 18.6.2
 
 * Remove 'analytics' from metatags
 
