@@ -1,3 +1,7 @@
+# 18.6.3
+
+* Upgrade dependencies
+
 # 18.6.2
 
 * Remove 'analytics' from metatags
