@@ -1,3 +1,7 @@
+# Unreleased
+
+* Use Ruby 3.3 as default https://github.com/alphagov/slimmer/pull/348
+
 # 18.6.2
 
 * Remove 'analytics' from metatags
