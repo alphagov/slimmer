@@ -1,4 +1,4 @@
-# Unreleased
+# 18.7.0
 
 * Use Ruby 3.3 as default https://github.com/alphagov/slimmer/pull/348
 
