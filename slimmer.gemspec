@@ -28,14 +28,14 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rack-test", "~> 2"
   s.add_development_dependency "rails", "~> 8"
   s.add_development_dependency "rake"
-  s.add_development_dependency "rubocop-govuk", "5.1.1"
+  s.add_development_dependency "rubocop-govuk", "5.1.9"
   s.add_development_dependency "webmock", "~> 3.8"
 
   s.files = Dir[
     "README.md",
     "CHANGELOG.md",
     "lib/**/*",
-    "Rakefile"
+    "Rakefile",
   ]
   s.require_paths = %w[lib]
 end
