@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
     "README.md",
     "CHANGELOG.md",
     "lib/**/*",
-    "Rakefile"
+    "Rakefile",
   ]
   s.require_paths = %w[lib]
 end
