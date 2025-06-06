@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rack-test", "~> 2"
   s.add_development_dependency "rails", "~> 8"
   s.add_development_dependency "rake"
-  s.add_development_dependency "rubocop-govuk", "5.1.10"
+  s.add_development_dependency "rubocop-govuk", "5.1.12"
   s.add_development_dependency "webmock", "~> 3.8"
 
   s.files = Dir[
