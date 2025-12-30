@@ -1,3 +1,6 @@
+# 18.8.0
+* Bump ruby version to 3.4.5 https://github.com/alphagov/slimmer/pull/377
+
 # 18.7.0
 
 * Use Ruby 3.3 as default https://github.com/alphagov/slimmer/pull/348
