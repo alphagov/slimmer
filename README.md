@@ -1,3 +1,9 @@
+> [!WARNING]
+> Slimmer has been retired and is no longer in use.
+>
+> (See [RFC-176](https://github.com/alphagov/govuk-rfcs/blob/main/rfc-176-replacing-static.md) for an explanation.)
+
+
 # Slimmer
 
 Slimmer provides Rack middleware for applying a standard header and footer around pages
@@ -59,7 +65,7 @@ end
 
 ## Use in before_action renders
 
-If you have a non-default layout and want to render in a before_action method, note that you may have to explicitly call `slimmer_template(:your_template_name)` in the action before rendering. Rendering in a before_action immediately stops the action chain, and since slimmer usually calls slimmer_template as an after_action, it would be skipped over (and you'd get the default layout). 
+If you have a non-default layout and want to render in a before_action method, note that you may have to explicitly call `slimmer_template(:your_template_name)` in the action before rendering. Rendering in a before_action immediately stops the action chain, and since slimmer usually calls slimmer_template as an after_action, it would be skipped over (and you'd get the default layout).
 
 ## Logging
 
