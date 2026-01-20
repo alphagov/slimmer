@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rest-client"
 
   s.add_development_dependency "climate_control", "~> 1.1"
-  s.add_development_dependency "minitest", "~> 5.16"
+  s.add_development_dependency "minitest", "~> 6.0"
   s.add_development_dependency "rack-test", "~> 2"
   s.add_development_dependency "rails", "~> 8"
   s.add_development_dependency "rake"
